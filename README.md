@@ -19,9 +19,6 @@ Implement in-app subscriptions, validate user receipts, check subscription statu
 
 Check the [documentation](https://docs.qonversion.io) to learn details on implementing and using Qonversion SDKs.
 
-[![Version](https://img.shields.io/cocoapods/v/Qonversion.svg?style=flat)](https://cocoapods.org/pods/Qonversion)
-[![Platform](https://img.shields.io/cocoapods/p/Qonversion.svg?style=flat)](https://cocoapods.org/pods/Qonversion)
-[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 [![MIT License](http://img.shields.io/cocoapods/l/Qonversion.svg?style=flat)](http://qonversion.io)
 
 
