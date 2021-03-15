@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface CDVQonversionPlugin : CDVPlugin
 {}
 
+- (void)storeSDKInfo:(CDVInvokedUrlCommand *)command;
 - (void)launch:(CDVInvokedUrlCommand *)command;
 - (void)setDebugMode:(CDVInvokedUrlCommand *)command;
 - (void)setUserID:(CDVInvokedUrlCommand *)command;
