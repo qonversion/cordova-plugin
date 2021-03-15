@@ -9,8 +9,8 @@
       "ios"
     ]
   },
-  "repository": "github:qonversion/cordova-sdk",
-  "bugs": "https://github.com/qonversion/cordova-sdk/issues",
+  "repository": "github:qonversion/cordova-plugin",
+  "bugs": "https://github.com/qonversion/cordova-plugin/issues",
   "keywords": [
     "cordova",
     "inapp",
