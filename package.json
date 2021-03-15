@@ -1,6 +1,6 @@
 {
   "name": "cordova-plugin-qonversion",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Qonversion Cordova Plugin",
   "cordova": {
     "id": "cordova-plugin-qonversion",
@@ -9,30 +9,19 @@
       "ios"
     ]
   },
+  "repository": "github:qonversion/cordova-sdk",
+  "bugs": "https://github.com/qonversion/cordova-sdk/issues",
   "keywords": [
     "cordova",
+    "inapp",
+    "Google billing",
+    "StoreKit",
+    "in-app",
     "qonversion",
     "purchases",
     "cordova-android",
     "cordova-ios"
   ],
   "author": "Qonversion, Inc.",
-  "license": "MIT",
-  "devDependencies": {
-    "@types/jest": "^24.0.15",
-    "@types/node": "^12.6.8",
-    "jest": "^24.8.0",
-    "prettier": "1.18.2",
-    "ts-jest": "^24.0.2",
-    "tslint": "^5.18.0",
-    "tslint-config-prettier": "^1.18.0",
-    "typescript": "^3.5.3",
-    "eslint": "^3.19.0",
-    "eslint-config-semistandard": "^11.0.0",
-    "eslint-config-standard": "^10.2.1",
-    "eslint-plugin-import": "^2.3.0",
-    "eslint-plugin-node": "^5.0.0",
-    "eslint-plugin-promise": "^3.5.0",
-    "eslint-plugin-standard": "^3.0.1"
-  }
+  "license": "MIT"
 }
