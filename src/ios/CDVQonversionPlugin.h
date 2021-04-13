@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)storeSDKInfo:(CDVInvokedUrlCommand *)command;
 - (void)launch:(CDVInvokedUrlCommand *)command;
 - (void)setDebugMode:(CDVInvokedUrlCommand *)command;
+- (void)setAdvertisingID:(CDVInvokedUrlCommand *)command;
 - (void)setUserID:(CDVInvokedUrlCommand *)command;
 - (void)syncPurchases:(CDVInvokedUrlCommand *)command;
 

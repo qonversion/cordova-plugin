@@ -20,6 +20,10 @@ var Qonversion = /** @class */ (function () {
         window.cordova.exec(null, null, 'QonversionPlugin', 'setDebugMode');
     };
 
+    Qonversion.setAdvertisingID = function () {
+        window.cordova.exec(null, null, 'QonversionPlugin', 'setAdvertisingID');
+    };
+
     Qonversion.syncPurchases = function () {
         window.cordova.exec(null, null, 'QonversionPlugin', 'syncPurchases');
     };    

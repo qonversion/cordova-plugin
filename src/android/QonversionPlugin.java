@@ -32,6 +32,10 @@ public class QonversionPlugin extends AnnotatedCordovaPlugin {
         Qonversion.setDebugMode();
     }
 
+    @PluginAction(thread = ExecutionThread.WORKER, actionName = "setAdvertisingID")
+    private void setAdvertisingID(CallbackContext callbackContext) {
+    }
+
     @PluginAction(thread = ExecutionThread.UI, actionName = "setUserID")
     private void setUserID(String userID, CallbackContext callbackContext) {
         Qonversion.setUserID(userID);

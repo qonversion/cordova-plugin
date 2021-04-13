@@ -30,6 +30,10 @@
     [Qonversion setDebugMode];
 }
 
+- (void)setAdvertisingID:(CDVInvokedUrlCommand *)command {
+    [Qonversion setAdvertisingID];
+}
+
 - (void)setUserID:(CDVInvokedUrlCommand *)command {
     NSString *userID = [command argumentAtIndex:0];
     [Qonversion setUserID:userID];
