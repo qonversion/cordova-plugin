@@ -1,5 +1,5 @@
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
-        id="cordova-plugin-qonversion" version="0.1.0">
+        id="cordova-plugin-qonversion" version="0.1.4">
     <name>Qonversion</name>
     <description>Cordova Qonversion Plugin</description>
     <license>MIT</license>

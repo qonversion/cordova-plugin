@@ -1,4 +1,4 @@
-const sdkVersion = "0.1.3";
+const sdkVersion = "0.1.4";
 const sdkVersionKey = "com.qonversion.keys.sourceVersion";
 const source = "cordova";
 const sourceKey = "com.qonversion.keys.source";
