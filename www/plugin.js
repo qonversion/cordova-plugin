@@ -1,23 +1,12 @@
 const sdkVersion = "1.0.0";
-const sdkVersionKey = "com.qonversion.keys.sourceVersion";
 const source = "cordova";
-const sourceKey = "com.qonversion.keys.source";
 
 var Qonversion = /** @class */ (function () {
     function Qonversion() {
     }
 
     Qonversion.launch = function (projectKey, observerMode) {
-        window.cordova.exec(null, null, 'QonversionPlugin', 'storeSDKInfo', [sdkVersion, sdkVersionKey, source, sourceKey]);
-        window.cordova.exec(null, null, 'QonversionPlugin', 'launch', [projectKey, observerMode]);
-    };
-
-    Qonversion.setUserID = function (userID) {
-        window.cordova.exec(null, null, 'QonversionPlugin', 'setUserID', [userID]);
-    };
-
-    Qonversion.setDebugMode = function () {
-        window.cordova.exec(null, null, 'QonversionPlugin', 'setDebugMode');
+        window.cordova.exec(null, null, 'QonversionPlugin', 'storeSDKInfo', [source, sdkVersion]);
     };
 
     Qonversion.setAdvertisingID = function () {
@@ -26,7 +15,7 @@ var Qonversion = /** @class */ (function () {
 
     Qonversion.syncPurchases = function () {
         window.cordova.exec(null, null, 'QonversionPlugin', 'syncPurchases');
-    };    
+    };
 
     return Qonversion;
 }());
