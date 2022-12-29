@@ -1,3 +1,4 @@
+cordova.define("cordova-plugin-qonversion.plugin", function(require, exports, module) {
 const sdkVersion = "1.0.0";
 const source = "cordova";
 
@@ -5,12 +6,12 @@ var Qonversion = /** @class */ (function () {
     function Qonversion() {
     }
 
-    Qonversion.launch = function (projectKey, observerMode) {
-        window.cordova.exec(null, null, 'QonversionPlugin', 'storeSDKInfo', [source, sdkVersion]);
-    };
+    Qonversion.initialize = function () {
+        window.cordova.exec(null, null, 'QonversionPlugin','initializeSdk', ["key", "mode", "env", "lifetime"])
+    }
 
-    Qonversion.setAdvertisingID = function () {
-        window.cordova.exec(null, null, 'QonversionPlugin', 'setAdvertisingID');
+    Qonversion.products = function (callback, errorCallback) {
+            window.cordova.exec(callback, errorCallback, 'QonversionPlugin', 'products', [])
     };
 
     Qonversion.syncPurchases = function () {
@@ -30,3 +31,5 @@ if (typeof module !== "undefined" && module.exports) {
     module.exports = Qonversion;
 }
 exports.default = Qonversion;
+
+});

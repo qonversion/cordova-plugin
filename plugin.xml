@@ -29,7 +29,7 @@
                 <source url="https://github.com/CocoaPods/Specs.git"/>
             </config>
             <pods use-frameworks="true">
-                <pod name="Qonversion" spec="2.13.2"/>
+                <pod name="QonversionSandwich" spec="1.0.0"/>
             </pods>
         </podspec>
     </platform>
