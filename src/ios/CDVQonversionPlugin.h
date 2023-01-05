@@ -17,14 +17,14 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)initializeSdk:(CDVInvokedUrlCommand *)command;
 - (void)setDefinedProperty:(CDVInvokedUrlCommand *)command;
 - (void)setCustomProperty:(CDVInvokedUrlCommand *)command;
-- (void)addAttributionData:(CDVInvokedUrlCommand *)command;
-- (void)checkPermissions:(CDVInvokedUrlCommand *)command;
+- (void)attribution:(CDVInvokedUrlCommand *)command;
+- (void)checkEntitlements:(CDVInvokedUrlCommand *)command;
 - (void)purchaseProduct:(CDVInvokedUrlCommand *)command;
 - (void)purchase:(CDVInvokedUrlCommand *)command;
 - (void)products:(CDVInvokedUrlCommand *)command;
 - (void)restore:(CDVInvokedUrlCommand *)command;
 - (void)offerings:(CDVInvokedUrlCommand *)command;
-- (void)checkTrialIntroEligibilityForProductIds:(CDVInvokedUrlCommand *)command;
+- (void)checkTrialIntroEligibility:(CDVInvokedUrlCommand *)command;
 - (void)identify:(CDVInvokedUrlCommand *)command;
 - (void)logout:(CDVInvokedUrlCommand *)command;
 - (void)userInfo:(CDVInvokedUrlCommand *)command;

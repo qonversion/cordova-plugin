@@ -62,14 +62,14 @@
     [self.qonversionSandwich setCustomProperty:property value:value];
 }
 
-- (void)addAttributionData:(CDVInvokedUrlCommand *)command {
+- (void)attribution:(CDVInvokedUrlCommand *)command {
     NSDictionary *data = [command argumentAtIndex:0];
     NSString *provider = [command argumentAtIndex:1];
     
     [self.qonversionSandwich attributionWithProviderKey:provider value:data];
 }
 
-- (void)checkPermissions:(CDVInvokedUrlCommand *)command {
+- (void)checkEntitlements:(CDVInvokedUrlCommand *)command {
     __block __weak CDVQonversionPlugin *weakSelf = self;
     [self.qonversionSandwich checkEntitlements:^(NSDictionary<NSString *,id> * _Nullable result, SandwichError * _Nullable error) {
         [weakSelf returnCordovaResult:result error:error command:command];
@@ -114,7 +114,7 @@
     }];
 }
 
-- (void)checkTrialIntroEligibilityForProductIds:(CDVInvokedUrlCommand *)command {
+- (void)checkTrialIntroEligibility:(CDVInvokedUrlCommand *)command {
     NSArray *data = [command argumentAtIndex:0];
     __block __weak CDVQonversionPlugin *weakSelf = self;
     [self.qonversionSandwich checkTrialIntroEligibility:data completion:^(NSDictionary<NSString *,id> * _Nullable result, SandwichError * _Nullable error) {
@@ -123,8 +123,8 @@
 }
 
 - (void)identify:(CDVInvokedUrlCommand *)command {
-    NSString *userId = [command argumentAtIndex:0];
-    [self.qonversionSandwich identify:userId];
+    NSString *identityId = [command argumentAtIndex:0];
+    [self.qonversionSandwich identify:identityId];
 }
 
 - (void)logout:(CDVInvokedUrlCommand *)command {
