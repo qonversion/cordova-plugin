@@ -28,8 +28,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)identify:(CDVInvokedUrlCommand *)command;
 - (void)logout:(CDVInvokedUrlCommand *)command;
 - (void)userInfo:(CDVInvokedUrlCommand *)command;
-- (void)setAdvertisingId:(CDVInvokedUrlCommand *)command;
-- (void)setAppleSearchAdsAttributionEnabled:(CDVInvokedUrlCommand *)command;
+- (void)collectAdvertisingId:(CDVInvokedUrlCommand *)command;
+- (void)collectAppleSearchAdsAttribution:(CDVInvokedUrlCommand *)command;
 - (void)promoPurchase:(CDVInvokedUrlCommand *)command;
 - (void)syncPurchases:(CDVInvokedUrlCommand *)command;
 

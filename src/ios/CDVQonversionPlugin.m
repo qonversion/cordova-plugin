@@ -138,11 +138,11 @@
     }];
 }
 
-- (void)setAdvertisingId:(CDVInvokedUrlCommand *)command {
+- (void)collectAdvertisingId:(CDVInvokedUrlCommand *)command {
     [self.qonversionSandwich collectAdvertisingId];
 }
 
-- (void)setAppleSearchAdsAttributionEnabled:(CDVInvokedUrlCommand *)command {
+- (void)collectAppleSearchAdsAttribution:(CDVInvokedUrlCommand *)command {
     [self.qonversionSandwich collectAppleSearchAdsAttribution];
 }
 
