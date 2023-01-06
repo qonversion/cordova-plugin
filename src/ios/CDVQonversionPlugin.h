@@ -14,10 +14,23 @@ NS_ASSUME_NONNULL_BEGIN
 {}
 
 - (void)storeSDKInfo:(CDVInvokedUrlCommand *)command;
-- (void)launch:(CDVInvokedUrlCommand *)command;
-- (void)setDebugMode:(CDVInvokedUrlCommand *)command;
-- (void)setAdvertisingID:(CDVInvokedUrlCommand *)command;
-- (void)setUserID:(CDVInvokedUrlCommand *)command;
+- (void)initializeSdk:(CDVInvokedUrlCommand *)command;
+- (void)setDefinedProperty:(CDVInvokedUrlCommand *)command;
+- (void)setCustomProperty:(CDVInvokedUrlCommand *)command;
+- (void)attribution:(CDVInvokedUrlCommand *)command;
+- (void)checkEntitlements:(CDVInvokedUrlCommand *)command;
+- (void)purchaseProduct:(CDVInvokedUrlCommand *)command;
+- (void)purchase:(CDVInvokedUrlCommand *)command;
+- (void)products:(CDVInvokedUrlCommand *)command;
+- (void)restore:(CDVInvokedUrlCommand *)command;
+- (void)offerings:(CDVInvokedUrlCommand *)command;
+- (void)checkTrialIntroEligibility:(CDVInvokedUrlCommand *)command;
+- (void)identify:(CDVInvokedUrlCommand *)command;
+- (void)logout:(CDVInvokedUrlCommand *)command;
+- (void)userInfo:(CDVInvokedUrlCommand *)command;
+- (void)collectAdvertisingId:(CDVInvokedUrlCommand *)command;
+- (void)collectAppleSearchAdsAttribution:(CDVInvokedUrlCommand *)command;
+- (void)promoPurchase:(CDVInvokedUrlCommand *)command;
 - (void)syncPurchases:(CDVInvokedUrlCommand *)command;
 
 @end
