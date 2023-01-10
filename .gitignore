@@ -12,4 +12,7 @@ www/index.js
 js/**/*.js
 js/**/*.js.map
 
+package-lock.json
+
+android.iml
 .idea
