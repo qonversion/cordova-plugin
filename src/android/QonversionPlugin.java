@@ -25,23 +25,23 @@ import io.qonversion.sandwich.SandwichError;
 
 public class QonversionPlugin extends AnnotatedCordovaPlugin implements QonversionEventsListener {
 
-    private final QonversionSandwich qonversionSandwich;
+    private QonversionSandwich qonversionSandwich;
 
     private static final String ERROR_CODE_PURCHASE_CANCELLED_BY_USER = "PURCHASE_CANCELLED_BY_USER";
 
     private @Nullable CallbackContext entitlementsUpdateDelegate = null;
 
-    public QonversionPlugin() {
-        super();
-
+    @PluginAction(thread = ExecutionThread.MAIN, actionName = "initialize")
+    public void initialize(CallbackContext callbackContext) {
         qonversionSandwich = new QonversionSandwich(
                 (Application) cordova.getContext().getApplicationContext(),
                 cordova::getActivity,
                 this
         );
+        callbackContext.success();
     }
 
-    @PluginAction(thread = ExecutionThread.WORKER, actionName = "storeSDKInfo")
+    @PluginAction(thread = ExecutionThread.MAIN, actionName = "storeSDKInfo")
     public void storeSDKInfo(String source, String sdkVersion, CallbackContext callbackContext) {
         qonversionSandwich.storeSdkInfo(source, sdkVersion);
         callbackContext.success();

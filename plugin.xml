@@ -1,11 +1,12 @@
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
         id="cordova-plugin-qonversion" version="1.0.0">
     <dependency id="cordova-annotated-plugin-android" />
+    <dependency id="cordova-plugin-device" />
     <name>Qonversion</name>
     <description>Cordova Qonversion Plugin</description>
     <license>MIT</license>
     <keywords>cordova,qonversion,iap,inapp,in-app,purchases,purchase,storekit,billing</keywords>
-    <js-module src="www/plugin.js" name="plugin">
+    <js-module src="www/index.js" name="QonversionPlugin">
         <clobbers target="Qonversion" />
     </js-module>
     <platform name="android">
