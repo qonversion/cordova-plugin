@@ -1,7 +1,7 @@
-import SKProductDiscount from "./SKProductDiscount";
-import SKSubscriptionPeriod from "./SKSubscriptionPeriod";
+import {SKProductDiscount} from "./SKProductDiscount";
+import {SKSubscriptionPeriod} from "./SKSubscriptionPeriod";
 
-class SKProduct {
+export class SKProduct {
   localizedDescription?: string;
   localizedTitle?: string;
   price: string;
@@ -49,5 +49,3 @@ class SKProduct {
     this.currencyCode = currencyCode;
   }
 }
-
-export default SKProduct;

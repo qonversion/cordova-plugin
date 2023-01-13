@@ -1,4 +1,4 @@
-class User {
+export class User {
   qonversionId: string;
   identityId?: string | null;
 
@@ -7,5 +7,3 @@ class User {
     this.identityId = identityId;
   }
 }
-
-export default User;

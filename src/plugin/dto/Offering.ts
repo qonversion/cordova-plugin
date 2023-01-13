@@ -1,7 +1,7 @@
-import { OfferingTags } from "./enums";
-import Product from "./Product";
+import {OfferingTags} from "./enums";
+import {Product} from "./Product";
 
-class Offering {
+export class Offering {
   id: string;
   tag: OfferingTags;
   products: Array<Product>;
@@ -16,5 +16,3 @@ class Offering {
     return this.products.find((object) => object.qonversionID === identifier);
   }
 }
-
-export default Offering;

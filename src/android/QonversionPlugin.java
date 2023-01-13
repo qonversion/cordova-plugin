@@ -10,6 +10,8 @@ import com.appfeel.cordova.annotated.android.plugin.ExecutionThread;
 import com.appfeel.cordova.annotated.android.plugin.PluginAction;
 
 import org.apache.cordova.CallbackContext;
+import org.apache.cordova.CordovaInterface;
+import org.apache.cordova.CordovaWebView;
 import org.apache.cordova.PluginResult;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,14 +33,14 @@ public class QonversionPlugin extends AnnotatedCordovaPlugin implements Qonversi
 
     private @Nullable CallbackContext entitlementsUpdateDelegate = null;
 
-    @PluginAction(thread = ExecutionThread.MAIN, actionName = "initialize")
-    public void initialize(CallbackContext callbackContext) {
+    @Override
+    public void pluginInitialize() {
+        super.pluginInitialize();
         qonversionSandwich = new QonversionSandwich(
                 (Application) cordova.getContext().getApplicationContext(),
                 cordova::getActivity,
                 this
         );
-        callbackContext.success();
     }
 
     @PluginAction(thread = ExecutionThread.MAIN, actionName = "storeSDKInfo")

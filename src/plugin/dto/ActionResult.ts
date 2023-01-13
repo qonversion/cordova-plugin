@@ -1,7 +1,7 @@
 import {ActionResultType} from "./enums";
-import QonversionError from "./QonversionError";
+import {QonversionError} from "./QonversionError";
 
-class ActionResult {
+export class ActionResult {
 
   type: ActionResultType;
   value: Map<String, String | undefined> | undefined;
@@ -17,5 +17,3 @@ class ActionResult {
     this.error = error;
   }
 }
-
-export default ActionResult;

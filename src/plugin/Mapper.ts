@@ -13,20 +13,20 @@ import {
   SKProductDiscountType,
   TrialDuration,
   TrialDurations,
-} from "../dto/enums";
-import IntroEligibility from "../dto/IntroEligibility";
-import Offering from "../dto/Offering";
-import Offerings from "../dto/Offerings";
-import Entitlement from "../dto/Entitlement";
-import Product from "../dto/Product";
-import SKProduct from "../dto/storeProducts/SKProduct";
-import SKProductDiscount from "../dto/storeProducts/SKProductDiscount";
-import SKSubscriptionPeriod from "../dto/storeProducts/SKSubscriptionPeriod";
-import SkuDetails from "../dto/storeProducts/SkuDetails";
-import ActionResult from "../dto/ActionResult";
-import QonversionError from "../dto/QonversionError";
-import AutomationsEvent from "../dto/AutomationsEvent";
-import User from '../dto/User';
+} from "./dto/enums";
+import {IntroEligibility} from "./dto/IntroEligibility";
+import {Offering} from "./dto/Offering";
+import {Offerings} from "./dto/Offerings";
+import {Entitlement} from "./dto/Entitlement";
+import {Product} from "./dto/Product";
+import {SKProduct} from "./dto/storeProducts/SKProduct";
+import {SKProductDiscount} from "./dto/storeProducts/SKProductDiscount";
+import {SKSubscriptionPeriod} from "./dto/storeProducts/SKSubscriptionPeriod";
+import {SkuDetails} from "./dto/storeProducts/SkuDetails";
+import {ActionResult} from "./dto/ActionResult";
+import {QonversionError} from "./dto/QonversionError";
+import {AutomationsEvent} from "./dto/AutomationsEvent";
+import {User} from './dto/User';
 
 export type QProduct = {
   id: string;

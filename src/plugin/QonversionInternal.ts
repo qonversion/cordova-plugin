@@ -1,15 +1,15 @@
-import {UserProperty, ProrationMode, AttributionProvider} from "../dto/enums";
-import IntroEligibility from "../dto/IntroEligibility";
+import {UserProperty, ProrationMode, AttributionProvider} from "./dto/enums";
+import {IntroEligibility} from "./dto/IntroEligibility";
 import Mapper, {QEntitlement, QOfferings, QProduct, QTrialIntroEligibility, QUser} from "./Mapper";
-import Offerings from "../dto/Offerings";
-import Entitlement from "../dto/Entitlement";
-import Product from "../dto/Product";
+import {Offerings} from "./dto/Offerings";
+import {Entitlement} from "./dto/Entitlement";
+import {Product} from "./dto/Product";
 import {callNative, DefinedNativeErrorCodes, isAndroid, isIos, noop} from "./utils";
-import {PromoPurchasesListener} from '../dto/PromoPurchasesListener';
-import User from '../dto/User';
-import QonversionApi from '../QonversionApi';
-import QonversionConfig from '../QonversionConfig';
-import {EntitlementsUpdateListener} from '../dto/EntitlementsUpdateListener';
+import {PromoPurchasesListener} from './dto/PromoPurchasesListener';
+import {User} from './dto/User';
+import {QonversionApi} from './QonversionApi';
+import {QonversionConfig} from './QonversionConfig';
+import {EntitlementsUpdateListener} from './dto/EntitlementsUpdateListener';
 
 const sdkVersion = "1.0.0";
 
@@ -18,7 +18,7 @@ export default class QonversionInternal implements QonversionApi {
   entitlementsUpdateListener: EntitlementsUpdateListener | undefined;
 
   constructor(qonversionConfig: QonversionConfig) {
-    callNative('storeSdkInfo', ['cordova', sdkVersion]).then(noop);
+    callNative('storeSDKInfo', ['cordova', sdkVersion]).then(noop);
     callNative<Record<string, QEntitlement>>('initializeSdk', [
       qonversionConfig.projectKey,
       qonversionConfig.launchMode,

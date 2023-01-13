@@ -1,6 +1,6 @@
-import Offering from "./Offering";
+import {Offering} from "./Offering";
 
-class Offerings {
+export class Offerings {
   main: Offering | null;
   availableOffering: Array<Offering>;
 
@@ -13,5 +13,3 @@ class Offerings {
     return this.availableOffering.find((object) => object.id === identifier);
   }
 }
-
-export default Offerings;

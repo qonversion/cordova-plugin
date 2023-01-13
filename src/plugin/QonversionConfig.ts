@@ -1,7 +1,7 @@
 import {EntitlementsCacheLifetime, Environment, LaunchMode} from './dto/enums';
 import {EntitlementsUpdateListener} from './dto/EntitlementsUpdateListener';
 
-class QonversionConfig {
+export class QonversionConfig {
   readonly projectKey: string;
   readonly launchMode: LaunchMode;
   readonly environment: Environment;
@@ -22,5 +22,3 @@ class QonversionConfig {
     this.entitlementsUpdateListener = entitlementsUpdateListener;
   }
 }
-
-export default QonversionConfig;

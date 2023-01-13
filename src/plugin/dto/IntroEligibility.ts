@@ -1,11 +1,9 @@
-import { IntroEligibilityStatus } from "./enums";
+import {IntroEligibilityStatus} from "./enums";
 
-class IntroEligibility {
+export class IntroEligibility {
   status?: IntroEligibilityStatus;
 
   constructor(status: IntroEligibilityStatus | undefined) {
     this.status = status;
   }
 }
-
-export default IntroEligibility;

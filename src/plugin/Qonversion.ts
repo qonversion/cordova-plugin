@@ -1,6 +1,6 @@
-import QonversionConfig from './QonversionConfig';
-import QonversionApi from './QonversionApi';
-import QonversionInternal from './internal/QonversionInternal';
+import {QonversionConfig} from './QonversionConfig';
+import {QonversionApi} from './QonversionApi';
+import QonversionInternal from './QonversionInternal';
 
 export default class Qonversion {
   private constructor() {}

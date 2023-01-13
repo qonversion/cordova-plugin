@@ -1,4 +1,4 @@
-import ActionResult from "./ActionResult";
+import {ActionResult} from "./ActionResult";
 
 export interface AutomationsDelegate {
 

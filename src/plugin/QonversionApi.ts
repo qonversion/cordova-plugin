@@ -1,13 +1,13 @@
-import Entitlement from './dto/Entitlement';
-import Product from './dto/Product';
+import {Entitlement} from './dto/Entitlement';
+import {Product} from './dto/Product';
 import {UserProperty, ProrationMode, AttributionProvider} from './dto/enums';
-import Offerings from './dto/Offerings';
-import IntroEligibility from './dto/IntroEligibility';
-import User from './dto/User';
+import {Offerings} from './dto/Offerings';
+import {IntroEligibility} from './dto/IntroEligibility';
+import {User} from './dto/User';
 import {EntitlementsUpdateListener} from './dto/EntitlementsUpdateListener';
 import {PromoPurchasesListener} from './dto/PromoPurchasesListener';
 
-interface QonversionApi {
+export interface QonversionApi {
 
   /**
    * Make a purchase and validate it through server-to-server using Qonversion's Backend
@@ -235,5 +235,3 @@ interface QonversionApi {
    */
   presentCodeRedemptionSheet(): void;
 }
-
-export default QonversionApi;

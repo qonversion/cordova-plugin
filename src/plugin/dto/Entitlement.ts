@@ -1,6 +1,6 @@
 import {EntitlementSource, EntitlementRenewState} from "./enums";
 
-class Entitlement {
+export class Entitlement {
   id: string;
   productId: string;
   isActive: boolean;
@@ -27,5 +27,3 @@ class Entitlement {
     this.expirationDate = expirationDate ? new Date(expirationDate) : undefined;
   }
 }
-
-export default Entitlement;

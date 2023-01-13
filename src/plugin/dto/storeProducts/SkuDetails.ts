@@ -1,4 +1,4 @@
-class SkuDetails {
+export class SkuDetails {
   description: string;
   freeTrialPeriod: string;
   iconUrl: string;
@@ -61,5 +61,3 @@ class SkuDetails {
     this.toString = toString;
   }
 }
-
-export default SkuDetails;

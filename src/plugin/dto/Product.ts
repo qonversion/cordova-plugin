@@ -1,8 +1,8 @@
-import { ProductDurations, ProductTypes, TrialDurations } from "./enums";
-import SKProduct from "./storeProducts/SKProduct";
-import SkuDetails from "./storeProducts/SkuDetails";
+import {ProductDurations, ProductTypes, TrialDurations} from "./enums";
+import {SKProduct} from "./storeProducts/SKProduct";
+import {SkuDetails} from "./storeProducts/SkuDetails";
 
-class Product {
+export class Product {
   qonversionID: string;
   storeID: string;
   type: ProductTypes;
@@ -50,5 +50,3 @@ class Product {
     this.offeringId = offeringId;
   }
 }
-
-export default Product;

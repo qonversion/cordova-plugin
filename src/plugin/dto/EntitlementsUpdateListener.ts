@@ -1,4 +1,4 @@
-import Entitlement from './Entitlement';
+import {Entitlement} from './Entitlement';
 
 export interface EntitlementsUpdateListener {
 

@@ -1,4 +1,4 @@
-class QonversionError {
+export class QonversionError {
   code: string;
   domain?: string;
   description: string;
@@ -16,5 +16,3 @@ class QonversionError {
     this.additionalMessage = additionalMessage;
   }
 }
-
-export default QonversionError;

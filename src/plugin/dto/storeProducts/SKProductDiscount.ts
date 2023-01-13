@@ -2,9 +2,9 @@ import {
   SKProductDiscountPaymentModes,
   SKProductDiscountTypes,
 } from "../enums";
-import SKSubscriptionPeriod from "./SKSubscriptionPeriod";
+import {SKSubscriptionPeriod} from "./SKSubscriptionPeriod";
 
-class SKProductDiscount {
+export class SKProductDiscount {
   price: string;
   localeIdentifier?: string;
   numberOfPeriods: number;
@@ -34,5 +34,3 @@ class SKProductDiscount {
     this.currencySymbol = currencySymbol;
   }
 }
-
-export default SKProductDiscount;

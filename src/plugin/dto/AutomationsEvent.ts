@@ -1,6 +1,6 @@
 import {AutomationsEventType} from "./enums";
 
-class AutomationsEvent {
+export class AutomationsEvent {
 
   type: AutomationsEventType;
   date: number;
@@ -13,5 +13,3 @@ class AutomationsEvent {
     this.date = date;
   }
 }
-
-export default AutomationsEvent;
