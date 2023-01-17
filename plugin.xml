@@ -6,73 +6,32 @@
     <description>Cordova Qonversion Plugin</description>
     <license>MIT</license>
     <keywords>cordova,qonversion,iap,inapp,in-app,purchases,purchase,storekit,billing</keywords>
-    <js-module src="www/index.js" name="QonversionPlugin">
-        <runs />
+    <js-module src="www/Qonversion.js" name="QonversionPlugin">
+        <clobbers target="Qonversion" />
     </js-module>
 
     <!--  Internal files  -->
-    <js-module src="www/QonversionInternal.js" name="QonversionInternal">
-        <runs />
-    </js-module>
-    <js-module src="www/Mapper.js" name="Mapper">
-        <runs />
-    </js-module>
-    <js-module src="www/utils.js" name="utils">
-        <runs />
-    </js-module>
-    <js-module src="www/Qonversion.js" name="Qonversion">
-        <runs />
-    </js-module>
-
+    <js-module src="www/QonversionInternal.js" name="QonversionInternal" />
+    <js-module src="www/Mapper.js" name="Mapper" />
+    <js-module src="www/utils.js" name="utils" />
     <!--  Public files  -->
-    <js-module src="www/QonversionConfig.js" name="QonversionConfig">
-        <merges target="Qonversion" />
-    </js-module>
-    <js-module src="www/QonversionConfigBuilder.js" name="QonversionConfigBuilder">
-        <merges target="Qonversion" />
-    </js-module>
-    <js-module src="www/dto/enums.js" name="dto/enums">
-        <merges target="Qonversion" />
-    </js-module>
-    <js-module src="www/dto/ActionResult.js" name="dto/ActionResult">
-        <merges target="Qonversion" />
-    </js-module>
-    <js-module src="www/dto/AutomationsEvent.js" name="dto/AutomationsEvent">
-        <merges target="Qonversion" />
-    </js-module>
-    <js-module src="www/dto/Entitlement.js" name="dto/Entitlement">
-        <merges target="Qonversion" />
-    </js-module>
-    <js-module src="www/dto/IntroEligibility.js" name="dto/IntroEligibility">
-        <merges target="Qonversion" />
-    </js-module>
-    <js-module src="www/dto/Offering.js" name="dto/Offering">
-        <merges target="Qonversion" />
-    </js-module>
-    <js-module src="www/dto/Offerings.js" name="dto/Offerings">
-        <merges target="Qonversion" />
-    </js-module>
-    <js-module src="www/dto/Product.js" name="dto/Product">
-        <merges target="Qonversion" />
-    </js-module>
-    <js-module src="www/dto/QonversionError.js" name="dto/QonversionError">
-        <merges target="Qonversion" />
-    </js-module>
-    <js-module src="www/dto/User.js" name="dto/User">
-        <merges target="Qonversion" />
-    </js-module>
-    <js-module src="www/dto/storeProducts/SKProduct.js" name="dto/storeProducts/SKProduct">
-        <merges target="Qonversion" />
-    </js-module>
-    <js-module src="www/dto/storeProducts/SKProductDiscount.js" name="dto/storeProducts/SKProductDiscount">
-        <merges target="Qonversion" />
-    </js-module>
-    <js-module src="www/dto/storeProducts/SKSubscriptionPeriod.js" name="dto/storeProducts/SKSubscriptionPeriod">
-        <merges target="Qonversion" />
-    </js-module>
-    <js-module src="www/dto/storeProducts/SkuDetails.js" name="dto/storeProducts/SkuDetails">
-        <merges target="Qonversion" />
-    </js-module>
+    <js-module src="www/QonversionConfig.js" name="QonversionConfig" />
+    <js-module src="www/QonversionConfigBuilder.js" name="QonversionConfigBuilder" />
+    <js-module src="www/dto/enums.js" name="dto/enums" />
+    <js-module src="www/dto/ActionResult.js" name="dto/ActionResult" />
+    <js-module src="www/dto/AutomationsEvent.js" name="dto/AutomationsEvent" />
+    <js-module src="www/dto/Entitlement.js" name="dto/Entitlement" />
+    <js-module src="www/dto/IntroEligibility.js" name="dto/IntroEligibility" />
+    <js-module src="www/dto/Offering.js" name="dto/Offering" />
+    <js-module src="www/dto/Offerings.js" name="dto/Offerings" />
+    <js-module src="www/dto/Product.js" name="dto/Product" />
+    <js-module src="www/dto/QonversionError.js" name="dto/QonversionError" />
+    <js-module src="www/dto/User.js" name="dto/User" />
+    <js-module src="www/dto/storeProducts/SKProduct.js" name="dto/storeProducts/SKProduct" />
+    <js-module src="www/dto/storeProducts/SKProductDiscount.js" name="dto/storeProducts/SKProductDiscount" />
+    <js-module src="www/dto/storeProducts/SKSubscriptionPeriod.js" name="dto/storeProducts/SKSubscriptionPeriod" />
+    <js-module src="www/dto/storeProducts/SkuDetails.js" name="dto/storeProducts/SkuDetails" />
+
     <platform name="android">
         <config-file target="res/xml/config.xml" parent="/*">
             <feature name="QonversionPlugin" >
