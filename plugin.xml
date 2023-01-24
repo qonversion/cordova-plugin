@@ -1,5 +1,6 @@
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
         id="cordova-plugin-qonversion" version="1.0.0">
+    <dependency id="cordova-annotated-plugin-android" />
     <name>Qonversion</name>
     <description>Cordova Qonversion Plugin</description>
     <license>MIT</license>
@@ -15,6 +16,8 @@
         </config-file>
         <framework src="io.qonversion.sandwich:sandwich:1.0.0" />
         <source-file src="src/android/QonversionPlugin.java" target-dir="src/com/qonversion/android/sdk" />
+        <source-file src="src/android/EntitiesConverter.java" target-dir="src/com/qonversion/android/sdk" />
+        <source-file src="src/android/Utils.java" target-dir="src/com/qonversion/android/sdk" />
     </platform>
     <platform name="ios">
         <config-file target="config.xml" parent="/*">

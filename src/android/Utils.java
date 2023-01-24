@@ -9,30 +9,44 @@ import io.qonversion.sandwich.ResultListener;
 import io.qonversion.sandwich.SandwichError;
 
 import org.apache.cordova.CallbackContext;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class Utils {
     static ResultListener getResultListener(CallbackContext callbackContext) {
         return new ResultListener() {
             @Override
             public void onSuccess(@NonNull Map<String, ?> map) {
-                final WritableMap payload = EntitiesConverter.convertMapToWritableMap(map);
-                promise.resolve(payload);
+                try {
+                    final JSONObject payload = EntitiesConverter.convertMapToJson(map);
+                    callbackContext.success(payload);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    callbackContext.error(e.getMessage());
+                }
             }
 
             @Override
             public void onError(@NonNull SandwichError error) {
-                rejectWithError(error, promise);
+                rejectWithError(error, callbackContext);
             }
         };
     }
 
-    static void rejectWithError(@NonNull SandwichError sandwichError, final Promise promise) {
-        rejectWithError(sandwichError, promise, null);
+    static void rejectWithError(@NonNull SandwichError sandwichError, final CallbackContext callbackContext) {
+        rejectWithError(sandwichError, callbackContext, null);
     }
 
-    static void rejectWithError(@NonNull SandwichError sandwichError, final Promise promise, @Nullable String customErrorCode) {
-        String errorMessage = sandwichError.getDescription() + "\n" + sandwichError.getAdditionalMessage();
-        String errorCode = customErrorCode == null ? sandwichError.getCode() : customErrorCode;
-        promise.reject(errorCode, errorMessage);
+    static void rejectWithError(@NonNull SandwichError sandwichError, final CallbackContext callbackContext, @Nullable String customErrorCode) {
+        try {
+            final JSONObject errorDescription = new JSONObject();
+            errorDescription.put("description", sandwichError.getDescription());
+            errorDescription.put("additionalMessage", sandwichError.getAdditionalMessage());
+            errorDescription.put("errorCode", customErrorCode == null ? sandwichError.getCode() : customErrorCode);
+            callbackContext.error(errorDescription);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            callbackContext.error(e.getMessage());
+        }
     }
 }
