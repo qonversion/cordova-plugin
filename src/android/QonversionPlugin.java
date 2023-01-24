@@ -10,8 +10,6 @@ import com.appfeel.cordova.annotated.android.plugin.ExecutionThread;
 import com.appfeel.cordova.annotated.android.plugin.PluginAction;
 
 import org.apache.cordova.CallbackContext;
-import org.apache.cordova.CordovaInterface;
-import org.apache.cordova.CordovaWebView;
 import org.apache.cordova.PluginResult;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -49,7 +47,7 @@ public class QonversionPlugin extends AnnotatedCordovaPlugin implements Qonversi
         callbackContext.success();
     }
 
-    @PluginAction(thread = ExecutionThread.MAIN, actionName = "initializeSdk")
+    @PluginAction(thread = ExecutionThread.MAIN, actionName = "initializeSdk", isAutofinish = false)
     public void initializeSdk(
             String projectKey,
             String launchModeKey,
@@ -72,17 +70,17 @@ public class QonversionPlugin extends AnnotatedCordovaPlugin implements Qonversi
         entitlementsUpdateCallbackContext.sendPluginResult(result);
     }
 
-    @PluginAction(thread = ExecutionThread.UI, actionName = "purchaseProduct")
+    @PluginAction(thread = ExecutionThread.UI, actionName = "purchaseProduct", isAutofinish = false)
     public void purchaseProduct(String productId, String offeringId, CallbackContext callbackContext) {
         qonversionSandwich.purchaseProduct(productId, offeringId, getPurchaseResultListener(callbackContext));
     }
 
-    @PluginAction(thread = ExecutionThread.UI, actionName = "purchase")
+    @PluginAction(thread = ExecutionThread.UI, actionName = "purchase", isAutofinish = false)
     public void purchase(String productId, CallbackContext callbackContext) {
         qonversionSandwich.purchase(productId, getPurchaseResultListener(callbackContext));
     }
 
-    @PluginAction(thread = ExecutionThread.UI, actionName = "updateProductWithId")
+    @PluginAction(thread = ExecutionThread.UI, actionName = "updateProductWithId", isAutofinish = false)
     public void updateProductWithId(
             final String productId,
             @Nullable final String offeringId,
@@ -92,7 +90,7 @@ public class QonversionPlugin extends AnnotatedCordovaPlugin implements Qonversi
         updateProductWithIdAndProrationMode(productId, offeringId, oldProductId, null, callbackContext);
     }
 
-    @PluginAction(thread = ExecutionThread.UI, actionName = "updateProductWithIdAndProrationMode")
+    @PluginAction(thread = ExecutionThread.UI, actionName = "updateProductWithIdAndProrationMode", isAutofinish = false)
     public void updateProductWithIdAndProrationMode(
             final String productId,
             @Nullable final String offeringId,
@@ -109,12 +107,12 @@ public class QonversionPlugin extends AnnotatedCordovaPlugin implements Qonversi
         );
     }
 
-    @PluginAction(thread = ExecutionThread.UI, actionName = "updatePurchase")
+    @PluginAction(thread = ExecutionThread.UI, actionName = "updatePurchase", isAutofinish = false)
     public void updatePurchase(String productId, String oldProductId, CallbackContext callbackContext) {
         updatePurchaseWithProrationMode(productId, oldProductId, null, callbackContext);
     }
 
-    @PluginAction(thread = ExecutionThread.UI, actionName = "updatePurchaseWithProrationMode")
+    @PluginAction(thread = ExecutionThread.UI, actionName = "updatePurchaseWithProrationMode", isAutofinish = false)
     public void updatePurchaseWithProrationMode(String productId, String oldProductId, Integer prorationMode, CallbackContext callbackContext) {
         qonversionSandwich.updatePurchase(productId, oldProductId, prorationMode, getPurchaseResultListener(callbackContext));
     }
@@ -143,22 +141,22 @@ public class QonversionPlugin extends AnnotatedCordovaPlugin implements Qonversi
         }
     }
 
-    @PluginAction(thread = ExecutionThread.WORKER, actionName = "checkEntitlements")
+    @PluginAction(thread = ExecutionThread.UI, actionName = "checkEntitlements", isAutofinish = false)
     public void checkEntitlements(CallbackContext callbackContext) {
         qonversionSandwich.checkEntitlements(Utils.getResultListener(callbackContext));
     }
 
-    @PluginAction(thread = ExecutionThread.WORKER, actionName = "products")
+    @PluginAction(thread = ExecutionThread.UI, actionName = "products", isAutofinish = false)
     public void products(CallbackContext callbackContext) {
         qonversionSandwich.products(Utils.getResultListener(callbackContext));
     }
 
-    @PluginAction(thread = ExecutionThread.WORKER, actionName = "offerings")
+    @PluginAction(thread = ExecutionThread.UI, actionName = "offerings", isAutofinish = false)
     public void offerings(CallbackContext callbackContext) {
         qonversionSandwich.offerings(Utils.getResultListener(callbackContext));
     }
 
-    @PluginAction(thread = ExecutionThread.WORKER, actionName = "checkTrialIntroEligibilityForProductIds")
+    @PluginAction(thread = ExecutionThread.UI, actionName = "checkTrialIntroEligibilityForProductIds", isAutofinish = false)
     public void checkTrialIntroEligibilityForProductIds(JSONArray ids, CallbackContext callbackContext) {
         try {
             List<String> productIds = EntitiesConverter.convertArrayToStringList(ids);
@@ -168,12 +166,12 @@ public class QonversionPlugin extends AnnotatedCordovaPlugin implements Qonversi
         }
     }
 
-    @PluginAction(thread = ExecutionThread.UI, actionName = "restore")
+    @PluginAction(thread = ExecutionThread.UI, actionName = "restore", isAutofinish = false)
     public void restore(CallbackContext callbackContext) {
         qonversionSandwich.restore(Utils.getResultListener(callbackContext));
     }
 
-    @PluginAction(thread = ExecutionThread.UI, actionName = "syncPurchases")
+    @PluginAction(thread = ExecutionThread.WORKER, actionName = "syncPurchases", isAutofinish = false)
     public void syncPurchases(CallbackContext callbackContext) {
         qonversionSandwich.syncPurchases();
         callbackContext.success();
@@ -191,7 +189,7 @@ public class QonversionPlugin extends AnnotatedCordovaPlugin implements Qonversi
         callbackContext.success();
     }
 
-    @PluginAction(thread = ExecutionThread.WORKER, actionName = "userInfo")
+    @PluginAction(thread = ExecutionThread.UI, actionName = "userInfo", isAutofinish = false)
     public void userInfo(CallbackContext callbackContext) {
         qonversionSandwich.userInfo(Utils.getResultListener(callbackContext));
     }
