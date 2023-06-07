@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <!--
+        Customize this policy to fit your own app's needs. For more guidance, please refer to the docs:
+            https://cordova.apache.org/docs/en/latest/
+        Some notes:
+            * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
+            * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
+                * Enable inline JS: add 'unsafe-inline' to default-src
+        -->
+        <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *; img-src 'self' data: content:;">
+        <meta name="format-detection" content="telephone=no">
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
+        <meta name="color-scheme" content="light dark">
+        <link rel="stylesheet" href="css/index.css">
+        <title>Hello World</title>
+    </head>
+    <body>
+        <div class="app">
+            <h1>Qonversion Cordova Plugin</h1>
+            <div id="deviceready" class="blink">
+                <p class="event listening">Connecting to Device</p>
+                <p class="event received">Device is Ready</p>
+            </div>
+            <div class="button-container">
+                <button id="initialize-sdk" type="button" class="qon-button top-margin">Initialize SDK</button>
+                <div class="row top-margin">
+                    <input placeholder="Product id" id="product-id" type="text" class="qon-input" name="product-id" />
+                    <button id="purchase" type="button" class="qon-button">Purchase</button>
+                </div>
+                <div class="row top-margin">
+                    <input placeholder="Product id" id="purchase-product-id" type="text" class="qon-input" name="purchase-product-id" />
+                    <button id="purchase-product" type="button" class="qon-button">Purchase Product</button>
+                </div>
+                <button id="get-products" type="button" class="qon-button top-margin">Get Products</button>
+                <button id="get-offerings" type="button" class="qon-button top-margin">Get Offerings</button>
+                <div class="row top-margin">
+                    <input placeholder="id1, id2, ..." id="product-ids" type="text" class="qon-input" name="product-ids" />
+                    <button id="check-trial-into" type="button" class="qon-button">Check trial/intro</button>
+                </div>
+                <button id="check-entitlements" type="button" class="qon-button top-margin">Check Entitlements</button>
+                <button id="restore" type="button" class="qon-button top-margin">Restore</button>
+                <button id="sync-purchases" type="button" class="qon-button top-margin">Sync Purchases</button>
+                <div class="row top-margin">
+                    <input placeholder="User id" id="user-id" type="text" class="qon-input" name="user-id" />
+                    <button id="identify" type="button" class="qon-button">Identify</button>
+                </div>
+                <button id="logout" type="button" class="qon-button top-margin">Logout</button>
+                <button id="user-info" type="button" class="qon-button top-margin">User Info</button>
+                <button id="attribution" type="button" class="qon-button top-margin">Attribution</button>
+                <button id="set-property" type="button" class="qon-button top-margin">Set Property</button>
+                <button id="set-user-property" type="button" class="qon-button top-margin">Set User Property</button>
+                <button id="set-entitlements-update-listener" type="button" class="qon-button top-margin">Set Entitlements Update Listener</button>
+                <button id="collect-advertising-id" type="button" class="qon-button top-margin">Collect Advertising Id</button>
+                <button id="collect-apple-search-ads-attribution" type="button" class="qon-button top-margin">Collect ASA Attribution</button>
+                <button id="set-promo-purchases-delegate" type="button" class="qon-button top-margin">Set Promo Purchases Delegate</button>
+                <button id="present-code-redemption-sheet" type="button" class="qon-button top-margin">Present Code Redemption Sheet</button>
+            </div>
+        </div>
+        <script src="cordova.js"></script>
+        <script src="js/index.js"></script>
+    </body>
+</html>

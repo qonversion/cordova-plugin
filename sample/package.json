@@ -1,0 +1,31 @@
+{
+  "name": "io.cordova.hellocordova",
+  "displayName": "HelloCordova",
+  "version": "1.0.0",
+  "description": "A sample Apache Cordova application.",
+  "main": "index.js",
+  "scripts": {
+    "refresh": "cordova plugin rm cordova-plugin-qonversion && cordova plugin add ../plugin",
+    "android": "cordova run android",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "ecosystem:cordova"
+  ],
+  "author": "Apache Cordova Team",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "cordova-android": "^10.1.2",
+    "cordova-annotated-plugin-android": "^1.0.4",
+    "cordova-ios": "^6.2.0",
+    "cordova-plugin-device": "^2.1.0",
+    "cordova-plugin-qonversion": "file:../../plugin"
+  },
+  "cordova": {
+    "platforms": [
+      "ios",
+      "android"
+    ],
+    "plugins": {}
+  }
+}
