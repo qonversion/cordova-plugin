@@ -17,4 +17,4 @@ android.iml
 .idea
 
 
-www/*
+**/www/*
