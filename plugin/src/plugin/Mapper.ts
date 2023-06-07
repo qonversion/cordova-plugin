@@ -142,9 +142,13 @@ const skuDetailsPriceRatio = 1000000;
 
 class Mapper {
   static convertEntitlements(
-    entitlements: Record<string, QEntitlement>
+    entitlements: Record<string, QEntitlement> | null | undefined
   ): Map<string, Entitlement> {
     let mappedPermissions = new Map();
+
+    if (!entitlements) {
+      return mappedPermissions;
+    }
 
     for (const key of Object.keys(entitlements)) {
       const entitlement = entitlements[key];
@@ -201,8 +205,12 @@ class Mapper {
     return EntitlementSource.UNKNOWN;
   }
 
-  static convertProducts(products: Record<string, QProduct>): Map<string, Product> {
+  static convertProducts(products: Record<string, QProduct> | null | undefined): Map<string, Product> {
     let mappedProducts = new Map();
+
+    if (!products) {
+      return mappedProducts;
+    }
 
     for (const key of Object.keys(products)) {
       const product = products[key];
@@ -270,7 +278,11 @@ class Mapper {
     return mappedProduct;
   }
 
-  static convertOfferings(offerings: QOfferings): Offerings | null {
+  static convertOfferings(offerings: QOfferings | null | undefined): Offerings | null {
+    if (!offerings) {
+      return null;
+    }
+
     if (
       !Array.isArray(offerings.availableOfferings) ||
       offerings.availableOfferings.length === 0
@@ -406,9 +418,13 @@ class Mapper {
   }
 
   static convertEligibility(
-    eligibilityMap: Record<string, QTrialIntroEligibility>
+    eligibilityMap: Record<string, QTrialIntroEligibility> | null | undefined
   ): Map<string, IntroEligibility> {
     let mappedEligibility = new Map<string, IntroEligibility>();
+
+    if (!eligibilityMap) {
+      return mappedEligibility;
+    }
 
     for (const key of Object.keys(eligibilityMap)) {
       const value = eligibilityMap[key];

@@ -33,6 +33,7 @@ const app = {
         document.getElementById("check-entitlements").addEventListener("click", this.checkEntitlements);
         document.getElementById("restore").addEventListener("click", this.restore);
         document.getElementById("sync-purchases").addEventListener("click", this.syncPurchases);
+        document.getElementById("sync-historical-data").addEventListener("click", this.syncHistoricalData);
         document.getElementById("identify").addEventListener("click", this.identify);
         document.getElementById("logout").addEventListener("click", this.logout);
         document.getElementById("user-info").addEventListener("click", this.userInfo);
@@ -116,6 +117,11 @@ const app = {
     async syncPurchases() {
         await Qonversion.getSharedInstance().syncPurchases();
         console.log('Qonversion syncPurchases');
+    },
+
+    async syncHistoricalData() {
+        await Qonversion.getSharedInstance().syncHistoricalData();
+        console.log('Qonversion syncHistoricalData');
     },
 
     identify() {

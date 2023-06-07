@@ -23,7 +23,9 @@ export default class QonversionInternal implements QonversionApi {
       qonversionConfig.projectKey,
       qonversionConfig.launchMode,
       qonversionConfig.environment,
-      qonversionConfig.entitlementsCacheLifetime
+      qonversionConfig.entitlementsCacheLifetime,
+      qonversionConfig.proxyUrl,
+      qonversionConfig.kidsMode
     ]).then((updatedEntitlements) => {
       if (this.entitlementsUpdateListener) {
         const entitlements = Mapper.convertEntitlements(updatedEntitlements);
@@ -32,6 +34,16 @@ export default class QonversionInternal implements QonversionApi {
     });
 
     this.entitlementsUpdateListener = qonversionConfig.entitlementsUpdateListener;
+  }
+
+  syncHistoricalData () {
+    callNative('syncHistoricalData').then(noop);
+  }
+
+  syncStoreKit2Purchases() {
+    if (isIos()) {
+      callNative('syncStoreKit2Purchases').then(noop);
+    }
   }
 
   async purchase(productId: string): Promise<Map<string, Entitlement>> {

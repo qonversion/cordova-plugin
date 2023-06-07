@@ -41,6 +41,12 @@ public class QonversionPlugin extends AnnotatedCordovaPlugin implements Qonversi
         );
     }
 
+    @PluginAction(thread = ExecutionThread.WORKER, actionName = "syncHistoricalData", isAutofinish = false)
+    public void syncHistoricalData(CallbackContext callbackContext) {
+        qonversionSandwich.syncHistoricalData();
+        callbackContext.success();
+    }
+
     @PluginAction(thread = ExecutionThread.MAIN, actionName = "storeSDKInfo")
     public void storeSDKInfo(String source, String sdkVersion, CallbackContext callbackContext) {
         qonversionSandwich.storeSdkInfo(source, sdkVersion);
@@ -53,6 +59,8 @@ public class QonversionPlugin extends AnnotatedCordovaPlugin implements Qonversi
             String launchModeKey,
             @Nullable String environmentKey,
             @Nullable String entitlementsCacheLifetimeKey,
+            @Nullable String proxyUrl,
+            boolean kidsMode,
             CallbackContext entitlementsUpdateCallbackContext
     ) {
         qonversionSandwich.initialize(
@@ -60,7 +68,9 @@ public class QonversionPlugin extends AnnotatedCordovaPlugin implements Qonversi
                 projectKey,
                 launchModeKey,
                 environmentKey,
-                entitlementsCacheLifetimeKey
+                entitlementsCacheLifetimeKey,
+                proxyUrl,
+                kidsMode
         );
 
         entitlementsUpdateDelegate = entitlementsUpdateCallbackContext;
