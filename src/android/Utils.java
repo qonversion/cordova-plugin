@@ -42,7 +42,7 @@ public class Utils {
             final JSONObject errorDescription = new JSONObject();
             errorDescription.put("description", sandwichError.getDescription());
             errorDescription.put("additionalMessage", sandwichError.getAdditionalMessage());
-            errorDescription.put("errorCode", customErrorCode == null ? sandwichError.getCode() : customErrorCode);
+            errorDescription.put("code", customErrorCode == null ? sandwichError.getCode() : customErrorCode);
             callbackContext.error(errorDescription);
         } catch (JSONException e) {
             e.printStackTrace();

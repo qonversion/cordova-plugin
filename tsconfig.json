@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "lib": [
+      "es6",
+      "dom",
+    ],
+    "module": "commonjs",
+    "target": "esnext",
+    "declaration": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "outDir": "www",
+    "strict": true,
+    "resolveJsonModule": true
+  },
+  "include": ["src/plugin/*"],
+  "exclude": ["node_modules", "dist"]
+}
