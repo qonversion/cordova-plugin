@@ -8,20 +8,30 @@
 #import "CDVQonversionPlugin.h"
 @import QonversionSandwich;
 
+static NSString *const kErrorCodePurchaseCancelledByUser = @"PURCHASE_CANCELLED_BY_USER";
+
 @interface CDVQonversionPlugin () <QonversionEventListener>
 
 @property (nonatomic, strong) QonversionSandwich *qonversionSandwich;
+@property (nonatomic, strong, nullable) NSString *entitlementsUpdateDelegateId;
+@property (nonatomic, strong, nullable) NSString *promoPurchaseDelegateId;
 
 @end
 
 @implementation CDVQonversionPlugin
 
 - (void)qonversionDidReceiveUpdatedEntitlements:(NSDictionary<NSString *,id> *)entitlements {
-
+    if (self.entitlementsUpdateDelegateId) {
+        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:entitlements];
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:self.entitlementsUpdateDelegateId];
+    }
 }
 
 - (void)shouldPurchasePromoProductWith:(NSString *)productId {
-
+    if (self.promoPurchaseDelegateId) {
+        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:productId];
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:self.entitlementsUpdateDelegateId];
+    }
 }
 
 - (QonversionSandwich *)qonversionSandwich {
@@ -50,6 +60,12 @@
                                        environmentKey:environmentKey
                          entitlementsCacheLifetimeKey:cacheLifetimeKey
                                              proxyUrl:proxyUrl];
+
+    self.entitlementsUpdateDelegateId = command.callbackId;
+
+    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_NO_RESULT];
+    [pluginResult setKeepCallbackAsBool:true];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
 - (void)syncHistoricalData:(CDVInvokedUrlCommand *)command {
@@ -126,7 +142,7 @@
     }];
 }
 
-- (void)checkTrialIntroEligibility:(CDVInvokedUrlCommand *)command {
+- (void)checkTrialIntroEligibilityForProductIds:(CDVInvokedUrlCommand *)command {
     NSArray *data = [command argumentAtIndex:0];
     __block __weak CDVQonversionPlugin *weakSelf = self;
     [self.qonversionSandwich checkTrialIntroEligibility:data completion:^(NSDictionary<NSString *,id> * _Nullable result, SandwichError * _Nullable error) {
@@ -172,14 +188,29 @@
     }
 }
 
-- (void)syncPurchases:(CDVInvokedUrlCommand *)command { }
+- (void)subscribeOnPromoPurchases:(CDVInvokedUrlCommand *)command {
+    self.promoPurchaseDelegateId = command.callbackId;
+
+    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_NO_RESULT];
+    [pluginResult setKeepCallbackAsBool:true];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
 
 - (void)returnCordovaResult:(NSDictionary *)result
                       error:(SandwichError *)error
                     command:(CDVInvokedUrlCommand *)command {
     CDVPluginResult *pluginResult = nil;
     if (error) {
-        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:error.additionalInfo];
+        NSMutableDictionary *errorInfo = [NSMutableDictionary new];
+        errorInfo[@"description"] = error.description;
+        errorInfo[@"additionalMessage"] = error.additionalMessage;
+        NSNumber *isCancelled = error.additionalInfo[@"isCancelled"];
+        if (isCancelled.boolValue) {
+            errorInfo[@"code"] = kErrorCodePurchaseCancelledByUser;
+        } else {
+            errorInfo[@"code"] = error.code;
+        }
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:errorInfo];
     } else {
         pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:result];
     }

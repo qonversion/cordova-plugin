@@ -26,14 +26,14 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)products:(CDVInvokedUrlCommand *)command;
 - (void)restore:(CDVInvokedUrlCommand *)command;
 - (void)offerings:(CDVInvokedUrlCommand *)command;
-- (void)checkTrialIntroEligibility:(CDVInvokedUrlCommand *)command;
+- (void)checkTrialIntroEligibilityForProductIds:(CDVInvokedUrlCommand *)command;
 - (void)identify:(CDVInvokedUrlCommand *)command;
 - (void)logout:(CDVInvokedUrlCommand *)command;
 - (void)userInfo:(CDVInvokedUrlCommand *)command;
 - (void)collectAdvertisingId:(CDVInvokedUrlCommand *)command;
 - (void)collectAppleSearchAdsAttribution:(CDVInvokedUrlCommand *)command;
 - (void)promoPurchase:(CDVInvokedUrlCommand *)command;
-- (void)syncPurchases:(CDVInvokedUrlCommand *)command;
+- (void)subscribeOnPromoPurchases:(CDVInvokedUrlCommand *)command;
 
 @end
 

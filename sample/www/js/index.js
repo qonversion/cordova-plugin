@@ -182,7 +182,12 @@ const app = {
     },
 
     setPromoPurchasesDelegate() {
-        // todo
+        Qonversion.getSharedInstance().setPromoPurchasesDelegate({
+            onPromoPurchaseReceived(productId, promoPurchaseExecutor) {
+                console.log('Promo purchase received!', productId);
+                promoPurchaseExecutor();
+            },
+        });
     },
 
     presentCodeRedemptionSheet() {

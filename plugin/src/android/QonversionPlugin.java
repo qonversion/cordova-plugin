@@ -206,14 +206,13 @@ public class QonversionPlugin extends AnnotatedCordovaPlugin implements Qonversi
 
     @Override
     public void onEntitlementsUpdated(@NonNull Map<String, ?> map) {
-        final JSONObject payload;
-        try {
-            if (entitlementsUpdateDelegate != null) {
-                payload = EntitiesConverter.convertMapToJson(map);
+        if (entitlementsUpdateDelegate != null) {
+            try {
+                final JSONObject payload = EntitiesConverter.convertMapToJson(map);
                 entitlementsUpdateDelegate.success(payload);
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-        } catch (JSONException e) {
-            e.printStackTrace();
         }
     }
 
