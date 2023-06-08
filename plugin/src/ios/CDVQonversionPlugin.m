@@ -17,18 +17,18 @@
 @implementation CDVQonversionPlugin
 
 - (void)qonversionDidReceiveUpdatedEntitlements:(NSDictionary<NSString *,id> *)entitlements {
-    
+
 }
 
 - (void)shouldPurchasePromoProductWith:(NSString *)productId {
-    
+
 }
 
 - (QonversionSandwich *)qonversionSandwich {
     if (!_qonversionSandwich) {
         _qonversionSandwich = [[QonversionSandwich alloc] initWithQonversionEventListener:self];
     }
-    
+
     return _qonversionSandwich;
 }
 
@@ -44,28 +44,40 @@
     NSString *launchModeKey = [command argumentAtIndex:1];
     NSString *environmentKey = [command argumentAtIndex:2];
     NSString *cacheLifetimeKey = [command argumentAtIndex:3];
-    
-    [self.qonversionSandwich initializeWithProjectKey:key launchModeKey:launchModeKey environmentKey:environmentKey entitlementsCacheLifetimeKey:cacheLifetimeKey];
+    NSString *proxyUrl = [command argumentAtIndex:4];
+    [self.qonversionSandwich initializeWithProjectKey:key
+                                        launchModeKey:launchModeKey
+                                       environmentKey:environmentKey
+                         entitlementsCacheLifetimeKey:cacheLifetimeKey
+                                             proxyUrl:proxyUrl];
+}
+
+- (void)syncHistoricalData:(CDVInvokedUrlCommand *)command {
+    [self.qonversionSandwich syncHistoricalData];
+}
+
+- (void)syncStoreKit2Purchases:(CDVInvokedUrlCommand *)command {
+    [self.qonversionSandwich syncStoreKit2Purchases];
 }
 
 - (void)setDefinedProperty:(CDVInvokedUrlCommand *)command {
     NSString *property = [command argumentAtIndex:0];
     NSString *value = [command argumentAtIndex:1];
-    
+
     [self.qonversionSandwich setDefinedProperty:property value:value];
 }
 
 - (void)setCustomProperty:(CDVInvokedUrlCommand *)command {
     NSString *property = [command argumentAtIndex:0];
     NSString *value = [command argumentAtIndex:1];
-    
+
     [self.qonversionSandwich setCustomProperty:property value:value];
 }
 
 - (void)attribution:(CDVInvokedUrlCommand *)command {
     NSDictionary *data = [command argumentAtIndex:0];
     NSString *provider = [command argumentAtIndex:1];
-    
+
     [self.qonversionSandwich attributionWithProviderKey:provider value:data];
 }
 
