@@ -71,19 +71,27 @@ const app = {
 
     async purchase() {
         const productId = document.getElementById('product-id').value;
-        const entitlements = await Qonversion.getSharedInstance().purchase(productId);
-        console.log('Qonversion purchase:', entitlements, productId);
+        try {
+            const entitlements = await Qonversion.getSharedInstance().purchase(productId);
+            console.log('Qonversion purchase:', entitlements, productId);
+        } catch (e) {
+            console.log('Qonversion purchase failed', e);
+        }
     },
 
     async purchaseProduct() {
         const productId = document.getElementById('purchase-product-id').value;
         const products = await Qonversion.getSharedInstance().products();
         const product = products.get(productId);
-        if (product) {
-            const entitlements = await Qonversion.getSharedInstance().purchaseProduct(product);
-            console.log('Qonversion purchaseProduct:', entitlements, product);
-        } else {
-            console.log('Qonversion purchaseProduct:', 'product not found', productId);
+        try {
+            if (product) {
+                const entitlements = await Qonversion.getSharedInstance().purchaseProduct(product);
+                console.log('Qonversion purchaseProduct:', entitlements, product);
+            } else {
+                console.log('Qonversion purchaseProduct:', 'product not found', productId);
+            }
+        } catch (e) {
+            console.log('Qonversion purchaseProduct failed', e);
         }
     },
 
@@ -105,13 +113,21 @@ const app = {
     },
 
     async checkEntitlements() {
-        const entitlements = await Qonversion.getSharedInstance().checkEntitlements();
-        console.log('Qonversion checkEntitlements:', entitlements);
+        try {
+            const entitlements = await Qonversion.getSharedInstance().checkEntitlements();
+            console.log('Qonversion checkEntitlements:', entitlements);
+        } catch (e) {
+            console.log('Qonversion checkEntitlements failed', e);
+        }
     },
 
     async restore() {
-        const entitlements = await Qonversion.getSharedInstance().restore();
-        console.log('Qonversion restore:', entitlements);
+        try {
+            const entitlements = await Qonversion.getSharedInstance().restore();
+            console.log('Qonversion restore:', entitlements);
+        } catch (e) {
+            console.log('Qonversion restore failed', e);
+        }
     },
 
     async syncPurchases() {
@@ -188,6 +204,7 @@ const app = {
                 promoPurchaseExecutor();
             },
         });
+        console.log('Qonversion setPromoPurchasesDelegate');
     },
 
     presentCodeRedemptionSheet() {

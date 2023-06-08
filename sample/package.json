@@ -1,6 +1,6 @@
 {
-  "name": "io.cordova.hellocordova",
-  "displayName": "HelloCordova",
+  "name": "com.qonversion.sample",
+  "displayName": "Sample Qonversion Cordova App",
   "version": "1.0.0",
   "description": "A sample Apache Cordova application.",
   "main": "index.js",

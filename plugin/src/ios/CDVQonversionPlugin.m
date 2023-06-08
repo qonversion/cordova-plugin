@@ -30,7 +30,7 @@ static NSString *const kErrorCodePurchaseCancelledByUser = @"PURCHASE_CANCELLED_
 - (void)shouldPurchasePromoProductWith:(NSString *)productId {
     if (self.promoPurchaseDelegateId) {
         CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:productId];
-        [self.commandDelegate sendPluginResult:pluginResult callbackId:self.entitlementsUpdateDelegateId];
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:self.promoPurchaseDelegateId];
     }
 }
 
@@ -202,7 +202,8 @@ static NSString *const kErrorCodePurchaseCancelledByUser = @"PURCHASE_CANCELLED_
     CDVPluginResult *pluginResult = nil;
     if (error) {
         NSMutableDictionary *errorInfo = [NSMutableDictionary new];
-        errorInfo[@"description"] = error.description;
+        errorInfo[@"domain"] = error.domain;
+        errorInfo[@"description"] = error.details;
         errorInfo[@"additionalMessage"] = error.additionalMessage;
         NSNumber *isCancelled = error.additionalInfo[@"isCancelled"];
         if (isCancelled.boolValue) {
