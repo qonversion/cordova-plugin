@@ -16,6 +16,7 @@ const sdkVersion = "1.0.0";
 export default class QonversionInternal implements QonversionApi {
 
   entitlementsUpdateListener: EntitlementsUpdateListener | undefined;
+  promoPurchasesListener: PromoPurchasesListener | undefined;
 
   constructor(qonversionConfig: QonversionConfig) {
     callNative('storeSDKInfo', ['cordova', sdkVersion]).then(noop);
@@ -64,9 +65,9 @@ export default class QonversionInternal implements QonversionApi {
       const entitlements = await purchasePromise;
 
       // noinspection UnnecessaryLocalVariableJS
-      const mappedPermissions = Mapper.convertEntitlements(entitlements);
+      const mappedEntitlement = Mapper.convertEntitlements(entitlements);
 
-      return mappedPermissions;
+      return mappedEntitlement;
     } catch (e: any) {
       if (e) {
         e.userCanceled = e.code === DefinedNativeErrorCodes.PURCHASE_CANCELLED_BY_USER;
@@ -101,9 +102,9 @@ export default class QonversionInternal implements QonversionApi {
       }
 
       // noinspection UnnecessaryLocalVariableJS
-      const mappedPermissions: Map<string, Entitlement> = Mapper.convertEntitlements(entitlements);
+      const mappedEntitlement: Map<string, Entitlement> = Mapper.convertEntitlements(entitlements);
 
-      return mappedPermissions;
+      return mappedEntitlement;
     } catch (e: any) {
       if (e) {
         e.userCanceled = e.code === DefinedNativeErrorCodes.PURCHASE_CANCELLED_BY_USER;
@@ -138,9 +139,9 @@ export default class QonversionInternal implements QonversionApi {
       }
 
       // noinspection UnnecessaryLocalVariableJS
-      const mappedPermissions: Map<string, Entitlement> = Mapper.convertEntitlements(entitlements);
+      const mappedEntitlement: Map<string, Entitlement> = Mapper.convertEntitlements(entitlements);
 
-      return mappedPermissions;
+      return mappedEntitlement;
     } catch (e: any) {
       if (e) {
         e.userCanceled = e.code === DefinedNativeErrorCodes.PURCHASE_CANCELLED_BY_USER;
@@ -190,24 +191,24 @@ export default class QonversionInternal implements QonversionApi {
     const entitlements = await callNative<Record<string, QEntitlement>>('checkEntitlements');
 
     // noinspection UnnecessaryLocalVariableJS
-    const mappedPermissions: Map<
+    const mappedEntitlement: Map<
       string,
       Entitlement
       > = Mapper.convertEntitlements(entitlements);
 
-    return mappedPermissions;
+    return mappedEntitlement;
   }
 
   async restore(): Promise<Map<string, Entitlement>> {
     const entitlements = await callNative<Record<string, QEntitlement>>('restore');
 
     // noinspection UnnecessaryLocalVariableJS
-    const mappedPermissions: Map<
+    const mappedEntitlement: Map<
       string,
       Entitlement
     > = Mapper.convertEntitlements(entitlements);
 
-    return mappedPermissions;
+    return mappedEntitlement;
   }
 
   syncPurchases() {
@@ -249,7 +250,7 @@ export default class QonversionInternal implements QonversionApi {
 
   collectAdvertisingId() {
     if (isIos()) {
-      callNative('collectAdvertisingID').then(noop);
+      callNative('collectAdvertisingId').then(noop);
     }
   }
 
@@ -264,23 +265,31 @@ export default class QonversionInternal implements QonversionApi {
   }
 
   setPromoPurchasesDelegate(delegate: PromoPurchasesListener) {
-    // todo replace with native call as done with updated entitlements
-    // if (!isIos()) {
-    //   return;
-    // }
-    //
-    // const eventEmitter = new NativeEventEmitter(RNQonversion);
-    // eventEmitter.removeAllListeners(EVENT_PROMO_PURCHASE_RECEIVED);
-    // eventEmitter.addListener(EVENT_PROMO_PURCHASE_RECEIVED, productId => {
-    //   const promoPurchaseExecutor = async () => {
-    //     const entitlements = await RNQonversion.promoPurchase(productId);
-    //
-    //     // noinspection UnnecessaryLocalVariableJS
-    //     const mappedPermissions: Map<string, Entitlement> = Mapper.convertEntitlements(entitlements);
-    //     return mappedPermissions;
-    //   };
-    //   delegate.onPromoPurchaseReceived(productId, promoPurchaseExecutor);
-    // });
+    if (!isIos()) {
+      return;
+    }
+
+    this.promoPurchasesListener = delegate;
+    callNative<string>('subscribeOnPromoPurchases').then(productId => {
+      if (this.promoPurchasesListener) {
+        const promoPurchaseExecutor = async () => {
+          const entitlements = await callNative<Record<string, QEntitlement>>(
+            'promoPurchase',
+            [productId],
+          );
+
+          // noinspection UnnecessaryLocalVariableJS
+          const mappedEntitlement: Map<string,
+            Entitlement> = Mapper.convertEntitlements(entitlements);
+
+          return mappedEntitlement;
+        };
+        this.promoPurchasesListener.onPromoPurchaseReceived(
+          productId,
+          promoPurchaseExecutor,
+        );
+      }
+    });
   }
 
   presentCodeRedemptionSheet() {

@@ -162,10 +162,10 @@ cordova-common@^4.0.2:
     strip-bom "^4.0.0"
     underscore "^1.9.2"
 
-cordova-ios@^6.2.0:
-  version "6.2.0"
-  resolved "https://registry.npmjs.org/cordova-ios/-/cordova-ios-6.2.0.tgz"
-  integrity sha512-sLjZg2QBI1SpQVwfe0MSn89YNVkBGLW9Q1vcFJBsqKBrhvoEOJ5Ytq0gwqdhgTOGzlwJUfxC6OHM3jcsRjtYrw==
+cordova-ios@^6.3.0:
+  version "6.3.0"
+  resolved "https://registry.npmjs.org/cordova-ios/-/cordova-ios-6.3.0.tgz"
+  integrity sha512-BZybgFzc7D0HmhkTYurFrRXiWgvYohmT7bwQsLPhf+VdiDjwGXbiSWgg3uP9MChvacCNcGXXUl2NhOaNC9UVaA==
   dependencies:
     cordova-common "^4.0.2"
     fs-extra "^9.1.0"
@@ -377,10 +377,10 @@ ios-sim@^8.0.2:
     plist "^3.0.1"
     simctl "^2"
 
-is-core-module@^2.9.0:
-  version "2.11.0"
-  resolved "https://registry.npmjs.org/is-core-module/-/is-core-module-2.11.0.tgz"
-  integrity sha512-RRjxlvLDkD1YJwDbroBHMb+cukurkDWNyHx7D3oNB5x9rb5ogcksMC5wHCadcXoo67gVr/+3GFySh3134zi6rw==
+is-core-module@^2.11.0:
+  version "2.12.1"
+  resolved "https://registry.npmjs.org/is-core-module/-/is-core-module-2.12.1.tgz"
+  integrity sha512-Q4ZuBAe2FUsKtyQJoQHlvP8OvBERxO3jEmy1I7hcRXcJBGGHFh/aJBswbXuS9sgrDH2QUO8ilkwNPHvHMd8clg==
   dependencies:
     has "^1.0.3"
 
@@ -583,11 +583,11 @@ rechoir@^0.6.2:
     resolve "^1.1.6"
 
 resolve@^1.1.6:
-  version "1.22.1"
-  resolved "https://registry.npmjs.org/resolve/-/resolve-1.22.1.tgz"
-  integrity sha512-nBpuuYuY5jFsli/JIs1oldw6fOQCBioohqWZg/2hiaOybXOft4lonv85uDOKXdf8rhyK159cxU5cDcK/NKk8zw==
+  version "1.22.2"
+  resolved "https://registry.npmjs.org/resolve/-/resolve-1.22.2.tgz"
+  integrity sha512-Sb+mjNHOULsBv818T40qSPeRiuWLyaGMa5ewydRLFimneixmVy2zdivRl+AF6jaYPC8ERxGDmFSiqui6SfPd+g==
   dependencies:
-    is-core-module "^2.9.0"
+    is-core-module "^2.11.0"
     path-parse "^1.0.7"
     supports-preserve-symlinks-flag "^1.0.0"
 

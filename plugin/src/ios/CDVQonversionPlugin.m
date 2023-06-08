@@ -8,27 +8,37 @@
 #import "CDVQonversionPlugin.h"
 @import QonversionSandwich;
 
+static NSString *const kErrorCodePurchaseCancelledByUser = @"PURCHASE_CANCELLED_BY_USER";
+
 @interface CDVQonversionPlugin () <QonversionEventListener>
 
 @property (nonatomic, strong) QonversionSandwich *qonversionSandwich;
+@property (nonatomic, strong, nullable) NSString *entitlementsUpdateDelegateId;
+@property (nonatomic, strong, nullable) NSString *promoPurchaseDelegateId;
 
 @end
 
 @implementation CDVQonversionPlugin
 
 - (void)qonversionDidReceiveUpdatedEntitlements:(NSDictionary<NSString *,id> *)entitlements {
-    
+    if (self.entitlementsUpdateDelegateId) {
+        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:entitlements];
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:self.entitlementsUpdateDelegateId];
+    }
 }
 
 - (void)shouldPurchasePromoProductWith:(NSString *)productId {
-    
+    if (self.promoPurchaseDelegateId) {
+        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:productId];
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:self.promoPurchaseDelegateId];
+    }
 }
 
 - (QonversionSandwich *)qonversionSandwich {
     if (!_qonversionSandwich) {
         _qonversionSandwich = [[QonversionSandwich alloc] initWithQonversionEventListener:self];
     }
-    
+
     return _qonversionSandwich;
 }
 
@@ -44,28 +54,46 @@
     NSString *launchModeKey = [command argumentAtIndex:1];
     NSString *environmentKey = [command argumentAtIndex:2];
     NSString *cacheLifetimeKey = [command argumentAtIndex:3];
-    
-    [self.qonversionSandwich initializeWithProjectKey:key launchModeKey:launchModeKey environmentKey:environmentKey entitlementsCacheLifetimeKey:cacheLifetimeKey];
+    NSString *proxyUrl = [command argumentAtIndex:4];
+    [self.qonversionSandwich initializeWithProjectKey:key
+                                        launchModeKey:launchModeKey
+                                       environmentKey:environmentKey
+                         entitlementsCacheLifetimeKey:cacheLifetimeKey
+                                             proxyUrl:proxyUrl];
+
+    self.entitlementsUpdateDelegateId = command.callbackId;
+
+    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_NO_RESULT];
+    [pluginResult setKeepCallbackAsBool:true];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
+- (void)syncHistoricalData:(CDVInvokedUrlCommand *)command {
+    [self.qonversionSandwich syncHistoricalData];
+}
+
+- (void)syncStoreKit2Purchases:(CDVInvokedUrlCommand *)command {
+    [self.qonversionSandwich syncStoreKit2Purchases];
 }
 
 - (void)setDefinedProperty:(CDVInvokedUrlCommand *)command {
     NSString *property = [command argumentAtIndex:0];
     NSString *value = [command argumentAtIndex:1];
-    
+
     [self.qonversionSandwich setDefinedProperty:property value:value];
 }
 
 - (void)setCustomProperty:(CDVInvokedUrlCommand *)command {
     NSString *property = [command argumentAtIndex:0];
     NSString *value = [command argumentAtIndex:1];
-    
+
     [self.qonversionSandwich setCustomProperty:property value:value];
 }
 
 - (void)attribution:(CDVInvokedUrlCommand *)command {
     NSDictionary *data = [command argumentAtIndex:0];
     NSString *provider = [command argumentAtIndex:1];
-    
+
     [self.qonversionSandwich attributionWithProviderKey:provider value:data];
 }
 
@@ -114,7 +142,7 @@
     }];
 }
 
-- (void)checkTrialIntroEligibility:(CDVInvokedUrlCommand *)command {
+- (void)checkTrialIntroEligibilityForProductIds:(CDVInvokedUrlCommand *)command {
     NSArray *data = [command argumentAtIndex:0];
     __block __weak CDVQonversionPlugin *weakSelf = self;
     [self.qonversionSandwich checkTrialIntroEligibility:data completion:^(NSDictionary<NSString *,id> * _Nullable result, SandwichError * _Nullable error) {
@@ -160,14 +188,30 @@
     }
 }
 
-- (void)syncPurchases:(CDVInvokedUrlCommand *)command { }
+- (void)subscribeOnPromoPurchases:(CDVInvokedUrlCommand *)command {
+    self.promoPurchaseDelegateId = command.callbackId;
+
+    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_NO_RESULT];
+    [pluginResult setKeepCallbackAsBool:true];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
 
 - (void)returnCordovaResult:(NSDictionary *)result
                       error:(SandwichError *)error
                     command:(CDVInvokedUrlCommand *)command {
     CDVPluginResult *pluginResult = nil;
     if (error) {
-        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:error.additionalInfo];
+        NSMutableDictionary *errorInfo = [NSMutableDictionary new];
+        errorInfo[@"domain"] = error.domain;
+        errorInfo[@"description"] = error.details;
+        errorInfo[@"additionalMessage"] = error.additionalMessage;
+        NSNumber *isCancelled = error.additionalInfo[@"isCancelled"];
+        if (isCancelled.boolValue) {
+            errorInfo[@"code"] = kErrorCodePurchaseCancelledByUser;
+        } else {
+            errorInfo[@"code"] = error.code;
+        }
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:errorInfo];
     } else {
         pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:result];
     }
