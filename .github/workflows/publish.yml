@@ -12,12 +12,9 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v3
 
-      - name: Go to plugin folder
-        run: |
-          cd plugin
-
       - name: Build
         run: |
+          cd plugin
           yarn
           yarn build
 
@@ -28,6 +25,8 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
 
       - name: Publish to npm
-        run: npm publish
+        run: |
+          cd plugin
+          npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
