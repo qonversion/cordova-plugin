@@ -15,7 +15,7 @@ def update_package(new_version)
 end
 
 def upgrade_sandwich_android(new_version)
-  path = "../android/build.gradle"
+  path = "../plugin/plugin.xml"
   regex = /<framework src=\"io\.qonversion\.sandwich:sandwich:.*\" \/>/
   result_value = "<framework src=\"io.qonversion.sandwich:sandwich:#{new_version}\" />"
 
@@ -23,7 +23,7 @@ def upgrade_sandwich_android(new_version)
 end
 
 def upgrade_sandwich_ios(new_version)
-  path = "../react-native-qonversion.podspec"
+  path = "../plugin/plugin.xml"
   regex = /<pod name=\"QonversionSandwich\" spec=\".*\" \/>/
   result_value = "<pod name=\"QonversionSandwich\" spec=\"#{new_version}\" />"
 
