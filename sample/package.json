@@ -5,7 +5,7 @@
   "description": "A sample Apache Cordova application.",
   "main": "index.js",
   "scripts": {
-    "refresh": "cordova plugin rm cordova-plugin-qonversion && cordova plugin add ../plugin",
+    "refresh": "cordova plugin rm cordova-plugin-qonversion && cordova plugin add ../plugin --link",
     "android": "cordova run android",
     "ios": "cordova run ios",
     "test": "echo \"Error: no test specified\" && exit 1"
