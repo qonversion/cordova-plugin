@@ -9,6 +9,9 @@
       "ios"
     ]
   },
+  "scripts": {
+    "build": "tsc"
+  },
   "repository": "github:qonversion/cordova-plugin",
   "bugs": "https://github.com/qonversion/cordova-plugin/issues",
   "keywords": [
@@ -23,5 +26,8 @@
     "cordova-ios"
   ],
   "author": "Qonversion, Inc.",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "typescript": "^4.9.4"
+  }
 }
