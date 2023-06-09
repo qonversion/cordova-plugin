@@ -56,7 +56,7 @@
                 <source url="https://github.com/CocoaPods/Specs.git"/>
             </config>
             <pods use-frameworks="true">
-                <pod name="QonversionSandwich" spec="1.5.2"/>
+                <pod name="QonversionSandwich" spec="1.5.2" />
             </pods>
         </podspec>
     </platform>
