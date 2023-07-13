@@ -15,12 +15,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 import io.qonversion.sandwich.PurchaseResultListener;
 import io.qonversion.sandwich.QonversionEventsListener;
 import io.qonversion.sandwich.QonversionSandwich;
+import io.qonversion.sandwich.ResultListener;
 import io.qonversion.sandwich.SandwichError;
 
 public class QonversionPlugin extends AnnotatedCordovaPlugin implements QonversionEventsListener {
@@ -179,6 +181,41 @@ public class QonversionPlugin extends AnnotatedCordovaPlugin implements Qonversi
     @PluginAction(thread = ExecutionThread.UI, actionName = "restore", isAutofinish = false)
     public void restore(CallbackContext callbackContext) {
         qonversionSandwich.restore(Utils.getResultListener(callbackContext));
+    }
+
+    @PluginAction(thread = ExecutionThread.UI, actionName = "remoteConfig", isAutofinish = false)
+    public void remoteConfig(CallbackContext callbackContext) {
+        qonversionSandwich.remoteConfig(Utils.getResultListener(callbackContext));
+    }
+
+    @PluginAction(thread = ExecutionThread.UI, actionName = "remoteConfig", isAutofinish = false)
+    public void attachUserToExperiment(String experimentId, String groupId, CallbackContext callbackContext) {
+        qonversionSandwich.attachUserToExperiment(experimentId, groupId, new ResultListener() {
+            @Override
+            public void onSuccess(@NonNull Map<String, ?> map) {
+                callbackContext.success(new JSONObject());
+            }
+
+            @Override
+            public void onError(@NonNull SandwichError sandwichError) {
+                Utils.rejectWithError(sandwichError, callbackContext);
+            }
+        });
+    }
+
+    @PluginAction(thread = ExecutionThread.UI, actionName = "remoteConfig", isAutofinish = false)
+    public void detachUserFromExperiment(String experimentId, CallbackContext callbackContext) {
+        qonversionSandwich.detachUserFromExperiment(experimentId, new ResultListener() {
+            @Override
+            public void onSuccess(@NonNull Map<String, ?> map) {
+                callbackContext.success(new JSONObject());
+            }
+
+            @Override
+            public void onError(@NonNull SandwichError sandwichError) {
+                Utils.rejectWithError(sandwichError, callbackContext);
+            }
+        });
     }
 
     @PluginAction(thread = ExecutionThread.WORKER, actionName = "syncPurchases", isAutofinish = false)

@@ -96,20 +96,35 @@ const app = {
     },
 
     async getProducts() {
-        const products = await Qonversion.getSharedInstance().products();
-        console.log('Qonversion products:', products);
+        const products = await Qonversion.getSharedInstance().remoteConfig();
+        console.log('AAAAAAA:', products.payload);
+        console.log('AAAAAAA:', products.payload["button_color"]);
+        console.log('AAAAAAA:', products.experiment);
+        console.log('AAAAAAA:', products.experiment.name);
+        console.log('AAAAAAA:', products.experiment.id);
+        console.log('AAAAAAA:', products.experiment.group);
+        console.log('AAAAAAA:', products.experiment.group.name);
+        console.log('AAAAAAA:', products.experiment.group.id);
+        console.log('AAAAAAA:', products.experiment.group.type);
+        // const products = await Qonversion.getSharedInstance().products();
+        // console.log('Qonversion products:', products);
     },
 
     async getOfferings() {
-        const offerings = await Qonversion.getSharedInstance().offerings();
+        const offerings = await Qonversion.getSharedInstance().attachUserToExperiment("c72c60a4-79a3-4031-aa8d-b22ee65e2a0e", "0ad8a1c6");
         console.log('Qonversion offerings:', offerings);
+        // const offerings = await Qonversion.getSharedInstance().offerings();
+        // console.log('Qonversion offerings:', offerings);
     },
 
     async checkTrialIntroEligibility() {
-        const productIds = document.getElementById('product-ids').value;
-        const ids = productIds.split(', ');
-        const eligibilities = await Qonversion.getSharedInstance().checkTrialIntroEligibility(ids);
-        console.log('Qonversion checkTrialIntroEligibility:', eligibilities, ids);
+        const offerings = await Qonversion.getSharedInstance().detachUserFromExperiment("c72c60a4-79a3-4031-aa8d-b22ee65e2a0e");
+        console.log('Qonversion offerings:', offerings);
+
+        // const productIds = document.getElementById('product-ids').value;
+        // const ids = productIds.split(', ');
+        // const eligibilities = await Qonversion.getSharedInstance().checkTrialIntroEligibility(ids);
+        // console.log('Qonversion checkTrialIntroEligibility:', eligibilities, ids);
     },
 
     async checkEntitlements() {
