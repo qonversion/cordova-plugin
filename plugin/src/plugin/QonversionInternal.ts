@@ -11,7 +11,7 @@ import {QonversionApi} from './QonversionApi';
 import {QonversionConfig} from './QonversionConfig';
 import {EntitlementsUpdateListener} from './dto/EntitlementsUpdateListener';
 
-const sdkVersion = "2.0.0";
+const sdkVersion = "2.0.1";
 
 export default class QonversionInternal implements QonversionApi {
 
