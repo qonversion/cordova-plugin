@@ -188,7 +188,7 @@ public class QonversionPlugin extends AnnotatedCordovaPlugin implements Qonversi
         qonversionSandwich.remoteConfig(Utils.getResultListener(callbackContext));
     }
 
-    @PluginAction(thread = ExecutionThread.UI, actionName = "remoteConfig", isAutofinish = false)
+    @PluginAction(thread = ExecutionThread.UI, actionName = "attachUserToExperiment", isAutofinish = false)
     public void attachUserToExperiment(String experimentId, String groupId, CallbackContext callbackContext) {
         qonversionSandwich.attachUserToExperiment(experimentId, groupId, new ResultListener() {
             @Override
@@ -203,7 +203,7 @@ public class QonversionPlugin extends AnnotatedCordovaPlugin implements Qonversi
         });
     }
 
-    @PluginAction(thread = ExecutionThread.UI, actionName = "remoteConfig", isAutofinish = false)
+    @PluginAction(thread = ExecutionThread.UI, actionName = "detachUserFromExperiment", isAutofinish = false)
     public void detachUserFromExperiment(String experimentId, CallbackContext callbackContext) {
         qonversionSandwich.detachUserFromExperiment(experimentId, new ResultListener() {
             @Override
