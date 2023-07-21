@@ -13,6 +13,7 @@ import {
   SKProductDiscountType,
   TrialDuration,
   TrialDurations,
+  ExperimentGroupType,
 } from "./dto/enums";
 import {IntroEligibility} from "./dto/IntroEligibility";
 import {Offering} from "./dto/Offering";
@@ -27,6 +28,9 @@ import {ActionResult} from "./dto/ActionResult";
 import {QonversionError} from "./dto/QonversionError";
 import {AutomationsEvent} from "./dto/AutomationsEvent";
 import {User} from './dto/User';
+import RemoteConfig from "./dto/RemoteConfig";
+import ExperimentGroup from "./dto/ExperimentGroup";
+import Experiment from "./dto/Experiment";
 
 export type QProduct = {
   id: string;
@@ -137,6 +141,23 @@ export type QUser = {
   qonversionId: string;
   identityId?: string | null;
 };
+
+export type QRemoteConfig = {
+  payload: Map<string, Object>;
+  experiment?: QExperiment | null;
+};
+
+export type QExperiment = {
+  id: string;
+  name: string;
+  group: QExperimentGroup;
+}
+
+export type QExperimentGroup = {
+  id: string;
+  name: string;
+  type: string;
+}
 
 const skuDetailsPriceRatio = 1000000;
 
@@ -482,6 +503,28 @@ class Mapper {
 
   static convertUserInfo(user: QUser) {
     return new User(user.qonversionId, user.identityId);
+  }
+
+  static convertRemoteConfig(remoteConfig: QRemoteConfig): RemoteConfig {
+    let experiment = null;
+    if (remoteConfig.experiment) {
+      const groupType = this.convertGroupType(remoteConfig.experiment.group.type);
+      const group = new ExperimentGroup(remoteConfig.experiment.group.id, remoteConfig.experiment.group.name, groupType);
+      experiment = new Experiment(remoteConfig.experiment.id, remoteConfig.experiment.name, group);
+    }
+
+    return new RemoteConfig(remoteConfig.payload, experiment);
+  }
+
+  static convertGroupType(type: String): ExperimentGroupType {
+    switch (type) {
+      case "control":
+        return ExperimentGroupType.CONTROL;
+      case "treatment":
+        return ExperimentGroupType.TREATMENT;
+      default:
+        return ExperimentGroupType.UNKNOWN;
+    }
   }
 }
 
