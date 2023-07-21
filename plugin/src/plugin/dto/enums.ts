@@ -164,3 +164,9 @@ export enum AutomationsEventType {
   SUBSCRIPTION_DOWNGRADED = "subscription_downgraded",
   SUBSCRIPTION_PRODUCT_CHANGED = "subscription_product_changed",
 }
+
+export enum ExperimentGroupType {
+  UNKNOWN = "unknown",
+  CONTROL = "control",
+  TREATMENT = "treatment",
+}

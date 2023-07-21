@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "refresh": "cordova plugin rm cordova-plugin-qonversion && cordova plugin add ../plugin --link",
-    "android": "cordova run android",
+    "android": "cordova run android -- --gradleArg=-PcdvCompileSdkVersion=33",
     "ios": "cordova run ios",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -16,7 +16,7 @@
   "author": "Apache Cordova Team",
   "license": "Apache-2.0",
   "devDependencies": {
-    "cordova-android": "^10.1.2",
+    "cordova-android": "^11.0.0",
     "cordova-annotated-plugin-android": "^1.0.4",
     "cordova-ios": "^6.3.0",
     "cordova-plugin-device": "^2.1.0",
@@ -24,11 +24,9 @@
   },
   "cordova": {
     "platforms": [
-      "android",
-      "ios"
+      "ios",
+      "android"
     ],
-    "plugins": {
-      "cordova-plugin-qonversion": {}
-    }
+    "plugins": {}
   }
 }

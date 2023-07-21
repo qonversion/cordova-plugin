@@ -1,6 +1,6 @@
 import {UserProperty, ProrationMode, AttributionProvider} from "./dto/enums";
 import {IntroEligibility} from "./dto/IntroEligibility";
-import Mapper, {QEntitlement, QOfferings, QProduct, QTrialIntroEligibility, QUser} from "./Mapper";
+import Mapper, {QEntitlement, QOfferings, QProduct, QTrialIntroEligibility, QUser, QRemoteConfig} from "./Mapper";
 import {Offerings} from "./dto/Offerings";
 import {Entitlement} from "./dto/Entitlement";
 import {Product} from "./dto/Product";
@@ -10,8 +10,9 @@ import {User} from './dto/User';
 import {QonversionApi} from './QonversionApi';
 import {QonversionConfig} from './QonversionConfig';
 import {EntitlementsUpdateListener} from './dto/EntitlementsUpdateListener';
+import RemoteConfig from "./dto/RemoteConfig";
 
-const sdkVersion = "2.0.0";
+const sdkVersion = "3.0.0";
 
 export default class QonversionInternal implements QonversionApi {
 
@@ -234,6 +235,26 @@ export default class QonversionInternal implements QonversionApi {
     const mappedUserInfo: User = Mapper.convertUserInfo(info);
 
     return mappedUserInfo;
+  }
+
+  async remoteConfig(): Promise<RemoteConfig> {
+    let remoteConfig = await callNative<QRemoteConfig>('remoteConfig');
+    // noinspection UnnecessaryLocalVariableJS
+    const mappedRemoteConfig: RemoteConfig = Mapper.convertRemoteConfig(
+        remoteConfig
+    );
+
+    return mappedRemoteConfig;
+  }
+
+  async attachUserToExperiment(experimentId: string, groupId: string): Promise<void> {
+    await callNative('attachUserToExperiment', [experimentId, groupId]);
+    return;
+  }
+
+  async detachUserFromExperiment(experimentId: string): Promise<void> {
+    await callNative('detachUserFromExperiment', [experimentId]);
+    return;
   }
 
   attribution(data: Object, provider: AttributionProvider) {

@@ -34,6 +34,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)collectAppleSearchAdsAttribution:(CDVInvokedUrlCommand *)command;
 - (void)promoPurchase:(CDVInvokedUrlCommand *)command;
 - (void)subscribeOnPromoPurchases:(CDVInvokedUrlCommand *)command;
+- (void)remoteConfig:(CDVInvokedUrlCommand *)command;
+- (void)attachUserToExperiment:(CDVInvokedUrlCommand *)command;
+- (void)detachUserFromExperiment:(CDVInvokedUrlCommand *)command;
 
 @end
 
