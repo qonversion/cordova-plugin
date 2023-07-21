@@ -150,6 +150,38 @@ static NSString *const kErrorCodePurchaseCancelledByUser = @"PURCHASE_CANCELLED_
     }];
 }
 
+- (void)remoteConfig:(CDVInvokedUrlCommand *)command {
+    __block __weak CDVQonversionPlugin *weakSelf = self;
+    [self.qonversionSandwich remoteConfig:^(NSDictionary<NSString *,id> * _Nullable result, SandwichError * _Nullable error) {
+        [weakSelf returnCordovaResult:result error:error command:command];
+    }];
+}
+
+- (void)attachUserToExperiment:(CDVInvokedUrlCommand *)command {
+    __block __weak CDVQonversionPlugin *weakSelf = self;
+    NSString *experimentId = [command argumentAtIndex:0];
+    NSString *groupId = [command argumentAtIndex:1];
+    [self.qonversionSandwich attachUserToExperimentWith:experimentId groupId:groupId completion:^(NSDictionary<NSString *,id> * _Nullable result, SandwichError * _Nullable error) {
+        if (error) {
+            [weakSelf returnCordovaResult:nil error:error command:command];
+        } else {
+            [weakSelf returnCordovaResult:@{} error:nil command:command];
+        }
+    }];
+}
+
+- (void)detachUserFromExperiment:(CDVInvokedUrlCommand *)command {
+    __block __weak CDVQonversionPlugin *weakSelf = self;
+    NSString *experimentId = [command argumentAtIndex:0];
+    [self.qonversionSandwich detachUserFromExperimentWith:experimentId completion:^(NSDictionary<NSString *,id> * _Nullable result, SandwichError * _Nullable error) {
+        if (error) {
+            [weakSelf returnCordovaResult:nil error:error command:command];
+        } else {
+            [weakSelf returnCordovaResult:@{} error:nil command:command];
+        }
+    }];
+}
+
 - (void)identify:(CDVInvokedUrlCommand *)command {
     NSString *identityId = [command argumentAtIndex:0];
     [self.qonversionSandwich identify:identityId];

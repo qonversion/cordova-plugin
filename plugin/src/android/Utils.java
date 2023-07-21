@@ -13,6 +13,21 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Utils {
+
+    static ResultListener getEmptyResultListener(CallbackContext callbackContext) {
+        return new ResultListener() {
+            @Override
+            public void onSuccess(@NonNull Map<String, ?> map) {
+                callbackContext.success(new JSONObject());
+            }
+
+            @Override
+            public void onError(@NonNull SandwichError sandwichError) {
+                Utils.rejectWithError(sandwichError, callbackContext);
+            }
+        };
+    }
+
     static ResultListener getResultListener(CallbackContext callbackContext) {
         return new ResultListener() {
             @Override
