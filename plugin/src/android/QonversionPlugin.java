@@ -190,32 +190,12 @@ public class QonversionPlugin extends AnnotatedCordovaPlugin implements Qonversi
 
     @PluginAction(thread = ExecutionThread.UI, actionName = "attachUserToExperiment", isAutofinish = false)
     public void attachUserToExperiment(String experimentId, String groupId, CallbackContext callbackContext) {
-        qonversionSandwich.attachUserToExperiment(experimentId, groupId, new ResultListener() {
-            @Override
-            public void onSuccess(@NonNull Map<String, ?> map) {
-                callbackContext.success(new JSONObject());
-            }
-
-            @Override
-            public void onError(@NonNull SandwichError sandwichError) {
-                Utils.rejectWithError(sandwichError, callbackContext);
-            }
-        });
+        qonversionSandwich.attachUserToExperiment(experimentId, groupId, Utils.getEmptyResultListener(callbackContext));
     }
 
     @PluginAction(thread = ExecutionThread.UI, actionName = "detachUserFromExperiment", isAutofinish = false)
     public void detachUserFromExperiment(String experimentId, CallbackContext callbackContext) {
-        qonversionSandwich.detachUserFromExperiment(experimentId, new ResultListener() {
-            @Override
-            public void onSuccess(@NonNull Map<String, ?> map) {
-                callbackContext.success(new JSONObject());
-            }
-
-            @Override
-            public void onError(@NonNull SandwichError sandwichError) {
-                Utils.rejectWithError(sandwichError, callbackContext);
-            }
-        });
+        qonversionSandwich.detachUserFromExperiment(experimentId, Utils.getEmptyResultListener(callbackContext));
     }
 
     @PluginAction(thread = ExecutionThread.WORKER, actionName = "syncPurchases", isAutofinish = false)
