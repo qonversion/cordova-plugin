@@ -19,6 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)syncStoreKit2Purchases:(CDVInvokedUrlCommand *)command;
 - (void)setDefinedProperty:(CDVInvokedUrlCommand *)command;
 - (void)setCustomProperty:(CDVInvokedUrlCommand *)command;
+- (void)userProperties:(CDVInvokedUrlCommand *)command;
 - (void)attribution:(CDVInvokedUrlCommand *)command;
 - (void)checkEntitlements:(CDVInvokedUrlCommand *)command;
 - (void)purchaseProduct:(CDVInvokedUrlCommand *)command;

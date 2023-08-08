@@ -1,6 +1,14 @@
-import {UserProperty, ProrationMode, AttributionProvider} from "./dto/enums";
+import {AttributionProvider, ProrationMode, UserPropertyKey} from "./dto/enums";
 import {IntroEligibility} from "./dto/IntroEligibility";
-import Mapper, {QEntitlement, QOfferings, QProduct, QTrialIntroEligibility, QUser, QRemoteConfig} from "./Mapper";
+import Mapper, {
+  QEntitlement,
+  QOfferings,
+  QProduct,
+  QRemoteConfig,
+  QTrialIntroEligibility,
+  QUser,
+  QUserProperties
+} from "./Mapper";
 import {Offerings} from "./dto/Offerings";
 import {Entitlement} from "./dto/Entitlement";
 import {Product} from "./dto/Product";
@@ -11,6 +19,7 @@ import {QonversionApi} from './QonversionApi';
 import {QonversionConfig} from './QonversionConfig';
 import {EntitlementsUpdateListener} from './dto/EntitlementsUpdateListener';
 import RemoteConfig from "./dto/RemoteConfig";
+import {UserProperties} from './dto/UserProperties';
 
 const sdkVersion = "3.0.0";
 
@@ -261,12 +270,26 @@ export default class QonversionInternal implements QonversionApi {
     callNative('attribution', [data, provider]).then(noop);
   }
 
-  setProperty(property: UserProperty, value: string) {
+  setUserProperty(property: UserPropertyKey, value: string) {
+    if (property == UserPropertyKey.CUSTOM) {
+      console.warn("Can not set user property with the key `UserPropertyKey.CUSTOM`. " +
+        "To set custom user property, use the `setCustomUserProperty` method.");
+      return;
+    }
+
     callNative('setDefinedProperty', [property, value]).then(noop);
   }
 
-  setUserProperty(property: string, value: string) {
+  setCustomUserProperty(property: string, value: string) {
     callNative('setCustomProperty', [property, value]).then(noop);
+  }
+
+  async userProperties(): Promise<UserProperties> {
+    const properties = await callNative<QUserProperties>('userProperties');
+    // noinspection UnnecessaryLocalVariableJS
+    const mappedUserProperties: UserProperties = Mapper.convertUserProperties(properties);
+
+    return mappedUserProperties;
   }
 
   collectAdvertisingId() {

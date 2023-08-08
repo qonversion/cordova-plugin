@@ -4,7 +4,7 @@ import QonversionInternal from './QonversionInternal';
 import {SKProduct} from './dto/storeProducts/SKProduct';
 import {SKProductDiscount} from './dto/storeProducts/SKProductDiscount';
 import {SKSubscriptionPeriod} from './dto/storeProducts/SKSubscriptionPeriod';
-import { SkuDetails } from './dto/storeProducts/SkuDetails';
+import {SkuDetails} from './dto/storeProducts/SkuDetails';
 import {ActionResult} from './dto/ActionResult';
 import {AutomationsEvent} from './dto/AutomationsEvent';
 import {Entitlement} from './dto/Entitlement';
@@ -26,7 +26,7 @@ import {
   SKProductDiscountPaymentMode,
   SKProductDiscountType,
   TrialDuration,
-  UserProperty
+  UserPropertyKey
 } from './dto/enums';
 import {IntroEligibility} from './dto/IntroEligibility';
 import {Offering} from './dto/Offering';
@@ -34,6 +34,8 @@ import {Offerings} from './dto/Offerings';
 import {Product} from './dto/Product';
 import {QonversionError} from './dto/QonversionError';
 import {User} from './dto/User';
+import {UserProperty} from './dto/UserProperty';
+import {UserProperties} from './dto/UserProperties';
 import {QonversionConfigBuilder} from './QonversionConfigBuilder';
 
 export default class Qonversion {
@@ -86,7 +88,9 @@ export default class Qonversion {
   static TrialDuration = TrialDuration;
   static EntitlementRenewState = EntitlementRenewState;
   static EntitlementSource = EntitlementSource;
+  static UserPropertyKey = UserPropertyKey;
   static UserProperty = UserProperty;
+  static UserProperties = UserProperties;
   static AttributionProvider = AttributionProvider;
   static ProrationMode = ProrationMode;
   static EntitlementsCacheLifetime = EntitlementsCacheLifetime;

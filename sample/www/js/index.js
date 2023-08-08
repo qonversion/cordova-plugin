@@ -38,8 +38,9 @@ const app = {
         document.getElementById("logout").addEventListener("click", this.logout);
         document.getElementById("user-info").addEventListener("click", this.userInfo);
         document.getElementById("attribution").addEventListener("click", this.attribution);
-        document.getElementById("set-property").addEventListener("click", this.setProperty);
         document.getElementById("set-user-property").addEventListener("click", this.setUserProperty);
+        document.getElementById("set-custom-user-property").addEventListener("click", this.setCustomUserProperty);
+        document.getElementById("user-properties").addEventListener("click", this.userProperties);
         document.getElementById("set-entitlements-update-listener").addEventListener("click", this.setEntitlementsUpdateListener);
         document.getElementById("collect-advertising-id").addEventListener("click", this.collectAdvertisingId);
         document.getElementById("collect-apple-search-ads-attribution").addEventListener("click", this.collectAppleSearchAdsAttribution);
@@ -168,14 +169,19 @@ const app = {
         console.log('Qonversion attribution', data, provider);
     },
 
-    setProperty() {
-        Qonversion.getSharedInstance().setProperty(Qonversion.UserProperty.ADVERTISING_ID, "testAdId");
+    setUserProperty() {
+        Qonversion.getSharedInstance().setUserProperty(Qonversion.UserPropertyKey.ADVERTISING_ID, "testAdId");
         console.log('Qonversion setProperty');
     },
 
-    setUserProperty() {
-        Qonversion.getSharedInstance().setUserProperty("test property", "test prop value");
+    setCustomUserProperty() {
+        Qonversion.getSharedInstance().setCustomUserProperty("test_property", "test prop value");
         console.log('Qonversion setUserProperty');
+    },
+
+    async userProperties() {
+        const properties = await Qonversion.getSharedInstance().userProperties();
+        console.log('Qonversion properties', properties);
     },
 
     setEntitlementsUpdateListener() {

@@ -1,4 +1,4 @@
-import { ExperimentGroupType } from "./enums";
+import {ExperimentGroupType} from "./enums";
 
 class ExperimentGroup {
     id: string;
