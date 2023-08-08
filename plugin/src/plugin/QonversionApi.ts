@@ -1,13 +1,13 @@
-import {Entitlement} from './dto/Entitlement';
-import {Product} from './dto/Product';
-import {ProrationMode, AttributionProvider, UserPropertyKey} from './dto/enums';
-import {Offerings} from './dto/Offerings';
-import {IntroEligibility} from './dto/IntroEligibility';
-import {User} from './dto/User';
-import {EntitlementsUpdateListener} from './dto/EntitlementsUpdateListener';
-import {PromoPurchasesListener} from './dto/PromoPurchasesListener';
-import RemoteConfig from "./dto/RemoteConfig";
-import {UserProperties} from './dto/UserProperties';
+import {Entitlement} from './Entitlement';
+import {Product} from './Product';
+import {ProrationMode, AttributionProvider, UserPropertyKey} from './enums';
+import {Offerings} from './Offerings';
+import {IntroEligibility} from './IntroEligibility';
+import {User} from './User';
+import {EntitlementsUpdateListener} from './EntitlementsUpdateListener';
+import {PromoPurchasesListener} from './PromoPurchasesListener';
+import {RemoteConfig} from "./RemoteConfig";
+import {UserProperties} from './UserProperties';
 
 export interface QonversionApi {
 

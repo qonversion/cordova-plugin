@@ -1,13 +1,13 @@
 import {QonversionConfig} from './QonversionConfig';
 import {QonversionApi} from './QonversionApi';
 import QonversionInternal from './QonversionInternal';
-import {SKProduct} from './dto/storeProducts/SKProduct';
-import {SKProductDiscount} from './dto/storeProducts/SKProductDiscount';
-import {SKSubscriptionPeriod} from './dto/storeProducts/SKSubscriptionPeriod';
-import {SkuDetails} from './dto/storeProducts/SkuDetails';
-import {ActionResult} from './dto/ActionResult';
-import {AutomationsEvent} from './dto/AutomationsEvent';
-import {Entitlement} from './dto/Entitlement';
+import {SKProduct} from './SKProduct';
+import {SKProductDiscount} from './SKProductDiscount';
+import {SKSubscriptionPeriod} from './SKSubscriptionPeriod';
+import {SkuDetails} from './SkuDetails';
+import {ActionResult} from './ActionResult';
+import {AutomationsEvent} from './AutomationsEvent';
+import {Entitlement} from './Entitlement';
 import {
   ActionResultType,
   AttributionProvider,
@@ -27,15 +27,15 @@ import {
   SKProductDiscountType,
   TrialDuration,
   UserPropertyKey
-} from './dto/enums';
-import {IntroEligibility} from './dto/IntroEligibility';
-import {Offering} from './dto/Offering';
-import {Offerings} from './dto/Offerings';
-import {Product} from './dto/Product';
-import {QonversionError} from './dto/QonversionError';
-import {User} from './dto/User';
-import {UserProperty} from './dto/UserProperty';
-import {UserProperties} from './dto/UserProperties';
+} from './enums';
+import {IntroEligibility} from './IntroEligibility';
+import {Offering} from './Offering';
+import {Offerings} from './Offerings';
+import {Product} from './Product';
+import {QonversionError} from './QonversionError';
+import {User} from './User';
+import {UserProperty} from './UserProperty';
+import {UserProperties} from './UserProperties';
 import {QonversionConfigBuilder} from './QonversionConfigBuilder';
 
 export default class Qonversion {

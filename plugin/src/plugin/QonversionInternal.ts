@@ -1,5 +1,5 @@
-import {AttributionProvider, ProrationMode, UserPropertyKey} from "./dto/enums";
-import {IntroEligibility} from "./dto/IntroEligibility";
+import {AttributionProvider, ProrationMode, UserPropertyKey} from "./enums";
+import {IntroEligibility} from "./IntroEligibility";
 import Mapper, {
   QEntitlement,
   QOfferings,
@@ -9,17 +9,17 @@ import Mapper, {
   QUser,
   QUserProperties
 } from "./Mapper";
-import {Offerings} from "./dto/Offerings";
-import {Entitlement} from "./dto/Entitlement";
-import {Product} from "./dto/Product";
+import {Offerings} from "./Offerings";
+import {Entitlement} from "./Entitlement";
+import {Product} from "./Product";
 import {callNative, DefinedNativeErrorCodes, isAndroid, isIos, noop} from "./utils";
-import {PromoPurchasesListener} from './dto/PromoPurchasesListener';
-import {User} from './dto/User';
+import {PromoPurchasesListener} from './PromoPurchasesListener';
+import {User} from './User';
 import {QonversionApi} from './QonversionApi';
 import {QonversionConfig} from './QonversionConfig';
-import {EntitlementsUpdateListener} from './dto/EntitlementsUpdateListener';
-import RemoteConfig from "./dto/RemoteConfig";
-import {UserProperties} from './dto/UserProperties';
+import {EntitlementsUpdateListener} from './EntitlementsUpdateListener';
+import {RemoteConfig} from "./RemoteConfig";
+import {UserProperties} from './UserProperties';
 
 const sdkVersion = "3.0.0";
 

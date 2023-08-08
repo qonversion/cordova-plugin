@@ -15,25 +15,25 @@ import {
   TrialDurations,
   ExperimentGroupType,
   UserPropertyKey,
-} from "./dto/enums";
-import {IntroEligibility} from "./dto/IntroEligibility";
-import {Offering} from "./dto/Offering";
-import {Offerings} from "./dto/Offerings";
-import {Entitlement} from "./dto/Entitlement";
-import {Product} from "./dto/Product";
-import {SKProduct} from "./dto/storeProducts/SKProduct";
-import {SKProductDiscount} from "./dto/storeProducts/SKProductDiscount";
-import {SKSubscriptionPeriod} from "./dto/storeProducts/SKSubscriptionPeriod";
-import {SkuDetails} from "./dto/storeProducts/SkuDetails";
-import {ActionResult} from "./dto/ActionResult";
-import {QonversionError} from "./dto/QonversionError";
-import {AutomationsEvent} from "./dto/AutomationsEvent";
-import {User} from './dto/User';
-import RemoteConfig from "./dto/RemoteConfig";
-import ExperimentGroup from "./dto/ExperimentGroup";
-import Experiment from "./dto/Experiment";
-import {UserProperty} from './dto/UserProperty';
-import {UserProperties} from './dto/UserProperties';
+} from "./enums";
+import {IntroEligibility} from "./IntroEligibility";
+import {Offering} from "./Offering";
+import {Offerings} from "./Offerings";
+import {Entitlement} from "./Entitlement";
+import {Product} from "./Product";
+import {SKProduct} from "./SKProduct";
+import {SKProductDiscount} from "./SKProductDiscount";
+import {SKSubscriptionPeriod} from "./SKSubscriptionPeriod";
+import {SkuDetails} from "./SkuDetails";
+import {ActionResult} from "./ActionResult";
+import {QonversionError} from "./QonversionError";
+import {AutomationsEvent} from "./AutomationsEvent";
+import {User} from './User';
+import {RemoteConfig} from "./RemoteConfig";
+import {ExperimentGroup} from "./ExperimentGroup";
+import {Experiment} from "./Experiment";
+import {UserProperty} from './UserProperty';
+import {UserProperties} from './UserProperties';
 
 export type QProduct = {
   id: string;

@@ -17,25 +17,25 @@
     <!--  Public files  -->
     <js-module src="www/QonversionConfig.js" name="QonversionConfig" />
     <js-module src="www/QonversionConfigBuilder.js" name="QonversionConfigBuilder" />
-    <js-module src="www/dto/enums.js" name="dto/enums" />
-    <js-module src="www/dto/ActionResult.js" name="dto/ActionResult" />
-    <js-module src="www/dto/AutomationsEvent.js" name="dto/AutomationsEvent" />
-    <js-module src="www/dto/Entitlement.js" name="dto/Entitlement" />
-    <js-module src="www/dto/IntroEligibility.js" name="dto/IntroEligibility" />
-    <js-module src="www/dto/Offering.js" name="dto/Offering" />
-    <js-module src="www/dto/Offerings.js" name="dto/Offerings" />
-    <js-module src="www/dto/Product.js" name="dto/Product" />
-    <js-module src="www/dto/Experiment.js" name="dto/Experiment" />
-    <js-module src="www/dto/ExperimentGroup.js" name="dto/ExperimentGroup" />
-    <js-module src="www/dto/RemoteConfig.js" name="dto/RemoteConfig" />
-    <js-module src="www/dto/QonversionError.js" name="dto/QonversionError" />
-    <js-module src="www/dto/User.js" name="dto/User" />
-    <js-module src="www/dto/UserProperties.js" name="dto/UserProperties" />
-    <js-module src="www/dto/UserProperty.js" name="dto/UserProperty" />
-    <js-module src="www/dto/storeProducts/SKProduct.js" name="dto/storeProducts/SKProduct" />
-    <js-module src="www/dto/storeProducts/SKProductDiscount.js" name="dto/storeProducts/SKProductDiscount" />
-    <js-module src="www/dto/storeProducts/SKSubscriptionPeriod.js" name="dto/storeProducts/SKSubscriptionPeriod" />
-    <js-module src="www/dto/storeProducts/SkuDetails.js" name="dto/storeProducts/SkuDetails" />
+    <js-module src="www/enums.js" name="enums" />
+    <js-module src="www/ActionResult.js" name="ActionResult" />
+    <js-module src="www/AutomationsEvent.js" name="AutomationsEvent" />
+    <js-module src="www/Entitlement.js" name="Entitlement" />
+    <js-module src="www/IntroEligibility.js" name="IntroEligibility" />
+    <js-module src="www/Offering.js" name="Offering" />
+    <js-module src="www/Offerings.js" name="Offerings" />
+    <js-module src="www/Product.js" name="Product" />
+    <js-module src="www/Experiment.js" name="Experiment" />
+    <js-module src="www/ExperimentGroup.js" name="ExperimentGroup" />
+    <js-module src="www/RemoteConfig.js" name="RemoteConfig" />
+    <js-module src="www/QonversionError.js" name="QonversionError" />
+    <js-module src="www/User.js" name="User" />
+    <js-module src="www/UserProperties.js" name="UserProperties" />
+    <js-module src="www/UserProperty.js" name="UserProperty" />
+    <js-module src="www/SKProduct.js" name="SKProduct" />
+    <js-module src="www/SKProductDiscount.js" name="SKProductDiscount" />
+    <js-module src="www/SKSubscriptionPeriod.js" name="SKSubscriptionPeriod" />
+    <js-module src="www/SkuDetails.js" name="SkuDetails" />
 
     <platform name="android">
         <config-file target="res/xml/config.xml" parent="/*">

@@ -1,5 +1,5 @@
 import {ActionResult} from "./ActionResult";
-import {QonversionApi} from '../QonversionApi';
+import {QonversionApi} from './QonversionApi';
 
 export interface AutomationsDelegate {
 
