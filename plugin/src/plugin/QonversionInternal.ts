@@ -12,7 +12,7 @@ import {QonversionConfig} from './QonversionConfig';
 import {EntitlementsUpdateListener} from './dto/EntitlementsUpdateListener';
 import RemoteConfig from "./dto/RemoteConfig";
 
-const sdkVersion = "3.0.0";
+const sdkVersion = "3.0.1";
 
 export default class QonversionInternal implements QonversionApi {
 
