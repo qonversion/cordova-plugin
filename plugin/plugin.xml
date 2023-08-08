@@ -41,7 +41,7 @@
                 <param name="android-package" value="com.qonversion.android.sdk.QonversionPlugin"/>
             </feature>
         </config-file>
-        <framework src="io.qonversion.sandwich:sandwich:2.0.2" />
+        <framework src="io.qonversion.sandwich:sandwich:3.0.1" />
         <source-file src="src/android/QonversionPlugin.java" target-dir="src/com/qonversion/android/sdk" />
         <source-file src="src/android/EntitiesConverter.java" target-dir="src/com/qonversion/android/sdk" />
         <source-file src="src/android/Utils.java" target-dir="src/com/qonversion/android/sdk" />
@@ -59,7 +59,7 @@
                 <source url="https://github.com/CocoaPods/Specs.git"/>
             </config>
             <pods use-frameworks="true">
-                <pod name="QonversionSandwich" spec="2.0.2" />
+                <pod name="QonversionSandwich" spec="3.0.1" />
             </pods>
         </podspec>
     </platform>
