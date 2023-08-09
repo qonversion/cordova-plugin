@@ -62,7 +62,7 @@ export class UserProperties {
   /**
    * Searches for a property with the given property {@link key} in all properties list.
    */
-  getProperty(key: String): UserProperty | undefined {
+  getProperty(key: string): UserProperty | undefined {
     return this.properties.find(userProperty => userProperty.key == key);
   }
 
