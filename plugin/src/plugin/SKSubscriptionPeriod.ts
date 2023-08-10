@@ -1,4 +1,4 @@
-import {SKPeriodUnits} from "../enums";
+import {SKPeriodUnits} from "./enums";
 
 export class SKSubscriptionPeriod {
   numberOfUnits: number;

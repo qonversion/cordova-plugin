@@ -1,6 +1,6 @@
 import {ProductDurations, ProductTypes, TrialDurations} from "./enums";
-import {SKProduct} from "./storeProducts/SKProduct";
-import {SkuDetails} from "./storeProducts/SkuDetails";
+import {SKProduct} from "./SKProduct";
+import {SkuDetails} from "./SkuDetails";
 
 export class Product {
   qonversionID: string;

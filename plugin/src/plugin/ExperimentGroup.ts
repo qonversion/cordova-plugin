@@ -1,6 +1,6 @@
-import { ExperimentGroupType } from "./enums";
+import {ExperimentGroupType} from "./enums";
 
-class ExperimentGroup {
+export class ExperimentGroup {
     id: string;
     name: string;
     type: ExperimentGroupType;
@@ -11,5 +11,3 @@ class ExperimentGroup {
         this.type = type;
     }
 }
-
-export default ExperimentGroup;

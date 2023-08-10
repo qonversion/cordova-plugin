@@ -14,23 +14,26 @@ import {
   TrialDuration,
   TrialDurations,
   ExperimentGroupType,
-} from "./dto/enums";
-import {IntroEligibility} from "./dto/IntroEligibility";
-import {Offering} from "./dto/Offering";
-import {Offerings} from "./dto/Offerings";
-import {Entitlement} from "./dto/Entitlement";
-import {Product} from "./dto/Product";
-import {SKProduct} from "./dto/storeProducts/SKProduct";
-import {SKProductDiscount} from "./dto/storeProducts/SKProductDiscount";
-import {SKSubscriptionPeriod} from "./dto/storeProducts/SKSubscriptionPeriod";
-import {SkuDetails} from "./dto/storeProducts/SkuDetails";
-import {ActionResult} from "./dto/ActionResult";
-import {QonversionError} from "./dto/QonversionError";
-import {AutomationsEvent} from "./dto/AutomationsEvent";
-import {User} from './dto/User';
-import RemoteConfig from "./dto/RemoteConfig";
-import ExperimentGroup from "./dto/ExperimentGroup";
-import Experiment from "./dto/Experiment";
+  UserPropertyKey,
+} from "./enums";
+import {IntroEligibility} from "./IntroEligibility";
+import {Offering} from "./Offering";
+import {Offerings} from "./Offerings";
+import {Entitlement} from "./Entitlement";
+import {Product} from "./Product";
+import {SKProduct} from "./SKProduct";
+import {SKProductDiscount} from "./SKProductDiscount";
+import {SKSubscriptionPeriod} from "./SKSubscriptionPeriod";
+import {SkuDetails} from "./SkuDetails";
+import {ActionResult} from "./ActionResult";
+import {QonversionError} from "./QonversionError";
+import {AutomationsEvent} from "./AutomationsEvent";
+import {User} from './User';
+import {RemoteConfig} from "./RemoteConfig";
+import {ExperimentGroup} from "./ExperimentGroup";
+import {Experiment} from "./Experiment";
+import {UserProperty} from './UserProperty';
+import {UserProperties} from './UserProperties';
 
 export type QProduct = {
   id: string;
@@ -147,6 +150,15 @@ export type QRemoteConfig = {
   experiment?: QExperiment | null;
 };
 
+export type QUserProperties = {
+  properties: QUserProperty[];
+};
+
+export type QUserProperty = {
+  key: string;
+  value: string;
+};
+
 export type QExperiment = {
   id: string;
   name: string;
@@ -224,6 +236,33 @@ class Mapper {
     }
 
     return EntitlementSource.UNKNOWN;
+  }
+
+  static convertDefinedUserPropertyKey(sourceKey: string): UserPropertyKey {
+    switch (sourceKey) {
+      case '_q_email':
+        return UserPropertyKey.EMAIL;
+      case '_q_name':
+        return UserPropertyKey.NAME;
+      case '_q_kochava_device_id':
+        return UserPropertyKey.KOCHAVA_DEVICE_ID;
+      case '_q_appsflyer_user_id':
+        return UserPropertyKey.APPS_FLYER_USER_ID;
+      case '_q_adjust_adid':
+        return UserPropertyKey.ADJUST_AD_ID;
+      case '_q_custom_user_id':
+        return UserPropertyKey.CUSTOM_USER_ID;
+      case '_q_fb_attribution':
+        return UserPropertyKey.FACEBOOK_ATTRIBUTION;
+      case '_q_firebase_instance_id':
+        return UserPropertyKey.FIREBASE_APP_INSTANCE_ID;
+      case '_q_app_set_id':
+        return UserPropertyKey.APP_SET_ID;
+      case '_q_advertising_id':
+        return UserPropertyKey.ADVERTISING_ID;
+    }
+
+    return UserPropertyKey.CUSTOM;
   }
 
   static convertProducts(products: Record<string, QProduct> | null | undefined): Map<string, Product> {
@@ -514,6 +553,15 @@ class Mapper {
     }
 
     return new RemoteConfig(remoteConfig.payload, experiment);
+  }
+
+  static convertUserProperties(properties: QUserProperties): UserProperties {
+    const mappedProperties = properties.properties.map(propertyData => {
+      const definedKey = Mapper.convertDefinedUserPropertyKey(propertyData.key);
+      return new UserProperty(propertyData.key, propertyData.value, definedKey);
+    });
+
+    return new UserProperties(mappedProperties);
   }
 
   static convertGroupType(type: String): ExperimentGroupType {

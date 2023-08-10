@@ -1,18 +1,27 @@
-import {UserProperty, ProrationMode, AttributionProvider} from "./dto/enums";
-import {IntroEligibility} from "./dto/IntroEligibility";
-import Mapper, {QEntitlement, QOfferings, QProduct, QTrialIntroEligibility, QUser, QRemoteConfig} from "./Mapper";
-import {Offerings} from "./dto/Offerings";
-import {Entitlement} from "./dto/Entitlement";
-import {Product} from "./dto/Product";
+import {AttributionProvider, ProrationMode, UserPropertyKey} from "./enums";
+import {IntroEligibility} from "./IntroEligibility";
+import Mapper, {
+  QEntitlement,
+  QOfferings,
+  QProduct,
+  QRemoteConfig,
+  QTrialIntroEligibility,
+  QUser,
+  QUserProperties
+} from "./Mapper";
+import {Offerings} from "./Offerings";
+import {Entitlement} from "./Entitlement";
+import {Product} from "./Product";
 import {callNative, DefinedNativeErrorCodes, isAndroid, isIos, noop} from "./utils";
-import {PromoPurchasesListener} from './dto/PromoPurchasesListener';
-import {User} from './dto/User';
+import {PromoPurchasesListener} from './PromoPurchasesListener';
+import {User} from './User';
 import {QonversionApi} from './QonversionApi';
 import {QonversionConfig} from './QonversionConfig';
-import {EntitlementsUpdateListener} from './dto/EntitlementsUpdateListener';
-import RemoteConfig from "./dto/RemoteConfig";
+import {EntitlementsUpdateListener} from './EntitlementsUpdateListener';
+import {RemoteConfig} from "./RemoteConfig";
+import {UserProperties} from './UserProperties';
 
-const sdkVersion = "3.0.0";
+const sdkVersion = "4.0.0";
 
 export default class QonversionInternal implements QonversionApi {
 
@@ -261,12 +270,26 @@ export default class QonversionInternal implements QonversionApi {
     callNative('attribution', [data, provider]).then(noop);
   }
 
-  setProperty(property: UserProperty, value: string) {
+  setUserProperty(property: UserPropertyKey, value: string) {
+    if (property == UserPropertyKey.CUSTOM) {
+      console.warn("Can not set user property with the key `UserPropertyKey.CUSTOM`. " +
+        "To set custom user property, use the `setCustomUserProperty` method.");
+      return;
+    }
+
     callNative('setDefinedProperty', [property, value]).then(noop);
   }
 
-  setUserProperty(property: string, value: string) {
+  setCustomUserProperty(property: string, value: string) {
     callNative('setCustomProperty', [property, value]).then(noop);
+  }
+
+  async userProperties(): Promise<UserProperties> {
+    const properties = await callNative<QUserProperties>('userProperties');
+    // noinspection UnnecessaryLocalVariableJS
+    const mappedUserProperties: UserProperties = Mapper.convertUserProperties(properties);
+
+    return mappedUserProperties;
   }
 
   collectAdvertisingId() {
