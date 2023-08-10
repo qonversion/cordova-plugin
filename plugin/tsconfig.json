@@ -1,13 +1,9 @@
 {
   "compilerOptions": {
-    "lib": [
-      "es6",
-      "dom",
-    ],
+    "lib": ["es6", "dom"],
     "module": "commonjs",
     "target": "esnext",
     "declaration": true,
-    "moduleResolution": "node",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "outDir": "www",

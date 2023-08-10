@@ -10,7 +10,7 @@
     ]
   },
   "scripts": {
-    "build": "tsc"
+    "build": "rm -rf ./www && tsc"
   },
   "repository": "github:qonversion/cordova-plugin",
   "bugs": "https://github.com/qonversion/cordova-plugin/issues",
@@ -27,7 +27,7 @@
   ],
   "author": "Qonversion, Inc.",
   "license": "MIT",
-  "dependencies": {
+  "devDependencies": {
     "typescript": "^4.9.4"
   }
 }

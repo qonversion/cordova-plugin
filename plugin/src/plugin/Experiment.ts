@@ -1,6 +1,6 @@
-import ExperimentGroup from "./ExperimentGroup";
+import {ExperimentGroup} from "./ExperimentGroup";
 
-class Experiment {
+export class Experiment {
     id: string;
     name: string;
     group: ExperimentGroup;
@@ -11,5 +11,3 @@ class Experiment {
         this.group = group;
     }
 }
-
-export default Experiment;
