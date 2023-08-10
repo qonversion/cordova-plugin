@@ -1,6 +1,6 @@
-import Experiment from "./Experiment";
+import {Experiment} from "./Experiment";
 
-class RemoteConfig {
+export class RemoteConfig {
     payload: Map<string, Object>;
     experiment?: Experiment | null;
 
@@ -9,5 +9,3 @@ class RemoteConfig {
         this.experiment = experiment;
     }
 }
-
-export default RemoteConfig;

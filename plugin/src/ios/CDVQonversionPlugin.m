@@ -90,6 +90,13 @@ static NSString *const kErrorCodePurchaseCancelledByUser = @"PURCHASE_CANCELLED_
     [self.qonversionSandwich setCustomProperty:property value:value];
 }
 
+- (void)userProperties:(CDVInvokedUrlCommand *)command {
+    __block __weak CDVQonversionPlugin *weakSelf = self;
+    [self.qonversionSandwich userProperties:^(NSDictionary<NSString *,id> * _Nullable result, SandwichError * _Nullable error) {
+        [weakSelf returnCordovaResult:result error:error command:command];
+    }];
+}
+
 - (void)attribution:(CDVInvokedUrlCommand *)command {
     NSDictionary *data = [command argumentAtIndex:0];
     NSString *provider = [command argumentAtIndex:1];
