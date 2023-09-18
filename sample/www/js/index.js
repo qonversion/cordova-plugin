@@ -104,11 +104,7 @@ const app = {
 
     async getRemoteConfig() {
         const remoteConfig = await Qonversion.getSharedInstance().remoteConfig();
-        console.log('Qonversion remote config:', remoteConfig.source);
-        console.log('Qonversion remote config:', remoteConfig.source.name);
-        console.log('Qonversion remote config:', remoteConfig.source.id);
-        console.log('Qonversion remote config:', remoteConfig.source.assignmentType);
-        console.log('Qonversion remote config:', remoteConfig.source.type);
+        console.log('Qonversion remote config:', remoteConfig);
     },
 
     async getOfferings() {
