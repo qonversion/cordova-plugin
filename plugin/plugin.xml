@@ -28,6 +28,7 @@
     <js-module src="www/Experiment.js" name="Experiment" />
     <js-module src="www/ExperimentGroup.js" name="ExperimentGroup" />
     <js-module src="www/RemoteConfig.js" name="RemoteConfig" />
+    <js-module src="www/RemoteConfigurationSource.js" name="RemoteConfigurationSource" />
     <js-module src="www/QonversionError.js" name="QonversionError" />
     <js-module src="www/User.js" name="User" />
     <js-module src="www/UserProperties.js" name="UserProperties" />
@@ -43,7 +44,7 @@
                 <param name="android-package" value="com.qonversion.android.sdk.QonversionPlugin"/>
             </feature>
         </config-file>
-        <framework src="io.qonversion.sandwich:sandwich:3.0.1" />
+        <framework src="io.qonversion.sandwich:sandwich:3.1.0" />
         <source-file src="src/android/QonversionPlugin.java" target-dir="src/com/qonversion/android/sdk" />
         <source-file src="src/android/EntitiesConverter.java" target-dir="src/com/qonversion/android/sdk" />
         <source-file src="src/android/Utils.java" target-dir="src/com/qonversion/android/sdk" />
@@ -61,7 +62,7 @@
                 <source url="https://github.com/CocoaPods/Specs.git"/>
             </config>
             <pods use-frameworks="true">
-                <pod name="QonversionSandwich" spec="3.0.1" />
+                <pod name="QonversionSandwich" spec="3.1.0" />
             </pods>
         </podspec>
     </platform>

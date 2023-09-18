@@ -171,3 +171,16 @@ export enum ExperimentGroupType {
   CONTROL = "control",
   TREATMENT = "treatment",
 }
+
+export enum RemoteConfigurationSourceType {
+  UNKNOWN = "unknown",
+  EXPERIMENT_CONTROL_GROUP = "experiment_control_group",
+  EXPERIMENT_TREATMENT_GROUP = "experiment_treatment_group",
+  REMOTE_CONFIGURATION = "remote_configuration",
+}
+
+export enum RemoteConfigurationAssignmentType {
+  UNKNOWN = "unknown",
+  AUTO = "auto",
+  MANUAL = "manual",
+}
