@@ -28,6 +28,7 @@ const app = {
         document.getElementById("purchase").addEventListener("click", this.purchase);
         document.getElementById("purchase-product").addEventListener("click", this.purchaseProduct);
         document.getElementById("get-products").addEventListener("click", this.getProducts);
+        document.getElementById("get-remote-config").addEventListener("click", this.getRemoteConfig);
         document.getElementById("get-offerings").addEventListener("click", this.getOfferings);
         document.getElementById("check-trial-into").addEventListener("click", this.checkTrialIntroEligibility);
         document.getElementById("check-entitlements").addEventListener("click", this.checkEntitlements);
@@ -99,6 +100,11 @@ const app = {
     async getProducts() {
         const products = await Qonversion.getSharedInstance().products();
         console.log('Qonversion products:', products);
+    },
+
+    async getRemoteConfig() {
+        const remoteConfig = await Qonversion.getSharedInstance().remoteConfig();
+        console.log('Qonversion remote config:', remoteConfig);
     },
 
     async getOfferings() {
