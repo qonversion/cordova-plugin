@@ -15,6 +15,8 @@ import {
   TrialDurations,
   ExperimentGroupType,
   UserPropertyKey,
+  RemoteConfigurationAssignmentType,
+  RemoteConfigurationSourceType
 } from "./enums";
 import {IntroEligibility} from "./IntroEligibility";
 import {Offering} from "./Offering";
@@ -30,6 +32,7 @@ import {QonversionError} from "./QonversionError";
 import {AutomationsEvent} from "./AutomationsEvent";
 import {User} from './User';
 import {RemoteConfig} from "./RemoteConfig";
+import {RemoteConfigurationSource} from "./RemoteConfigurationSource";
 import {ExperimentGroup} from "./ExperimentGroup";
 import {Experiment} from "./Experiment";
 import {UserProperty} from './UserProperty';
@@ -148,6 +151,14 @@ export type QUser = {
 export type QRemoteConfig = {
   payload: Map<string, Object>;
   experiment?: QExperiment | null;
+  source: QRemoteConfigurationSource;
+};
+
+export type QRemoteConfigurationSource = {
+  id: string;
+  name: string;
+  type: string;
+  assignmentType: string;
 };
 
 export type QUserProperties = {
@@ -552,7 +563,36 @@ class Mapper {
       experiment = new Experiment(remoteConfig.experiment.id, remoteConfig.experiment.name, group);
     }
 
-    return new RemoteConfig(remoteConfig.payload, experiment);
+    const sourceType = this.convertRemoteConfigurationSourceType (remoteConfig.source.type);
+    const assignmentType = this.convertRemoteConfigurationAssignmentType (remoteConfig.source.assignmentType);
+
+    const source = new RemoteConfigurationSource(remoteConfig.source.id, remoteConfig.source.name, sourceType, assignmentType)
+
+    return new RemoteConfig(remoteConfig.payload, experiment, source);
+  }
+
+  static convertRemoteConfigurationSourceType(type: String): RemoteConfigurationSourceType {
+    switch (type) {
+      case "experiment_control_group":
+        return RemoteConfigurationSourceType.EXPERIMENT_CONTROL_GROUP;
+      case "experiment_treatment_group":
+        return RemoteConfigurationSourceType.EXPERIMENT_TREATMENT_GROUP;
+      case "remote_configuration":
+        return RemoteConfigurationSourceType.REMOTE_CONFIGURATION;
+      default:
+        return RemoteConfigurationSourceType.UNKNOWN;
+    }
+  }
+
+  static convertRemoteConfigurationAssignmentType(type: String): RemoteConfigurationAssignmentType {
+    switch (type) {
+      case "auto":
+        return RemoteConfigurationAssignmentType.AUTO;
+      case "manual":
+        return RemoteConfigurationAssignmentType.MANUAL;
+      default:
+        return RemoteConfigurationAssignmentType.UNKNOWN;
+    }
   }
 
   static convertUserProperties(properties: QUserProperties): UserProperties {
