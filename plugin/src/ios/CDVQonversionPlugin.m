@@ -189,6 +189,30 @@ static NSString *const kErrorCodePurchaseCancelledByUser = @"PURCHASE_CANCELLED_
     }];
 }
 
+- (void)attachUserToRemoteConfiguration:(CDVInvokedUrlCommand *)command {
+    __block __weak CDVQonversionPlugin *weakSelf = self;
+    NSString *remoteConfigurationId = [command argumentAtIndex:0];
+    [self.qonversionSandwich attachUserToRemoteConfigurationWith:remoteConfigurationId completion:^(NSDictionary<NSString *,id> * _Nullable result, SandwichError * _Nullable error) {
+        if (error) {
+            [weakSelf returnCordovaResult:nil error:error command:command];
+        } else {
+            [weakSelf returnCordovaResult:@{} error:nil command:command];
+        }
+    }];
+}
+
+- (void)detachUserFromRemoteConfiguration:(CDVInvokedUrlCommand *)command {
+    __block __weak CDVQonversionPlugin *weakSelf = self;
+    NSString *remoteConfigurationId = [command argumentAtIndex:0];
+    [self.qonversionSandwich detachUserFromRemoteConfigurationWith:remoteConfigurationId completion:^(NSDictionary<NSString *,id> * _Nullable result, SandwichError * _Nullable error) {
+        if (error) {
+            [weakSelf returnCordovaResult:nil error:error command:command];
+        } else {
+            [weakSelf returnCordovaResult:@{} error:nil command:command];
+        }
+    }];
+}
+
 - (void)identify:(CDVInvokedUrlCommand *)command {
     NSString *identityId = [command argumentAtIndex:0];
     [self.qonversionSandwich identify:identityId];
