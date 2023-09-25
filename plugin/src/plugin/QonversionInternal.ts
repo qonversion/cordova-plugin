@@ -21,7 +21,7 @@ import {EntitlementsUpdateListener} from './EntitlementsUpdateListener';
 import {RemoteConfig} from "./RemoteConfig";
 import {UserProperties} from './UserProperties';
 
-const sdkVersion = "4.1.0";
+const sdkVersion = "4.2.0";
 
 export default class QonversionInternal implements QonversionApi {
 
@@ -263,6 +263,16 @@ export default class QonversionInternal implements QonversionApi {
 
   async detachUserFromExperiment(experimentId: string): Promise<void> {
     await callNative('detachUserFromExperiment', [experimentId]);
+    return;
+  }
+
+  async attachUserToRemoteConfiguration(remoteConfigurationId: string): Promise<void> {
+    await callNative('attachUserToRemoteConfiguration', [remoteConfigurationId]);
+    return;
+  }
+
+  async detachUserFromRemoteConfiguration(remoteConfigurationId: string): Promise<void> {
+    await callNative('detachUserFromRemoteConfiguration', [remoteConfigurationId]);
     return;
   }
 

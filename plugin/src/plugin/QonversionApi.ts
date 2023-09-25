@@ -192,6 +192,22 @@ export interface QonversionApi {
   detachUserFromExperiment(experimentId: string): Promise<void>
 
   /**
+   * This function should be used for the test purposes only. Do not forget to delete the usage of this function before the release.
+   * Use this function to attach the user to the remote configuration.
+   * @param remoteConfigurationId identifier of the remote configuration
+   * @returns the promise for success result or throws an error otherwise.
+   */
+  attachUserToRemoteConfiguration(remoteConfigurationId: string): Promise<void>
+
+  /**
+   * This function should be used for the test purposes only. Do not forget to delete the usage of this function before the release.
+   * Use this function to detach the user from the remote configuration.
+   * @param remoteConfigurationId identifier of the remote configuration
+   * @returns the promise for success result or throws an error otherwise.
+   */
+  detachUserFromRemoteConfiguration(remoteConfigurationId: string): Promise<void>
+
+  /**
    * Sends your attribution {@link data} to the {@link provider}.
    *
    * @param data an object containing your attribution data
