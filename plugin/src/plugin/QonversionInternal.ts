@@ -266,6 +266,16 @@ export default class QonversionInternal implements QonversionApi {
     return;
   }
 
+  async attachUserToRemoteConfiguration(remoteConfigurationId: string): Promise<void> {
+    await callNative('attachUserToRemoteConfiguration', [remoteConfigurationId]);
+    return;
+  }
+
+  async detachUserFromRemoteConfiguration(remoteConfigurationId: string): Promise<void> {
+    await callNative('detachUserFromRemoteConfiguration', [remoteConfigurationId]);
+    return;
+  }
+
   attribution(data: Object, provider: AttributionProvider) {
     callNative('attribution', [data, provider]).then(noop);
   }
