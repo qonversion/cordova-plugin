@@ -27,8 +27,6 @@
       "android",
       "ios"
     ],
-    "plugins": {
-      "cordova-plugin-qonversion": {}
-    }
+    "plugins": {}
   }
 }

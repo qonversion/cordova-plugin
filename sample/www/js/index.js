@@ -26,7 +26,7 @@ const app = {
 
         document.getElementById("initialize-sdk").addEventListener("click", this.initializeSdk);
         document.getElementById("purchase").addEventListener("click", this.purchase);
-        document.getElementById("purchase-product").addEventListener("click", this.purchaseProduct);
+        document.getElementById("update-purchase").addEventListener("click", this.updatePurchase);
         document.getElementById("get-products").addEventListener("click", this.getProducts);
         document.getElementById("get-remote-config").addEventListener("click", this.getRemoteConfig);
         document.getElementById("get-offerings").addEventListener("click", this.getOfferings);
@@ -73,21 +73,26 @@ const app = {
 
     async purchase() {
         const productId = document.getElementById('product-id').value;
+        const products = await Qonversion.getSharedInstance().products();
+        const product = products.get(productId);
         try {
-            const entitlements = await Qonversion.getSharedInstance().purchase(productId);
+            const purchaseModel = product.toPurchaseModel();
+            const entitlements = await Qonversion.getSharedInstance().purchase(purchaseModel);
             console.log('Qonversion purchase:', entitlements, productId);
         } catch (e) {
             console.log('Qonversion purchase failed', e);
         }
     },
 
-    async purchaseProduct() {
-        const productId = document.getElementById('purchase-product-id').value;
+    async updatePurchase() {
+        const productId = document.getElementById('update-product-id').value;
+        const oldProductId = document.getElementById('update-product-old-id').value;
         const products = await Qonversion.getSharedInstance().products();
         const product = products.get(productId);
         try {
             if (product) {
-                const entitlements = await Qonversion.getSharedInstance().purchaseProduct(product);
+                const purchaseUpdateModel = product.toPurchaseUpdateModel(oldProductId);
+                const entitlements = await Qonversion.getSharedInstance().purchaseProduct(purchaseUpdateModel);
                 console.log('Qonversion purchaseProduct:', entitlements, product);
             } else {
                 console.log('Qonversion purchaseProduct:', 'product not found', productId);
