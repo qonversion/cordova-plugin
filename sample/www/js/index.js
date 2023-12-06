@@ -73,10 +73,11 @@ const app = {
 
     async purchase() {
         const productId = document.getElementById('product-id').value;
+        const offerId = document.getElementById('offer-id').value;
         const products = await Qonversion.getSharedInstance().products();
         const product = products.get(productId);
         try {
-            const purchaseModel = product.toPurchaseModel();
+            const purchaseModel = product.toPurchaseModel(offerId);
             const entitlements = await Qonversion.getSharedInstance().purchase(purchaseModel);
             console.log('Qonversion purchase:', entitlements, productId);
         } catch (e) {
@@ -91,14 +92,14 @@ const app = {
         const product = products.get(productId);
         try {
             if (product) {
-                const purchaseUpdateModel = product.toPurchaseUpdateModel(oldProductId);
-                const entitlements = await Qonversion.getSharedInstance().purchaseProduct(purchaseUpdateModel);
-                console.log('Qonversion purchaseProduct:', entitlements, product);
+                const purchaseUpdateModel = product.toPurchaseUpdateModel(oldProductId, Qonversion.PurchaseUpdatePolicy.CHARGE_FULL_PRICE);
+                const entitlements = await Qonversion.getSharedInstance().updatePurchase(purchaseUpdateModel);
+                console.log('Qonversion updatePurchase:', entitlements, product);
             } else {
-                console.log('Qonversion purchaseProduct:', 'product not found', productId);
+                console.log('Qonversion updatePurchase:', 'product not found', productId);
             }
         } catch (e) {
-            console.log('Qonversion purchaseProduct failed', e);
+            console.log('Qonversion updatePurchase failed', e);
         }
     },
 
