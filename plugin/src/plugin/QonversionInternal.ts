@@ -61,19 +61,11 @@ export default class QonversionInternal implements QonversionApi {
 
   async purchase(purchaseModel: PurchaseModel): Promise<Map<string, Entitlement>> {
     try {
-      let purchasePromise: Promise<Record<string, QEntitlement> | null | undefined>;
-      if (isIos()) {
-        purchasePromise = callNative('purchase', [
-          purchaseModel.productId,
-        ]);
-      } else {
-        purchasePromise = callNative('purchase', [
-          purchaseModel.productId,
-          purchaseModel.offerId,
-          purchaseModel.applyOffer,
-        ]);
-      }
-      const entitlements = await purchasePromise;
+      const entitlements = await callNative<Record<string, QEntitlement>>('purchase', [
+        purchaseModel.productId,
+        purchaseModel.offerId,
+        purchaseModel.applyOffer,
+      ]);
 
       // noinspection UnnecessaryLocalVariableJS
       const mappedEntitlement = Mapper.convertEntitlements(entitlements);
