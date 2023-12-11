@@ -5,7 +5,7 @@ import {ProductPrice} from "./ProductPrice";
  */
 export class ProductInAppDetails {
   /**
-   * The price of an in-app product.
+   * The price of the in-app product.
    */
   price: ProductPrice;
 
