@@ -19,13 +19,13 @@ import {
   IntroEligibilityStatus,
   LaunchMode,
   OfferingTag,
-  ProductDuration,
+  PricingPhaseRecurrenceMode,
+  PricingPhaseType,
   ProductType,
-  ProrationMode,
+  PurchaseUpdatePolicy,
   SKPeriodUnit,
   SKProductDiscountPaymentMode,
   SKProductDiscountType,
-  TrialDuration,
   UserPropertyKey
 } from './enums';
 import {IntroEligibility} from './IntroEligibility';
@@ -37,6 +37,14 @@ import {User} from './User';
 import {UserProperty} from './UserProperty';
 import {UserProperties} from './UserProperties';
 import {QonversionConfigBuilder} from './QonversionConfigBuilder';
+import { SubscriptionPeriod } from './SubscriptionPeriod';
+import {ProductInAppDetails} from './ProductInAppDetails';
+import {ProductOfferDetails} from './ProductOfferDetails';
+import {ProductPrice} from './ProductPrice';
+import {ProductPricingPhase} from './ProductPricingPhase';
+import {ProductStoreDetails} from './ProductStoreDetails';
+import {PurchaseModel} from './PurchaseModel';
+import {PurchaseUpdateModel} from './PurchaseUpdateModel';
 
 export default class Qonversion {
   private constructor() {}
@@ -84,15 +92,12 @@ export default class Qonversion {
   static LaunchMode = LaunchMode;
   static Environment = Environment;
   static ProductType = ProductType;
-  static ProductDuration = ProductDuration;
-  static TrialDuration = TrialDuration;
   static EntitlementRenewState = EntitlementRenewState;
   static EntitlementSource = EntitlementSource;
   static UserPropertyKey = UserPropertyKey;
   static UserProperty = UserProperty;
   static UserProperties = UserProperties;
   static AttributionProvider = AttributionProvider;
-  static ProrationMode = ProrationMode;
   static EntitlementsCacheLifetime = EntitlementsCacheLifetime;
   static SKPeriodUnit = SKPeriodUnit;
   static SKProductDiscountType = SKProductDiscountType;
@@ -105,12 +110,23 @@ export default class Qonversion {
   static Offering = Offering;
   static Offerings = Offerings;
   static Product = Product;
+  static PricingPhaseRecurrenceMode = PricingPhaseRecurrenceMode;
+  static PricingPhaseType = PricingPhaseType;
+  static PurchaseUpdatePolicy = PurchaseUpdatePolicy;
+  static ProductInAppDetails = ProductInAppDetails;
+  static ProductOfferDetails = ProductOfferDetails;
+  static ProductPrice = ProductPrice;
+  static ProductPricingPhase = ProductPricingPhase;
+  static ProductStoreDetails = ProductStoreDetails;
+  static PurchaseModel = PurchaseModel;
+  static PurchaseUpdateModel = PurchaseUpdateModel;
   static QonversionError = QonversionError;
   static User = User;
   static SKProduct = SKProduct;
   static SKProductDiscount = SKProductDiscount;
   static SKSubscriptionPeriod = SKSubscriptionPeriod;
   static SkuDetails = SkuDetails;
+  static SubscriptionPeriod = SubscriptionPeriod;
 
   // The rest
   static Config = QonversionConfig;

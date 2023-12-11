@@ -111,15 +111,6 @@ static NSString *const kErrorCodePurchaseCancelledByUser = @"PURCHASE_CANCELLED_
     }];
 }
 
-- (void)purchaseProduct:(CDVInvokedUrlCommand *)command {
-    NSString *productId = [command argumentAtIndex:0];
-    NSString *offeringId = [command argumentAtIndex:1];
-    __block __weak CDVQonversionPlugin *weakSelf = self;
-    [self.qonversionSandwich purchaseProduct:productId offeringId:offeringId completion:^(NSDictionary<NSString *,id> * _Nullable result, SandwichError * _Nullable error) {
-        [weakSelf returnCordovaResult:result error:error command:command];
-    }];
-}
-
 - (void)purchase:(CDVInvokedUrlCommand *)command {
     NSString *productId = [command argumentAtIndex:0];
     __block __weak CDVQonversionPlugin *weakSelf = self;

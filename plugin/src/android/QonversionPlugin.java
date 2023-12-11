@@ -82,51 +82,28 @@ public class QonversionPlugin extends AnnotatedCordovaPlugin implements Qonversi
         entitlementsUpdateCallbackContext.sendPluginResult(result);
     }
 
-    @PluginAction(thread = ExecutionThread.UI, actionName = "purchaseProduct", isAutofinish = false)
-    public void purchaseProduct(String productId, String offeringId, CallbackContext callbackContext) {
-        qonversionSandwich.purchaseProduct(productId, offeringId, getPurchaseResultListener(callbackContext));
-    }
-
     @PluginAction(thread = ExecutionThread.UI, actionName = "purchase", isAutofinish = false)
-    public void purchase(String productId, CallbackContext callbackContext) {
-        qonversionSandwich.purchase(productId, getPurchaseResultListener(callbackContext));
-    }
-
-    @PluginAction(thread = ExecutionThread.UI, actionName = "updateProductWithId", isAutofinish = false)
-    public void updateProductWithId(
-            final String productId,
-            @Nullable final String offeringId,
-            final String oldProductId,
-            CallbackContext callbackContext
-    ) {
-        updateProductWithIdAndProrationMode(productId, offeringId, oldProductId, null, callbackContext);
-    }
-
-    @PluginAction(thread = ExecutionThread.UI, actionName = "updateProductWithIdAndProrationMode", isAutofinish = false)
-    public void updateProductWithIdAndProrationMode(
-            final String productId,
-            @Nullable final String offeringId,
-            final String oldProductId,
-            @Nullable final Integer prorationMode,
-            CallbackContext callbackContext
-    ) {
-        qonversionSandwich.updatePurchaseWithProduct(
-                productId,
-                offeringId,
-                oldProductId,
-                prorationMode,
-                getPurchaseResultListener(callbackContext)
-        );
+    public void purchase(String productId, @Nullable String offerId, @Nullable Boolean applyOffer, CallbackContext callbackContext) {
+        qonversionSandwich.purchase(productId, offerId, applyOffer, getPurchaseResultListener(callbackContext));
     }
 
     @PluginAction(thread = ExecutionThread.UI, actionName = "updatePurchase", isAutofinish = false)
-    public void updatePurchase(String productId, String oldProductId, CallbackContext callbackContext) {
-        updatePurchaseWithProrationMode(productId, oldProductId, null, callbackContext);
-    }
-
-    @PluginAction(thread = ExecutionThread.UI, actionName = "updatePurchaseWithProrationMode", isAutofinish = false)
-    public void updatePurchaseWithProrationMode(String productId, String oldProductId, Integer prorationMode, CallbackContext callbackContext) {
-        qonversionSandwich.updatePurchase(productId, oldProductId, prorationMode, getPurchaseResultListener(callbackContext));
+    public void updatePurchase(
+            String productId,
+            @Nullable String offerId,
+            @Nullable Boolean applyOffer,
+            String oldProductId,
+            @Nullable String updatePolicyKey,
+            CallbackContext callbackContext
+    ) {
+        qonversionSandwich.updatePurchase(
+                productId,
+                offerId,
+                applyOffer,
+                oldProductId,
+                updatePolicyKey,
+                getPurchaseResultListener(callbackContext)
+        );
     }
 
     @PluginAction(thread = ExecutionThread.WORKER, actionName = "setDefinedProperty")
