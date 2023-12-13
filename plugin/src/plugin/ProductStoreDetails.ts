@@ -97,6 +97,12 @@ export class ProductStoreDetails {
    */
   isSubscription: boolean;
 
+  /**
+   * True if the subscription product is prepaid, which means that users pay in advance -
+   * they will need to make a new payment to extend their plan.
+   */
+  isPrepaid: boolean;
+
   constructor(
     basePlanId: string | null,
     productId: string,
@@ -113,6 +119,7 @@ export class ProductStoreDetails {
     productType: ProductType,
     isInApp: boolean,
     isSubscription: boolean,
+    isPrepaid: boolean,
   ) {
     this.basePlanId = basePlanId;
     this.productId = productId;
@@ -129,5 +136,6 @@ export class ProductStoreDetails {
     this.productType = productType;
     this.isInApp = isInApp;
     this.isSubscription = isSubscription;
+    this.isPrepaid = isPrepaid;
   }
 }
