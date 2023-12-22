@@ -37,7 +37,7 @@ import {User} from './User';
 import {UserProperty} from './UserProperty';
 import {UserProperties} from './UserProperties';
 import {QonversionConfigBuilder} from './QonversionConfigBuilder';
-import { SubscriptionPeriod } from './SubscriptionPeriod';
+import {SubscriptionPeriod} from './SubscriptionPeriod';
 import {ProductInAppDetails} from './ProductInAppDetails';
 import {ProductOfferDetails} from './ProductOfferDetails';
 import {ProductPrice} from './ProductPrice';
