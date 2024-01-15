@@ -211,7 +211,7 @@ const skuDetailsPriceRatio = 1000000;
 
 class Mapper {
   static convertEntitlements(
-      entitlements: Record<string, QEntitlement> | null | undefined
+    entitlements: Record<string, QEntitlement> | null | undefined
   ): Map<string, Entitlement> {
     let mappedPermissions = new Map();
 
