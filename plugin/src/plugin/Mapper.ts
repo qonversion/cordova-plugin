@@ -211,7 +211,7 @@ const skuDetailsPriceRatio = 1000000;
 
 class Mapper {
   static convertEntitlements(
-      entitlements: Record<string, QEntitlement> | null | undefined
+    entitlements: Record<string, QEntitlement> | null | undefined
   ): Map<string, Entitlement> {
     let mappedPermissions = new Map();
 
@@ -220,7 +220,6 @@ class Mapper {
     }
 
     for (const [key, entitlement] of Object.entries(entitlements)) {
-      console.log('AAAAAAGGGGGG: ', entitlement);
       let renewState: EntitlementRenewState;
       switch (entitlement.renewState) {
         case EntitlementRenewState.NON_RENEWABLE:
