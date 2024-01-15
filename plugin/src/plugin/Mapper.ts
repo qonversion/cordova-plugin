@@ -220,7 +220,6 @@ class Mapper {
     }
 
     for (const [key, entitlement] of Object.entries(entitlements)) {
-      console.log('AAAAAAGGGGGG: ', entitlement);
       let renewState: EntitlementRenewState;
       switch (entitlement.renewState) {
         case EntitlementRenewState.NON_RENEWABLE:
