@@ -21,7 +21,7 @@ import {EntitlementsUpdateListener} from './EntitlementsUpdateListener';
 import {RemoteConfig} from "./RemoteConfig";
 import {UserProperties} from './UserProperties';
 
-const sdkVersion = "4.2.0";
+const sdkVersion = "4.3.0";
 
 export default class QonversionInternal implements QonversionApi {
 
