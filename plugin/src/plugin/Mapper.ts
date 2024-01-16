@@ -219,7 +219,8 @@ class Mapper {
       return mappedPermissions;
     }
 
-    for (const [key, entitlement] of Object.entries(entitlements)) {
+    for (const key of Object.keys(entitlements)) {
+      const entitlement = entitlements[key];
       let renewState: EntitlementRenewState;
       switch (entitlement.renewState) {
         case EntitlementRenewState.NON_RENEWABLE:
