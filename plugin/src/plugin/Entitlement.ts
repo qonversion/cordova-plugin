@@ -1,5 +1,5 @@
 import {EntitlementSource, EntitlementRenewState, EntitlementGrantType} from "./enums";
-import Transaction from "./Transaction";
+import {Transaction} from "./Transaction";
 
 export class Entitlement {
   id: string;

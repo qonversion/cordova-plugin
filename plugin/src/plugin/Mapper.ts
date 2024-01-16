@@ -41,7 +41,7 @@ import {ExperimentGroup} from "./ExperimentGroup";
 import {Experiment} from "./Experiment";
 import {UserProperty} from './UserProperty';
 import {UserProperties} from './UserProperties';
-import Transaction from "./Transaction";
+import {Transaction} from "./Transaction";
 
 export type QProduct = {
   id: string;
