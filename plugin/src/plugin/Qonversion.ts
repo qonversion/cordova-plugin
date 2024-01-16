@@ -43,10 +43,10 @@ import {UserProperty} from './UserProperty';
 import {UserProperties} from './UserProperties';
 import {QonversionConfigBuilder} from './QonversionConfigBuilder';
 import {Experiment} from "./Experiment";
-import { Transaction } from './Transaction';
-import { RemoteConfig } from './RemoteConfig';
+import {Transaction} from './Transaction';
+import {RemoteConfig} from './RemoteConfig';
 import {RemoteConfigurationSource} from "./RemoteConfigurationSource";
-import { ExperimentGroup } from './ExperimentGroup';
+import {ExperimentGroup} from './ExperimentGroup';
 
 export default class Qonversion {
   private constructor() {}
