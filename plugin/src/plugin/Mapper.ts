@@ -16,7 +16,11 @@ import {
   ExperimentGroupType,
   UserPropertyKey,
   RemoteConfigurationAssignmentType,
-  RemoteConfigurationSourceType
+  RemoteConfigurationSourceType,
+  TransactionType,
+  TransactionOwnershipType,
+  TransactionEnvironment,
+  EntitlementGrantType
 } from "./enums";
 import {IntroEligibility} from "./IntroEligibility";
 import {Offering} from "./Offering";
@@ -37,6 +41,7 @@ import {ExperimentGroup} from "./ExperimentGroup";
 import {Experiment} from "./Experiment";
 import {UserProperty} from './UserProperty';
 import {UserProperties} from './UserProperties';
+import {Transaction} from "./Transaction";
 
 export type QProduct = {
   id: string;
@@ -118,7 +123,27 @@ export type QEntitlement = {
   source: string;
   startedTimestamp: number;
   expirationTimestamp: number;
+  renewsCount: number;
+  trialStartTimestamp: number;
+  firstPurchaseTimestamp: number;
+  lastPurchaseTimestamp: number;
+  lastActivatedOfferCode: string;
+  grantType: string;
+  autoRenewDisableTimestamp: number;
+  transactions: Array<QTransaction>;
 };
+
+export type QTransaction = {
+  originalTransactionId: string;
+  transactionId: string;
+  offerCode: string;
+  transactionTimestamp: number;
+  expirationTimestamp: number;
+  transactionRevocationTimestamp: number;
+  environment: string;
+  ownershipType: string;
+  type: string;
+}
 
 export type QOfferings = {
   availableOfferings?: Array<QOffering>;
@@ -194,8 +219,7 @@ class Mapper {
       return mappedPermissions;
     }
 
-    for (const key of Object.keys(entitlements)) {
-      const entitlement = entitlements[key];
+    for (const [key, entitlement] of Object.entries(entitlements)) {
       let renewState: EntitlementRenewState;
       switch (entitlement.renewState) {
         case EntitlementRenewState.NON_RENEWABLE:
@@ -216,20 +240,97 @@ class Mapper {
       }
 
       const entitlementSource = this.convertEntitlementSource(entitlement.source);
+      const entitlementGrantType = this.convertEntitlementGrantType(entitlement.grantType);
+      const transactions: Array<Transaction> = [];
+
+      if (Array.isArray(entitlement.transactions)) {
+        entitlement.transactions.forEach((transaction) => {
+          const mappedTransaction = this.convertTransaction(transaction);
+
+          transactions.push(mappedTransaction);
+        });
+      }
 
       const mappedPermission = new Entitlement(
-        entitlement.id,
-        entitlement.productId,
-        entitlement.active,
-        renewState,
-        entitlementSource,
-        entitlement.startedTimestamp,
-        entitlement.expirationTimestamp
+          entitlement.id,
+          entitlement.productId,
+          entitlement.active,
+          renewState,
+          entitlementSource,
+          entitlement.startedTimestamp,
+          entitlement.renewsCount,
+          entitlementGrantType,
+          transactions,
+          entitlement.expirationTimestamp,
+          entitlement.trialStartTimestamp,
+          entitlement.firstPurchaseTimestamp,
+          entitlement.lastPurchaseTimestamp,
+          entitlement.autoRenewDisableTimestamp,
+          entitlement.lastActivatedOfferCode,
       );
       mappedPermissions.set(key, mappedPermission);
     }
 
     return mappedPermissions;
+  }
+
+  static convertTransaction(transaction: QTransaction): Transaction {
+    const environment = this.convertTransactionEnvironment(transaction.environment);
+    const ownershipType = this.convertTransactionOwnershipType(transaction.ownershipType);
+    const type = this.convertTransactionType(transaction.type);
+
+    return new Transaction(
+        transaction.originalTransactionId,
+        transaction.transactionId,
+        transaction.transactionTimestamp,
+        environment,
+        ownershipType,
+        type,
+        transaction.expirationTimestamp,
+        transaction.transactionRevocationTimestamp,
+        transaction.offerCode,
+    );
+  }
+
+  static convertTransactionType(typeKey: string): TransactionType {
+    switch (typeKey) {
+      case "SubscriptionStarted":
+        return TransactionType.SUBSCRIPTION_STARTED;
+      case "SubscriptionRenewed":
+        return TransactionType.SUBSCRIPTION_RENEWED;
+      case "TrialStarted":
+        return TransactionType.TRIAL_STARTED;
+      case "IntroStarted":
+        return TransactionType.INTRO_STARTED;
+      case "IntroRenewed":
+        return TransactionType.INTRO_RENEWED;
+      case "NonConsumablePurchase":
+        return TransactionType.NON_CONSUMABLE_PURCHASE;
+    }
+
+    return TransactionType.UNKNOWN;
+  }
+
+  static convertTransactionOwnershipType(ownershipTypeKey: string): TransactionOwnershipType {
+    switch (ownershipTypeKey) {
+      case "Owner":
+        return TransactionOwnershipType.OWNER;
+      case "FamilySharing":
+        return TransactionOwnershipType.FAMILY_SHARING;
+    }
+
+    return TransactionOwnershipType.OWNER;
+  }
+
+  static convertTransactionEnvironment(envKey: string): TransactionEnvironment {
+    switch (envKey) {
+      case "Production":
+        return TransactionEnvironment.PRODUCTION;
+      case "Sandbox":
+        return TransactionEnvironment.SANDBOX;
+    }
+
+    return TransactionEnvironment.PRODUCTION;
   }
 
   static convertEntitlementSource(sourceKey: string): EntitlementSource {
@@ -247,6 +348,21 @@ class Mapper {
     }
 
     return EntitlementSource.UNKNOWN;
+  }
+
+  static convertEntitlementGrantType(typeKey: string): EntitlementGrantType {
+    switch (typeKey) {
+      case "Purchase":
+        return EntitlementGrantType.PURCHASE;
+      case "FamilySharing":
+        return EntitlementGrantType.FAMILY_SHARING;
+      case "OfferCode":
+        return EntitlementGrantType.OFFER_CODE;
+      case "Manual":
+        return EntitlementGrantType.MANUAL;
+    }
+
+    return EntitlementGrantType.PURCHASE;
   }
 
   static convertDefinedUserPropertyKey(sourceKey: string): UserPropertyKey {
