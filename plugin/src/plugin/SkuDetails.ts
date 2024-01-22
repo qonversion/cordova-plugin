@@ -1,3 +1,6 @@
+/**
+ * @deprecated
+ */
 export class SkuDetails {
   description: string;
   freeTrialPeriod: string;
