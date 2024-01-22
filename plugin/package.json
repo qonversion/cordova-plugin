@@ -1,6 +1,6 @@
 {
   "name": "cordova-plugin-qonversion",
-  "version": "4.3.0",
+  "version": "5.0.0",
   "description": "Qonversion Cordova Plugin",
   "cordova": {
     "id": "cordova-plugin-qonversion",
