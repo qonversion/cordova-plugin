@@ -21,6 +21,7 @@
     <js-module src="www/ActionResult.js" name="ActionResult" />
     <js-module src="www/AutomationsEvent.js" name="AutomationsEvent" />
     <js-module src="www/Entitlement.js" name="Entitlement" />
+    <js-module src="www/Transaction.js" name="Transaction" />
     <js-module src="www/IntroEligibility.js" name="IntroEligibility" />
     <js-module src="www/Offering.js" name="Offering" />
     <js-module src="www/Offerings.js" name="Offerings" />
@@ -70,7 +71,7 @@
                 <source url="https://github.com/CocoaPods/Specs.git"/>
             </config>
             <pods use-frameworks="true">
-                <pod name="QonversionSandwich" spec="3.2.0" />
+                <pod name="QonversionSandwich" spec="3.3.3" />
             </pods>
         </podspec>
     </platform>

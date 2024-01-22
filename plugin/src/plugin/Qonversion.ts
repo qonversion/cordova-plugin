@@ -12,10 +12,12 @@ import {
   ActionResultType,
   AttributionProvider,
   AutomationsEventType,
+  EntitlementGrantType,
   EntitlementRenewState,
   EntitlementsCacheLifetime,
   EntitlementSource,
   Environment,
+  ExperimentGroupType,
   IntroEligibilityStatus,
   LaunchMode,
   OfferingTag,
@@ -26,6 +28,9 @@ import {
   SKPeriodUnit,
   SKProductDiscountPaymentMode,
   SKProductDiscountType,
+  TransactionEnvironment,
+  TransactionOwnershipType,
+  TransactionType,
   UserPropertyKey
 } from './enums';
 import {IntroEligibility} from './IntroEligibility';
@@ -37,6 +42,11 @@ import {User} from './User';
 import {UserProperty} from './UserProperty';
 import {UserProperties} from './UserProperties';
 import {QonversionConfigBuilder} from './QonversionConfigBuilder';
+import {Experiment} from "./Experiment";
+import {Transaction} from './Transaction';
+import {RemoteConfig} from './RemoteConfig';
+import {RemoteConfigurationSource} from "./RemoteConfigurationSource";
+import {ExperimentGroup} from './ExperimentGroup';
 import {SubscriptionPeriod} from './SubscriptionPeriod';
 import {ProductInAppDetails} from './ProductInAppDetails';
 import {ProductOfferDetails} from './ProductOfferDetails';
@@ -89,11 +99,21 @@ export default class Qonversion {
   static ActionResult = ActionResult;
   static AutomationsEvent = AutomationsEvent;
   static Entitlement = Entitlement;
+  static Transaction = Transaction;
+  static RemoteConfig = RemoteConfig;
+  static Experiment = Experiment;
   static LaunchMode = LaunchMode;
   static Environment = Environment;
   static ProductType = ProductType;
   static EntitlementRenewState = EntitlementRenewState;
   static EntitlementSource = EntitlementSource;
+  static RemoteConfigurationSource = RemoteConfigurationSource;
+  static ExperimentGroup = ExperimentGroup;
+  static ExperimentGroupType = ExperimentGroupType;
+  static EntitlementGrantType = EntitlementGrantType;
+  static TransactionEnvironment = TransactionEnvironment;
+  static TransactionOwnershipType = TransactionOwnershipType;
+  static TransactionType = TransactionType;
   static UserPropertyKey = UserPropertyKey;
   static UserProperty = UserProperty;
   static UserProperties = UserProperties;
