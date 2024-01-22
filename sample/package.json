@@ -8,7 +8,8 @@
     "refresh": "cordova plugin rm cordova-plugin-qonversion && cordova plugin add ../plugin",
     "android": "cordova run android -- --gradleArg=-PcdvCompileSdkVersion=33",
     "ios": "cordova run ios",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "xcode": "open \"./platforms/ios/Qonversion Cordova.xcworkspace\""
   },
   "keywords": [
     "ecosystem:cordova"
