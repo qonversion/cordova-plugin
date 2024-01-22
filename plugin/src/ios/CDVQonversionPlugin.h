@@ -22,7 +22,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)userProperties:(CDVInvokedUrlCommand *)command;
 - (void)attribution:(CDVInvokedUrlCommand *)command;
 - (void)checkEntitlements:(CDVInvokedUrlCommand *)command;
-- (void)purchaseProduct:(CDVInvokedUrlCommand *)command;
 - (void)purchase:(CDVInvokedUrlCommand *)command;
 - (void)products:(CDVInvokedUrlCommand *)command;
 - (void)restore:(CDVInvokedUrlCommand *)command;

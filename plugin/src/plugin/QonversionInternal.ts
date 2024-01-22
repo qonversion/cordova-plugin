@@ -1,4 +1,4 @@
-import {AttributionProvider, ProrationMode, UserPropertyKey} from "./enums";
+import {AttributionProvider, UserPropertyKey} from "./enums";
 import {IntroEligibility} from "./IntroEligibility";
 import Mapper, {
   QEntitlement,
@@ -20,8 +20,10 @@ import {QonversionConfig} from './QonversionConfig';
 import {EntitlementsUpdateListener} from './EntitlementsUpdateListener';
 import {RemoteConfig} from "./RemoteConfig";
 import {UserProperties} from './UserProperties';
+import {PurchaseModel} from './PurchaseModel';
+import {PurchaseUpdateModel} from './PurchaseUpdateModel';
 
-const sdkVersion = "4.3.0";
+const sdkVersion = "5.0.0";
 
 export default class QonversionInternal implements QonversionApi {
 
@@ -57,22 +59,13 @@ export default class QonversionInternal implements QonversionApi {
     }
   }
 
-  async purchase(productId: string): Promise<Map<string, Entitlement>> {
-    return QonversionInternal.purchaseProxy(productId);
-  }
-
-  async purchaseProduct(product: Product): Promise<Map<string, Entitlement>> {
-    return QonversionInternal.purchaseProxy(product.qonversionID, product.offeringId);
-  }
-
-  private static async purchaseProxy(productId: string, offeringId: string | null = null): Promise<Map<string, Entitlement>> {
+  async purchase(purchaseModel: PurchaseModel): Promise<Map<string, Entitlement>> {
     try {
-      const purchasePromise = !!offeringId ?
-        callNative<Record<string, QEntitlement>>('purchaseProduct', [productId, offeringId])
-          :
-        callNative<Record<string, QEntitlement>>('purchase', [productId]);
-
-      const entitlements = await purchasePromise;
+      const entitlements = await callNative<Record<string, QEntitlement>>('purchase', [
+        purchaseModel.productId,
+        purchaseModel.offerId,
+        purchaseModel.applyOffer,
+      ]);
 
       // noinspection UnnecessaryLocalVariableJS
       const mappedEntitlement = Mapper.convertEntitlements(entitlements);
@@ -88,28 +81,22 @@ export default class QonversionInternal implements QonversionApi {
     }
   }
 
-  async updatePurchase(
-    productId: string,
-    oldProductId: string,
-    prorationMode: ProrationMode | undefined
-  ): Promise<Map<string, Entitlement> | null> {
+  async updatePurchase(purchaseUpdateModel: PurchaseUpdateModel): Promise<Map<string, Entitlement> | null> {
     if (!isAndroid()) {
       return null;
     }
 
     try {
-      let entitlements;
-      if (!prorationMode) {
-        entitlements = await callNative<Record<string, QEntitlement>>(
-          'updatePurchase',
-          [productId, oldProductId]
-        );
-      } else {
-        entitlements = await callNative<Record<string, QEntitlement>>(
-          'updatePurchaseWithProrationMode',
-          [productId, oldProductId, prorationMode]
-        );
-      }
+      const entitlements = await callNative<Record<string, QEntitlement>>(
+        'updatePurchase',
+        [
+          purchaseUpdateModel.productId,
+          purchaseUpdateModel.offerId,
+          purchaseUpdateModel.applyOffer,
+          purchaseUpdateModel.oldProductId,
+          purchaseUpdateModel.updatePolicy,
+        ]
+      );
 
       // noinspection UnnecessaryLocalVariableJS
       const mappedEntitlement: Map<string, Entitlement> = Mapper.convertEntitlements(entitlements);
@@ -121,43 +108,6 @@ export default class QonversionInternal implements QonversionApi {
         throw e;
       } else {
         throw 'Unknown error occurred while purchase';
-      }
-    }
-  }
-
-  async updatePurchaseWithProduct(
-    product: Product,
-    oldProductId: String,
-    prorationMode: ProrationMode | undefined
-  ): Promise<Map<string, Entitlement> | null> {
-    if (!isAndroid()) {
-      return null;
-    }
-
-    try {
-      let entitlements;
-      if (!prorationMode) {
-        entitlements = await callNative<Record<string, QEntitlement>>(
-          'updateProductWithId',
-          [product.qonversionID, product.offeringId, oldProductId]
-        );
-      } else {
-        entitlements = await callNative<Record<string, QEntitlement>>(
-          'updateProductWithIdAndProrationMode',
-          [product.qonversionID, product.offeringId, oldProductId, prorationMode]
-        );
-      }
-
-      // noinspection UnnecessaryLocalVariableJS
-      const mappedEntitlement: Map<string, Entitlement> = Mapper.convertEntitlements(entitlements);
-
-      return mappedEntitlement;
-    } catch (e: any) {
-      if (e) {
-        e.userCanceled = e.code === DefinedNativeErrorCodes.PURCHASE_CANCELLED_BY_USER;
-        throw e;
-      } else {
-        throw 'Unknown error occurred while updating purchase';
       }
     }
   }
