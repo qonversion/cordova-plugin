@@ -196,8 +196,8 @@ export default class QonversionInternal implements QonversionApi {
     return mappedUserInfo;
   }
 
-  async remoteConfig(): Promise<RemoteConfig> {
-    let remoteConfig = await callNative<QRemoteConfig>('remoteConfig');
+  async remoteConfig(contextKey: string | undefined): Promise<RemoteConfig> {
+    let remoteConfig = await callNative<QRemoteConfig>('remoteConfig', [contextKey]);
     // noinspection UnnecessaryLocalVariableJS
     const mappedRemoteConfig: RemoteConfig = Mapper.convertRemoteConfig(
         remoteConfig

@@ -166,8 +166,8 @@ public class QonversionPlugin extends AnnotatedCordovaPlugin implements Qonversi
     }
 
     @PluginAction(thread = ExecutionThread.UI, actionName = "remoteConfig", isAutofinish = false)
-    public void remoteConfig(CallbackContext callbackContext) {
-        qonversionSandwich.remoteConfig(Utils.getResultListener(callbackContext));
+    public void remoteConfig(@Nullable String contextKey, CallbackContext callbackContext) {
+        qonversionSandwich.remoteConfig(contextKey, Utils.getResultListener(callbackContext));
     }
 
     @PluginAction(thread = ExecutionThread.UI, actionName = "attachUserToExperiment", isAutofinish = false)
