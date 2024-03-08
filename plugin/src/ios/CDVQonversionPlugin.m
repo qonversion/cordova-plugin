@@ -150,7 +150,8 @@ static NSString *const kErrorCodePurchaseCancelledByUser = @"PURCHASE_CANCELLED_
 
 - (void)remoteConfig:(CDVInvokedUrlCommand *)command {
     __block __weak CDVQonversionPlugin *weakSelf = self;
-    [self.qonversionSandwich remoteConfig:^(NSDictionary<NSString *,id> * _Nullable result, SandwichError * _Nullable error) {
+    NSString *contextKey = [command argumentAtIndex:0];
+    [self.qonversionSandwich remoteConfig:contextKey :^(NSDictionary<NSString *,id> * _Nullable result, SandwichError * _Nullable error) {
         [weakSelf returnCordovaResult:result error:error command:command];
     }];
 }

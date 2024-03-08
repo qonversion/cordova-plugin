@@ -23,7 +23,7 @@ import {UserProperties} from './UserProperties';
 import {PurchaseModel} from './PurchaseModel';
 import {PurchaseUpdateModel} from './PurchaseUpdateModel';
 
-const sdkVersion = "5.1.0";
+const sdkVersion = "5.2.0";
 
 export default class QonversionInternal implements QonversionApi {
 
@@ -196,8 +196,8 @@ export default class QonversionInternal implements QonversionApi {
     return mappedUserInfo;
   }
 
-  async remoteConfig(): Promise<RemoteConfig> {
-    let remoteConfig = await callNative<QRemoteConfig>('remoteConfig');
+  async remoteConfig(contextKey: string | undefined): Promise<RemoteConfig> {
+    let remoteConfig = await callNative<QRemoteConfig>('remoteConfig', [contextKey]);
     // noinspection UnnecessaryLocalVariableJS
     const mappedRemoteConfig: RemoteConfig = Mapper.convertRemoteConfig(
         remoteConfig
