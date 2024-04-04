@@ -45,6 +45,7 @@ import {QonversionConfigBuilder} from './QonversionConfigBuilder';
 import {Experiment} from "./Experiment";
 import {Transaction} from './Transaction';
 import {RemoteConfig} from './RemoteConfig';
+import {RemoteConfigList} from './RemoteConfigList';
 import {RemoteConfigurationSource} from "./RemoteConfigurationSource";
 import {ExperimentGroup} from './ExperimentGroup';
 import {SubscriptionPeriod} from './SubscriptionPeriod';
@@ -101,6 +102,7 @@ export default class Qonversion {
   static Entitlement = Entitlement;
   static Transaction = Transaction;
   static RemoteConfig = RemoteConfig;
+  static RemoteConfigList = RemoteConfigList;
   static Experiment = Experiment;
   static LaunchMode = LaunchMode;
   static Environment = Environment;
