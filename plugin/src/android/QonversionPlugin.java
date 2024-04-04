@@ -165,17 +165,17 @@ public class QonversionPlugin extends AnnotatedCordovaPlugin implements Qonversi
         qonversionSandwich.restore(Utils.getResultListener(callbackContext));
     }
 
-    @PluginAction(thread = ExecutionThread.UI, actionName = "remoteConfig", isAutofinish = false)
+    @PluginAction(thread = ExecutionThread.WORKER, actionName = "remoteConfig", isAutofinish = false)
     public void remoteConfig(@Nullable String contextKey, CallbackContext callbackContext) {
         qonversionSandwich.remoteConfig(contextKey, Utils.getResultListener(callbackContext));
     }
 
-    @PluginAction(thread = ExecutionThread.UI, actionName = "remoteConfigList", isAutofinish = false)
+    @PluginAction(thread = ExecutionThread.WORKER, actionName = "remoteConfigList", isAutofinish = false)
     public void remoteConfigList(CallbackContext callbackContext) {
         qonversionSandwich.remoteConfigList(Utils.getResultListener(callbackContext));
     }
 
-    @PluginAction(thread = ExecutionThread.UI, actionName = "remoteConfigListForContextKeys", isAutofinish = false)
+    @PluginAction(thread = ExecutionThread.WORKER, actionName = "remoteConfigListForContextKeys", isAutofinish = false)
     public void remoteConfigListForContextKeys(JSONArray contextKeys, boolean includeEmptyContextKey, CallbackContext callbackContext) {
         try {
             List<String> keysList = EntitiesConverter.convertArrayToStringList(contextKeys);
