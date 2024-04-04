@@ -156,6 +156,22 @@ static NSString *const kErrorCodePurchaseCancelledByUser = @"PURCHASE_CANCELLED_
     }];
 }
 
+- (void)remoteConfigList:(CDVInvokedUrlCommand *)command {
+    __block __weak CDVQonversionPlugin *weakSelf = self;
+    [_qonversionSandwich remoteConfigList:^(NSDictionary<NSString *,id> * _Nullable result, SandwichError * _Nullable error) {
+        [weakSelf returnCordovaResult:result error:error command:command];
+    }];
+}
+
+- (void)remoteConfigListForContextKeys:(CDVInvokedUrlCommand *)command {
+    __block __weak CDVQonversionPlugin *weakSelf = self;
+    NSArray *contextKeys = [command argumentAtIndex:0];
+    BOOL includeEmptyContextKey = [[command argumentAtIndex:1] boolValue];
+    [_qonversionSandwich remoteConfigList:contextKeys includeEmptyContextKey:includeEmptyContextKey :^(NSDictionary<NSString *,id> * _Nullable result, SandwichError * _Nullable error) {
+        [weakSelf returnCordovaResult:result error:error command:command];
+    }];
+}
+
 - (void)attachUserToExperiment:(CDVInvokedUrlCommand *)command {
     __block __weak CDVQonversionPlugin *weakSelf = self;
     NSString *experimentId = [command argumentAtIndex:0];

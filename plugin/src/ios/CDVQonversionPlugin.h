@@ -35,6 +35,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)promoPurchase:(CDVInvokedUrlCommand *)command;
 - (void)subscribeOnPromoPurchases:(CDVInvokedUrlCommand *)command;
 - (void)remoteConfig:(CDVInvokedUrlCommand *)command;
+- (void)remoteConfigList:(CDVInvokedUrlCommand *)command;
+- (void)remoteConfigListForContextKeys:(CDVInvokedUrlCommand *)command;
 - (void)attachUserToExperiment:(CDVInvokedUrlCommand *)command;
 - (void)detachUserFromExperiment:(CDVInvokedUrlCommand *)command;
 - (void)attachUserToRemoteConfiguration:(CDVInvokedUrlCommand *)command;

@@ -29,6 +29,7 @@ const app = {
         document.getElementById("update-purchase").addEventListener("click", this.updatePurchase);
         document.getElementById("get-products").addEventListener("click", this.getProducts);
         document.getElementById("get-remote-config").addEventListener("click", this.getRemoteConfig);
+        document.getElementById("get-remote-config-list").addEventListener("click", this.getRemoteConfigList);
         document.getElementById("get-offerings").addEventListener("click", this.getOfferings);
         document.getElementById("check-trial-into").addEventListener("click", this.checkTrialIntroEligibility);
         document.getElementById("check-entitlements").addEventListener("click", this.checkEntitlements);
@@ -111,6 +112,11 @@ const app = {
     async getRemoteConfig() {
         const remoteConfig = await Qonversion.getSharedInstance().remoteConfig();
         console.log('Qonversion remote config:', remoteConfig);
+    },
+
+    async getRemoteConfigList() {
+        const remoteConfigList = await Qonversion.getSharedInstance().remoteConfigList();
+        console.log('Qonversion remote config list:', remoteConfigList);
     },
 
     async getOfferings() {

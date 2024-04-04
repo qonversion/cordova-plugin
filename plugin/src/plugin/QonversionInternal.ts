@@ -5,6 +5,7 @@ import Mapper, {
   QOfferings,
   QProduct,
   QRemoteConfig,
+  QRemoteConfigList,
   QTrialIntroEligibility,
   QUser,
   QUserProperties
@@ -19,11 +20,12 @@ import {QonversionApi} from './QonversionApi';
 import {QonversionConfig} from './QonversionConfig';
 import {EntitlementsUpdateListener} from './EntitlementsUpdateListener';
 import {RemoteConfig} from "./RemoteConfig";
+import {RemoteConfigList} from "./RemoteConfigList";
 import {UserProperties} from './UserProperties';
 import {PurchaseModel} from './PurchaseModel';
 import {PurchaseUpdateModel} from './PurchaseUpdateModel';
 
-const sdkVersion = "5.2.0";
+const sdkVersion = "5.3.0";
 
 export default class QonversionInternal implements QonversionApi {
 
@@ -197,13 +199,29 @@ export default class QonversionInternal implements QonversionApi {
   }
 
   async remoteConfig(contextKey: string | undefined): Promise<RemoteConfig> {
-    let remoteConfig = await callNative<QRemoteConfig>('remoteConfig', [contextKey]);
+    const remoteConfig = await callNative<QRemoteConfig>('remoteConfig', [contextKey]);
     // noinspection UnnecessaryLocalVariableJS
     const mappedRemoteConfig: RemoteConfig = Mapper.convertRemoteConfig(
         remoteConfig
     );
 
     return mappedRemoteConfig;
+  }
+
+  async remoteConfigList(): Promise<RemoteConfigList> {
+    const remoteConfigList = await callNative<QRemoteConfigList>('remoteConfigList');
+    // noinspection UnnecessaryLocalVariableJS
+    const mappedRemoteConfigList: RemoteConfigList = Mapper.convertRemoteConfigList(remoteConfigList);
+
+    return mappedRemoteConfigList;
+  }
+
+  async remoteConfigListForContextKeys(contextKeys: string[], includeEmptyContextKey: boolean): Promise<RemoteConfigList> {
+    let remoteConfigList = await callNative<QRemoteConfigList>('remoteConfigListForContextKeys', [contextKeys, includeEmptyContextKey]);
+    // noinspection UnnecessaryLocalVariableJS
+    const mappedRemoteConfigList: RemoteConfigList = Mapper.convertRemoteConfigList(remoteConfigList);
+
+    return mappedRemoteConfigList;
   }
 
   async attachUserToExperiment(experimentId: string, groupId: string): Promise<void> {
