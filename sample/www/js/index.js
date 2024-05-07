@@ -159,10 +159,10 @@ const app = {
         console.log('Qonversion syncHistoricalData');
     },
 
-    identify() {
+    async identify() {
         const userId = document.getElementById('user-id').value;
-        Qonversion.getSharedInstance().identify(userId);
-        console.log('Qonversion identify', userId);
+        const user = await Qonversion.getSharedInstance().identify(userId);
+        console.log('Qonversion identify', user);
     },
 
     logout() {
