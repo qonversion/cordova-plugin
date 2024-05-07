@@ -213,8 +213,7 @@ public class QonversionPlugin extends AnnotatedCordovaPlugin implements Qonversi
 
     @PluginAction(thread = ExecutionThread.WORKER, actionName = "identify")
     public void identify(String userID, CallbackContext callbackContext) {
-        qonversionSandwich.identify(userID);
-        callbackContext.success();
+        qonversionSandwich.identify(userID, Utils.getResultListener(callbackContext));
     }
 
     @PluginAction(thread = ExecutionThread.WORKER, actionName = "logout")

@@ -25,7 +25,7 @@ import {UserProperties} from './UserProperties';
 import {PurchaseModel} from './PurchaseModel';
 import {PurchaseUpdateModel} from './PurchaseUpdateModel';
 
-const sdkVersion = "5.3.1";
+const sdkVersion = "5.4.0";
 
 export default class QonversionInternal implements QonversionApi {
 
@@ -181,8 +181,13 @@ export default class QonversionInternal implements QonversionApi {
     callNative('syncPurchases').then(noop);
   }
 
-  identify(userID: string) {
-    callNative('identify', [userID]).then(noop);
+  async identify(userID: string): Promise<User> {
+    const info = await callNative<QUser>('identify', [userID]);
+
+    // noinspection UnnecessaryLocalVariableJS
+    const mappedUserInfo: User = Mapper.convertUserInfo(info);
+
+    return mappedUserInfo;
   }
 
   logout() {
