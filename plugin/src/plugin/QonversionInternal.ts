@@ -25,7 +25,7 @@ import {UserProperties} from './UserProperties';
 import {PurchaseModel} from './PurchaseModel';
 import {PurchaseUpdateModel} from './PurchaseUpdateModel';
 
-const sdkVersion = "5.4.0";
+const sdkVersion = "5.5.0";
 
 export default class QonversionInternal implements QonversionApi {
 
