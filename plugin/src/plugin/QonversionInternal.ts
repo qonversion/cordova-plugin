@@ -1,4 +1,4 @@
-import {AttributionProvider, UserPropertyKey} from "./enums";
+import {AttributionProvider, QonversionErrorCode, UserPropertyKey} from "./enums";
 import {IntroEligibility} from "./IntroEligibility";
 import Mapper, {
   QEntitlement,
@@ -13,7 +13,7 @@ import Mapper, {
 import {Offerings} from "./Offerings";
 import {Entitlement} from "./Entitlement";
 import {Product} from "./Product";
-import {callNative, DefinedNativeErrorCodes, isAndroid, isIos, noop} from "./utils";
+import {callNative, isAndroid, isIos, noop} from "./utils";
 import {PromoPurchasesListener} from './PromoPurchasesListener';
 import {User} from './User';
 import {QonversionApi} from './QonversionApi';
@@ -75,7 +75,7 @@ export default class QonversionInternal implements QonversionApi {
       return mappedEntitlement;
     } catch (e: any) {
       if (e) {
-        e.userCanceled = e.code === DefinedNativeErrorCodes.PURCHASE_CANCELLED_BY_USER;
+        e.userCanceled = e.code === QonversionErrorCode.PURCHASE_CANCELED;
         throw e;
       } else {
         throw 'Unknown error occurred while purchase';
@@ -106,7 +106,7 @@ export default class QonversionInternal implements QonversionApi {
       return mappedEntitlement;
     } catch (e: any) {
       if (e) {
-        e.userCanceled = e.code === DefinedNativeErrorCodes.PURCHASE_CANCELLED_BY_USER;
+        e.userCanceled = e.code === QonversionErrorCode.PURCHASE_CANCELED;
         throw e;
       } else {
         throw 'Unknown error occurred while purchase';
