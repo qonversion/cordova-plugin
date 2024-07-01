@@ -50,6 +50,7 @@ import {RemoteConfigurationSource} from "./RemoteConfigurationSource";
 import {ExperimentGroup} from './ExperimentGroup';
 import {SubscriptionPeriod} from './SubscriptionPeriod';
 import {ProductInAppDetails} from './ProductInAppDetails';
+import {ProductInstallmentPlanDetails} from './ProductInstallmentPlanDetails';
 import {ProductOfferDetails} from './ProductOfferDetails';
 import {ProductPrice} from './ProductPrice';
 import {ProductPricingPhase} from './ProductPricingPhase';
@@ -136,6 +137,7 @@ export default class Qonversion {
   static PricingPhaseType = PricingPhaseType;
   static PurchaseUpdatePolicy = PurchaseUpdatePolicy;
   static ProductInAppDetails = ProductInAppDetails;
+  static ProductInstallmentPlanDetails = ProductInstallmentPlanDetails;
   static ProductOfferDetails = ProductOfferDetails;
   static ProductPrice = ProductPrice;
   static ProductPricingPhase = ProductPricingPhase;
