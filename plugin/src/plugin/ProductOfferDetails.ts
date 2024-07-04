@@ -1,5 +1,5 @@
 import {ProductPricingPhase} from "./ProductPricingPhase";
-import {ProductInstallmentPlanDetails} from './ProductInstallmentPlanDetails';
+import {ProductInstallmentPlanDetails} from "./ProductInstallmentPlanDetails";
 
 /**
  * This class contains all the information about the Google subscription offer details.

@@ -48,7 +48,7 @@ import {ProductOfferDetails} from "./ProductOfferDetails";
 import {ProductInAppDetails} from "./ProductInAppDetails";
 import {ProductPrice} from "./ProductPrice";
 import {ProductPricingPhase} from "./ProductPricingPhase";
-import {ProductInstallmentPlanDetails} from './ProductInstallmentPlanDetails';
+import {ProductInstallmentPlanDetails} from "./ProductInstallmentPlanDetails";
 
 export type QProduct = {
   id: string;

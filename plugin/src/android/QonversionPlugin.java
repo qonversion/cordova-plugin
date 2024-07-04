@@ -19,7 +19,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import io.qonversion.sandwich.PurchaseResultListener;
 import io.qonversion.sandwich.QonversionEventsListener;
 import io.qonversion.sandwich.QonversionSandwich;
 import io.qonversion.sandwich.ResultListener;

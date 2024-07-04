@@ -27,6 +27,7 @@
     <js-module src="www/Offerings.js" name="Offerings" />
     <js-module src="www/Product.js" name="Product" />
     <js-module src="www/ProductInAppDetails.js" name="ProductInAppDetails" />
+    <js-module src="www/ProductInstallmentPlanDetails.js" name="ProductInstallmentPlanDetails" />
     <js-module src="www/ProductOfferDetails.js" name="ProductOfferDetails" />
     <js-module src="www/ProductPrice.js" name="ProductPrice" />
     <js-module src="www/ProductPricingPhase.js" name="ProductPricingPhase" />
