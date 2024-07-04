@@ -25,6 +25,7 @@ import {
   PricingPhaseType,
   ProductType,
   PurchaseUpdatePolicy,
+  QonversionErrorCode,
   SKPeriodUnit,
   SKProductDiscountPaymentMode,
   SKProductDiscountType,
@@ -145,6 +146,7 @@ export default class Qonversion {
   static PurchaseModel = PurchaseModel;
   static PurchaseUpdateModel = PurchaseUpdateModel;
   static QonversionError = QonversionError;
+  static QonversionErrorCode = QonversionErrorCode;
   static User = User;
   static SKProduct = SKProduct;
   static SKProductDiscount = SKProductDiscount;
