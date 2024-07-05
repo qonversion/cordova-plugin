@@ -19,7 +19,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import io.qonversion.sandwich.PurchaseResultListener;
 import io.qonversion.sandwich.QonversionEventsListener;
 import io.qonversion.sandwich.QonversionSandwich;
 import io.qonversion.sandwich.ResultListener;
@@ -28,8 +27,6 @@ import io.qonversion.sandwich.SandwichError;
 public class QonversionPlugin extends AnnotatedCordovaPlugin implements QonversionEventsListener {
 
     private QonversionSandwich qonversionSandwich;
-
-    private static final String ERROR_CODE_PURCHASE_CANCELLED_BY_USER = "PURCHASE_CANCELLED_BY_USER";
 
     private @Nullable CallbackContext entitlementsUpdateDelegate = null;
 
@@ -84,7 +81,7 @@ public class QonversionPlugin extends AnnotatedCordovaPlugin implements Qonversi
 
     @PluginAction(thread = ExecutionThread.UI, actionName = "purchase", isAutofinish = false)
     public void purchase(String productId, @Nullable String offerId, @Nullable Boolean applyOffer, CallbackContext callbackContext) {
-        qonversionSandwich.purchase(productId, offerId, applyOffer, getPurchaseResultListener(callbackContext));
+        qonversionSandwich.purchase(productId, offerId, applyOffer, Utils.getResultListener(callbackContext));
     }
 
     @PluginAction(thread = ExecutionThread.UI, actionName = "updatePurchase", isAutofinish = false)
@@ -102,7 +99,7 @@ public class QonversionPlugin extends AnnotatedCordovaPlugin implements Qonversi
                 applyOffer,
                 oldProductId,
                 updatePolicyKey,
-                getPurchaseResultListener(callbackContext)
+                Utils.getResultListener(callbackContext)
         );
     }
 
@@ -237,29 +234,5 @@ public class QonversionPlugin extends AnnotatedCordovaPlugin implements Qonversi
                 e.printStackTrace();
             }
         }
-    }
-
-    private PurchaseResultListener getPurchaseResultListener(CallbackContext callbackContext) {
-        return new PurchaseResultListener() {
-            @Override
-            public void onSuccess(@NonNull Map<String, ?> map) {
-                try {
-                    final JSONObject payload = EntitiesConverter.convertMapToJson(map);
-                    callbackContext.success(payload);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    callbackContext.error(e.getMessage());
-                }
-            }
-
-            @Override
-            public void onError(@NonNull SandwichError error, boolean isCancelled) {
-                if (isCancelled) {
-                    Utils.rejectWithError(error, callbackContext, ERROR_CODE_PURCHASE_CANCELLED_BY_USER);
-                } else {
-                    Utils.rejectWithError(error, callbackContext);
-                }
-            }
-        };
     }
 }
