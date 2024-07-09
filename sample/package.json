@@ -20,7 +20,7 @@
     "cordova-android": "^11.0.0",
     "cordova-annotated-plugin-android": "^1.0.4",
     "cordova-ios": "^6.3.0",
-    "cordova-plugin-device": "^2.1.0",
+    "cordova-plugin-device": "^3.0.0",
     "cordova-plugin-qonversion": "file:../plugin"
   },
   "cordova": {

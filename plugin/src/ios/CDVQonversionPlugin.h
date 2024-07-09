@@ -41,6 +41,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)detachUserFromExperiment:(CDVInvokedUrlCommand *)command;
 - (void)attachUserToRemoteConfiguration:(CDVInvokedUrlCommand *)command;
 - (void)detachUserFromRemoteConfiguration:(CDVInvokedUrlCommand *)command;
+- (void)isFallbackFileAccessible:(CDVInvokedUrlCommand *)command;
 
 @end
 

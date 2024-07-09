@@ -202,6 +202,11 @@ public class QonversionPlugin extends AnnotatedCordovaPlugin implements Qonversi
         qonversionSandwich.detachUserFromRemoteConfiguration(remoteConfigurationId, Utils.getEmptyResultListener(callbackContext));
     }
 
+    @PluginAction(thread = ExecutionThread.WORKER, actionName = "isFallbackFileAccessible", isAutofinish = false)
+    public void isFallbackFileAccessible(CallbackContext callbackContext) {
+        qonversionSandwich.isFallbackFileAccessible(Utils.getResultListener(callbackContext));
+    }
+
     @PluginAction(thread = ExecutionThread.WORKER, actionName = "syncPurchases", isAutofinish = false)
     public void syncPurchases(CallbackContext callbackContext) {
         qonversionSandwich.syncPurchases();

@@ -189,6 +189,12 @@ export interface QonversionApi {
   detachUserFromRemoteConfiguration(remoteConfigurationId: string): Promise<void>
 
   /**
+   * Call this function to check if the fallback file is accessible.
+   * @returns the promise with the flag that indicates whether Qonversion was able to read data from the fallback file or not.
+   */
+  isFallbackFileAccessible(): Promise<Boolean>;
+
+  /**
    * Sends your attribution {@link data} to the {@link provider}.
    *
    * @param data an object containing your attribution data
