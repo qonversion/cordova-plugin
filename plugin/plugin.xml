@@ -27,6 +27,7 @@
     <js-module src="www/Offerings.js" name="Offerings" />
     <js-module src="www/Product.js" name="Product" />
     <js-module src="www/ProductInAppDetails.js" name="ProductInAppDetails" />
+    <js-module src="www/ProductInstallmentPlanDetails.js" name="ProductInstallmentPlanDetails" />
     <js-module src="www/ProductOfferDetails.js" name="ProductOfferDetails" />
     <js-module src="www/ProductPrice.js" name="ProductPrice" />
     <js-module src="www/ProductPricingPhase.js" name="ProductPricingPhase" />
@@ -54,7 +55,7 @@
                 <param name="android-package" value="com.qonversion.android.sdk.QonversionPlugin"/>
             </feature>
         </config-file>
-        <framework src="io.qonversion.sandwich:sandwich:4.5.0" />
+        <framework src="io.qonversion.sandwich:sandwich:5.0.2" />
         <source-file src="src/android/QonversionPlugin.java" target-dir="src/com/qonversion/android/sdk" />
         <source-file src="src/android/EntitiesConverter.java" target-dir="src/com/qonversion/android/sdk" />
         <source-file src="src/android/Utils.java" target-dir="src/com/qonversion/android/sdk" />
@@ -72,7 +73,7 @@
                 <source url="https://github.com/CocoaPods/Specs.git"/>
             </config>
             <pods use-frameworks="true">
-                <pod name="QonversionSandwich" spec="4.5.0" />
+                <pod name="QonversionSandwich" spec="5.0.2" />
             </pods>
         </podspec>
     </platform>

@@ -1,6 +1,7 @@
-import {AttributionProvider, UserPropertyKey} from "./enums";
+import {AttributionProvider, QonversionErrorCode, UserPropertyKey} from "./enums";
 import {IntroEligibility} from "./IntroEligibility";
 import Mapper, {
+  QEmptySuccessResult,
   QEntitlement,
   QOfferings,
   QProduct,
@@ -13,7 +14,7 @@ import Mapper, {
 import {Offerings} from "./Offerings";
 import {Entitlement} from "./Entitlement";
 import {Product} from "./Product";
-import {callNative, DefinedNativeErrorCodes, isAndroid, isIos, noop} from "./utils";
+import {callNative, isAndroid, isIos, noop} from "./utils";
 import {PromoPurchasesListener} from './PromoPurchasesListener';
 import {User} from './User';
 import {QonversionApi} from './QonversionApi';
@@ -25,7 +26,7 @@ import {UserProperties} from './UserProperties';
 import {PurchaseModel} from './PurchaseModel';
 import {PurchaseUpdateModel} from './PurchaseUpdateModel';
 
-const sdkVersion = "5.5.0";
+const sdkVersion = "6.0.0";
 
 export default class QonversionInternal implements QonversionApi {
 
@@ -75,7 +76,7 @@ export default class QonversionInternal implements QonversionApi {
       return mappedEntitlement;
     } catch (e: any) {
       if (e) {
-        e.userCanceled = e.code === DefinedNativeErrorCodes.PURCHASE_CANCELLED_BY_USER;
+        e.userCanceled = e.code === QonversionErrorCode.PURCHASE_CANCELED;
         throw e;
       } else {
         throw 'Unknown error occurred while purchase';
@@ -106,7 +107,7 @@ export default class QonversionInternal implements QonversionApi {
       return mappedEntitlement;
     } catch (e: any) {
       if (e) {
-        e.userCanceled = e.code === DefinedNativeErrorCodes.PURCHASE_CANCELLED_BY_USER;
+        e.userCanceled = e.code === QonversionErrorCode.PURCHASE_CANCELED;
         throw e;
       } else {
         throw 'Unknown error occurred while purchase';
@@ -179,6 +180,12 @@ export default class QonversionInternal implements QonversionApi {
     }
 
     callNative('syncPurchases').then(noop);
+  }
+
+  async isFallbackFileAccessible(): Promise<Boolean> {
+    const isAccessibleResult = await callNative<QEmptySuccessResult>('isFallbackFileAccessible');
+    
+    return isAccessibleResult.success;
   }
 
   async identify(userID: string): Promise<User> {

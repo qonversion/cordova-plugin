@@ -8,8 +8,6 @@
 #import "CDVQonversionPlugin.h"
 @import QonversionSandwich;
 
-static NSString *const kErrorCodePurchaseCancelledByUser = @"PURCHASE_CANCELLED_BY_USER";
-
 @interface CDVQonversionPlugin () <QonversionEventListener>
 
 @property (nonatomic, strong) QonversionSandwich *qonversionSandwich;
@@ -221,6 +219,17 @@ static NSString *const kErrorCodePurchaseCancelledByUser = @"PURCHASE_CANCELLED_
     }];
 }
 
+- (void)isFallbackFileAccessible:(CDVInvokedUrlCommand *)command {
+    __block __weak CDVQonversionPlugin *weakSelf = self;
+    [self.qonversionSandwich isFallbackFileAccessibleWithCompletion:^(NSDictionary<NSString *,id> * _Nullable result, SandwichError * _Nullable error) {
+        if (error) {
+            [weakSelf returnCordovaResult:nil error:error command:command];
+        } else {
+            [weakSelf returnCordovaResult:result error:nil command:command];
+        }
+    }];
+}
+
 - (void)identify:(CDVInvokedUrlCommand *)command {
     __block __weak CDVQonversionPlugin *weakSelf = self;
     NSString *identityId = [command argumentAtIndex:0];
@@ -279,12 +288,7 @@ static NSString *const kErrorCodePurchaseCancelledByUser = @"PURCHASE_CANCELLED_
         errorInfo[@"domain"] = error.domain;
         errorInfo[@"description"] = error.details;
         errorInfo[@"additionalMessage"] = error.additionalMessage;
-        NSNumber *isCancelled = error.additionalInfo[@"isCancelled"];
-        if (isCancelled.boolValue) {
-            errorInfo[@"code"] = kErrorCodePurchaseCancelledByUser;
-        } else {
-            errorInfo[@"code"] = error.code;
-        }
+        errorInfo[@"code"] = error.code;
         pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:errorInfo];
     } else {
         pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:result];

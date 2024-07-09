@@ -10,10 +10,6 @@ export const isAndroid = (): boolean => {
     return device.platform === "Android"
 }
 
-export enum DefinedNativeErrorCodes {
-    PURCHASE_CANCELLED_BY_USER = "PURCHASE_CANCELLED_BY_USER"
-}
-
 export const NATIVE_MODULE_NAME = 'QonversionPlugin';
 
 export const callNative = <T>(methodName: string, args?: any[]): Promise<T> => {
