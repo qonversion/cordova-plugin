@@ -219,6 +219,17 @@
     }];
 }
 
+- (void)isFallbackFileAccessible:(CDVInvokedUrlCommand *)command {
+    __block __weak CDVQonversionPlugin *weakSelf = self;
+    [self.qonversionSandwich isFallbackFileAccessibleWithCompletion:^(NSDictionary<NSString *,id> * _Nullable result, SandwichError * _Nullable error) {
+        if (error) {
+            [weakSelf returnCordovaResult:nil error:error command:command];
+        } else {
+            [weakSelf returnCordovaResult:result error:nil command:command];
+        }
+    }];
+}
+
 - (void)identify:(CDVInvokedUrlCommand *)command {
     __block __weak CDVQonversionPlugin *weakSelf = self;
     NSString *identityId = [command argumentAtIndex:0];

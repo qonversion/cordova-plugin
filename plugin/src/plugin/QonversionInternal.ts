@@ -1,6 +1,7 @@
 import {AttributionProvider, QonversionErrorCode, UserPropertyKey} from "./enums";
 import {IntroEligibility} from "./IntroEligibility";
 import Mapper, {
+  QEmptySuccessResult,
   QEntitlement,
   QOfferings,
   QProduct,
@@ -25,7 +26,7 @@ import {UserProperties} from './UserProperties';
 import {PurchaseModel} from './PurchaseModel';
 import {PurchaseUpdateModel} from './PurchaseUpdateModel';
 
-const sdkVersion = "5.5.0";
+const sdkVersion = "6.0.0";
 
 export default class QonversionInternal implements QonversionApi {
 
@@ -179,6 +180,12 @@ export default class QonversionInternal implements QonversionApi {
     }
 
     callNative('syncPurchases').then(noop);
+  }
+
+  async isFallbackFileAccessible(): Promise<Boolean> {
+    const isAccessibleResult = await callNative<QEmptySuccessResult>('isFallbackFileAccessible');
+    
+    return isAccessibleResult.success;
   }
 
   async identify(userID: string): Promise<User> {

@@ -246,6 +246,10 @@ type QAutomationsEvent = {
   timestamp: number;
 };
 
+export type QEmptySuccessResult = {
+  success: boolean;
+};
+
 export type QUser = {
   qonversionId: string;
   identityId?: string | null;
