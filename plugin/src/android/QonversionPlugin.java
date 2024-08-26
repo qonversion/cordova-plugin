@@ -80,8 +80,24 @@ public class QonversionPlugin extends AnnotatedCordovaPlugin implements Qonversi
     }
 
     @PluginAction(thread = ExecutionThread.UI, actionName = "purchase", isAutofinish = false)
-    public void purchase(String productId, @Nullable String offerId, @Nullable Boolean applyOffer, CallbackContext callbackContext) {
-        qonversionSandwich.purchase(productId, offerId, applyOffer, Utils.getResultListener(callbackContext));
+    public void purchase(
+            String productId,
+            @Nullable String offerId,
+            @Nullable Boolean applyOffer,
+            @Nullable String oldProductId,
+            @Nullable String updatePolicyKey,
+            @Nullable JSONArray contextKeys,
+            CallbackContext callbackContext
+    ) {
+        List<String> contextKeysList = EntitiesConverter.convertArrayToStringList(ids);
+        qonversionSandwich.purchase(
+            productId,
+            offerId,
+            applyOffer,
+            oldProductId,
+            updatePolicyKey,
+            contextKeysList,
+            Utils.getResultListener(callbackContext));
     }
 
     @PluginAction(thread = ExecutionThread.UI, actionName = "updatePurchase", isAutofinish = false)
@@ -91,16 +107,10 @@ public class QonversionPlugin extends AnnotatedCordovaPlugin implements Qonversi
             @Nullable Boolean applyOffer,
             String oldProductId,
             @Nullable String updatePolicyKey,
+            @Nullable JSONArray contextKeys,
             CallbackContext callbackContext
     ) {
-        qonversionSandwich.updatePurchase(
-                productId,
-                offerId,
-                applyOffer,
-                oldProductId,
-                updatePolicyKey,
-                Utils.getResultListener(callbackContext)
-        );
+        purchase(productId, offerId, applyOffer, oldProductId, updatePolicyKey, contextKeys, Utils.getResultListener(callbackContext));
     }
 
     @PluginAction(thread = ExecutionThread.WORKER, actionName = "setDefinedProperty")
