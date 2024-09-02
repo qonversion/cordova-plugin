@@ -25,7 +25,7 @@ import {RemoteConfigList} from "./RemoteConfigList";
 import {UserProperties} from './UserProperties';
 import {PurchaseModel} from './PurchaseModel';
 import {PurchaseUpdateModel} from './PurchaseUpdateModel';
-import {PurchaseOptions} from "./PurchaseOptions";
+import {PurchaseOptions} from "./PurchaseOptions";;
 
 const sdkVersion = "6.0.1";
 
@@ -65,22 +65,20 @@ export default class QonversionInternal implements QonversionApi {
 
   async purchaseProduct(product: Product, options: PurchaseOptions): Promise<Map<string, Entitlement>> {
     try {
-      let purchasePromise: Promise<Record<string, QEntitlement> | null | undefined>;
-      const entitlements = await callNative<Record<string, QEntitlement>>('purchase', [
-        product.qonversionID,
-        options.offerId,
-        options.applyOffer,
-        options.oldProduct?.qonversionID,
-        options.updatePolicy,
-        options.quantity,
-        options.contextKeys
-      ]);
+      let args: any[] = [product.qonversionID]
+      if (isIos()) {
+        args = [...args, options.quantity, options.contextKeys];
+      } else {
+        args = [...args, options.offerId, options.applyOffer, options.oldProduct?.qonversionID, options.updatePolicy, options.contextKeys];
+      }
+
+      const entitlements = await callNative<Record<string, QEntitlement>>('purchase', args);
 
       // noinspection UnnecessaryLocalVariableJS
       const mappedPermissions = Mapper.convertEntitlements(entitlements);
 
       return mappedPermissions;
-    } catch (e) {
+    } catch (e: any) {
       if (e) {
         e.userCanceled = e.code === QonversionErrorCode.PURCHASE_CANCELED;
         throw e;
@@ -92,14 +90,11 @@ export default class QonversionInternal implements QonversionApi {
 
   async purchase(purchaseModel: PurchaseModel): Promise<Map<string, Entitlement>> {
     try {
-      const entitlements = await callNative<Record<string, QEntitlement>>('purchase', [
-        purchaseModel.productId,
-        purchaseModel.offerId,
-        purchaseModel.applyOffer,
-        null,
-        null,
-        null
-      ]);
+      let args: any[] = [purchaseModel.productId]
+      if (isAndroid()) {
+        args = [...args, purchaseModel.offerId, purchaseModel.applyOffer,];
+      }
+      const entitlements = await callNative<Record<string, QEntitlement>>('purchase', args);
 
       // noinspection UnnecessaryLocalVariableJS
       const mappedEntitlement = Mapper.convertEntitlements(entitlements);

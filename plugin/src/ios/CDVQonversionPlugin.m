@@ -111,10 +111,10 @@
 
 - (void)purchase:(CDVInvokedUrlCommand *)command {
     NSString *productId = [command argumentAtIndex:0];
-    NSInteget quantity = [command argumentAtIndex:5];
-    NSArray *contextKeys = [command argumentAtIndex:6];
+    NSNumber *quantityNumber = [command argumentAtIndex:1];
+    NSArray *contextKeys = [command argumentAtIndex:2];
     __block __weak CDVQonversionPlugin *weakSelf = self;
-    [self.qonversionSandwich purchase:productId quantity:quantity, contextKeys:contextKeys completion:^(NSDictionary<NSString *,id> * _Nullable result, SandwichError * _Nullable error) {
+    [self.qonversionSandwich purchase:productId quantity:[quantityNumber integerValue] contextKeys:contextKeys completion:^(NSDictionary<NSString *,id> * _Nullable result, SandwichError * _Nullable error) {
         [weakSelf returnCordovaResult:result error:error command:command];
     }];
 }
