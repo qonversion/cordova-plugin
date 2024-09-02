@@ -92,7 +92,7 @@ export default class QonversionInternal implements QonversionApi {
     try {
       let args: any[] = [purchaseModel.productId]
       if (isAndroid()) {
-        args = [...args, purchaseModel.offerId, purchaseModel.applyOffer,];
+        args = [...args, purchaseModel.offerId, purchaseModel.applyOffer, null, null, []];
       }
       const entitlements = await callNative<Record<string, QEntitlement>>('purchase', args);
 
@@ -124,7 +124,7 @@ export default class QonversionInternal implements QonversionApi {
           purchaseUpdateModel.applyOffer,
           purchaseUpdateModel.oldProductId,
           purchaseUpdateModel.updatePolicy,
-          null
+          []
         ]
       );
 

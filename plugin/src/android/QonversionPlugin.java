@@ -89,15 +89,19 @@ public class QonversionPlugin extends AnnotatedCordovaPlugin implements Qonversi
             @Nullable JSONArray contextKeys,
             CallbackContext callbackContext
     ) {
-        List<String> contextKeysList = EntitiesConverter.convertArrayToStringList(ids);
-        qonversionSandwich.purchase(
-            productId,
-            offerId,
-            applyOffer,
-            oldProductId,
-            updatePolicyKey,
-            contextKeysList,
-            Utils.getResultListener(callbackContext));
+        try {
+            List<String> contextKeysList = EntitiesConverter.convertArrayToStringList(contextKeys);
+            qonversionSandwich.purchase(
+                    productId,
+                    offerId,
+                    applyOffer,
+                    oldProductId,
+                    updatePolicyKey,
+                    contextKeysList,
+                    Utils.getResultListener(callbackContext));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     @PluginAction(thread = ExecutionThread.UI, actionName = "updatePurchase", isAutofinish = false)
@@ -110,7 +114,7 @@ public class QonversionPlugin extends AnnotatedCordovaPlugin implements Qonversi
             @Nullable JSONArray contextKeys,
             CallbackContext callbackContext
     ) {
-        purchase(productId, offerId, applyOffer, oldProductId, updatePolicyKey, contextKeys, Utils.getResultListener(callbackContext));
+        purchase(productId, offerId, applyOffer, oldProductId, updatePolicyKey, contextKeys, callbackContext);
     }
 
     @PluginAction(thread = ExecutionThread.WORKER, actionName = "setDefinedProperty")
