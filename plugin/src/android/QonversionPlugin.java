@@ -80,8 +80,29 @@ public class QonversionPlugin extends AnnotatedCordovaPlugin implements Qonversi
     }
 
     @PluginAction(thread = ExecutionThread.UI, actionName = "purchase", isAutofinish = false)
-    public void purchase(String productId, @Nullable String offerId, @Nullable Boolean applyOffer, CallbackContext callbackContext) {
-        qonversionSandwich.purchase(productId, offerId, applyOffer, Utils.getResultListener(callbackContext));
+    public void purchase(
+            String productId,
+            @Nullable String offerId,
+            @Nullable Boolean applyOffer,
+            @Nullable String oldProductId,
+            @Nullable String updatePolicyKey,
+            @Nullable JSONArray contextKeys,
+            CallbackContext callbackContext
+    ) {
+        try {
+            List<String> contextKeysList = EntitiesConverter.convertArrayToStringList(contextKeys);
+            qonversionSandwich.purchase(
+                    productId,
+                    offerId,
+                    applyOffer,
+                    oldProductId,
+                    updatePolicyKey,
+                    contextKeysList,
+                    Utils.getResultListener(callbackContext));
+        } catch (JSONException e) {
+            e.printStackTrace();
+            callbackContext.error(e.getMessage());
+        }
     }
 
     @PluginAction(thread = ExecutionThread.UI, actionName = "updatePurchase", isAutofinish = false)
@@ -91,16 +112,10 @@ public class QonversionPlugin extends AnnotatedCordovaPlugin implements Qonversi
             @Nullable Boolean applyOffer,
             String oldProductId,
             @Nullable String updatePolicyKey,
+            @Nullable JSONArray contextKeys,
             CallbackContext callbackContext
     ) {
-        qonversionSandwich.updatePurchase(
-                productId,
-                offerId,
-                applyOffer,
-                oldProductId,
-                updatePolicyKey,
-                Utils.getResultListener(callbackContext)
-        );
+        purchase(productId, offerId, applyOffer, oldProductId, updatePolicyKey, contextKeys, callbackContext);
     }
 
     @PluginAction(thread = ExecutionThread.WORKER, actionName = "setDefinedProperty")
@@ -154,6 +169,7 @@ public class QonversionPlugin extends AnnotatedCordovaPlugin implements Qonversi
             qonversionSandwich.checkTrialIntroEligibility(productIds, Utils.getResultListener(callbackContext));
         } catch (JSONException e) {
             e.printStackTrace();
+            callbackContext.error(e.getMessage());
         }
     }
 
@@ -179,6 +195,7 @@ public class QonversionPlugin extends AnnotatedCordovaPlugin implements Qonversi
             qonversionSandwich.remoteConfigList(keysList, includeEmptyContextKey, Utils.getResultListener(callbackContext));
         } catch (JSONException e) {
             e.printStackTrace();
+            callbackContext.error(e.getMessage());
         }
     }
 

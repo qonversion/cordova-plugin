@@ -25,6 +25,7 @@ import {RemoteConfigList} from "./RemoteConfigList";
 import {UserProperties} from './UserProperties';
 import {PurchaseModel} from './PurchaseModel';
 import {PurchaseUpdateModel} from './PurchaseUpdateModel';
+import {PurchaseOptions} from "./PurchaseOptions";;
 
 const sdkVersion = "6.0.1";
 
@@ -62,13 +63,38 @@ export default class QonversionInternal implements QonversionApi {
     }
   }
 
+  async purchaseProduct(product: Product, options: PurchaseOptions): Promise<Map<string, Entitlement>> {
+    try {
+      let args: any[] = [product.qonversionID]
+      if (isIos()) {
+        args = [...args, options.quantity, options.contextKeys];
+      } else {
+        args = [...args, options.offerId, options.applyOffer, options.oldProduct?.qonversionID, options.updatePolicy, options.contextKeys];
+      }
+
+      const entitlements = await callNative<Record<string, QEntitlement>>('purchase', args);
+
+      // noinspection UnnecessaryLocalVariableJS
+      const mappedPermissions = Mapper.convertEntitlements(entitlements);
+
+      return mappedPermissions;
+    } catch (e: any) {
+      if (e) {
+        e.userCanceled = e.code === QonversionErrorCode.PURCHASE_CANCELED;
+        throw e;
+      } else {
+        throw 'Unknown error occurred while purchase';
+      }
+    }
+  }
+
   async purchase(purchaseModel: PurchaseModel): Promise<Map<string, Entitlement>> {
     try {
-      const entitlements = await callNative<Record<string, QEntitlement>>('purchase', [
-        purchaseModel.productId,
-        purchaseModel.offerId,
-        purchaseModel.applyOffer,
-      ]);
+      let args: any[] = [purchaseModel.productId]
+      if (isAndroid()) {
+        args = [...args, purchaseModel.offerId, purchaseModel.applyOffer, null, null, []];
+      }
+      const entitlements = await callNative<Record<string, QEntitlement>>('purchase', args);
 
       // noinspection UnnecessaryLocalVariableJS
       const mappedEntitlement = Mapper.convertEntitlements(entitlements);
@@ -98,6 +124,7 @@ export default class QonversionInternal implements QonversionApi {
           purchaseUpdateModel.applyOffer,
           purchaseUpdateModel.oldProductId,
           purchaseUpdateModel.updatePolicy,
+          []
         ]
       );
 
@@ -184,7 +211,7 @@ export default class QonversionInternal implements QonversionApi {
 
   async isFallbackFileAccessible(): Promise<Boolean> {
     const isAccessibleResult = await callNative<QEmptySuccessResult>('isFallbackFileAccessible');
-    
+
     return isAccessibleResult.success;
   }
 
