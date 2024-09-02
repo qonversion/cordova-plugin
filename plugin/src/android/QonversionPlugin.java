@@ -101,6 +101,7 @@ public class QonversionPlugin extends AnnotatedCordovaPlugin implements Qonversi
                     Utils.getResultListener(callbackContext));
         } catch (JSONException e) {
             e.printStackTrace();
+            callbackContext.error(e.getMessage());
         }
     }
 
@@ -168,6 +169,7 @@ public class QonversionPlugin extends AnnotatedCordovaPlugin implements Qonversi
             qonversionSandwich.checkTrialIntroEligibility(productIds, Utils.getResultListener(callbackContext));
         } catch (JSONException e) {
             e.printStackTrace();
+            callbackContext.error(e.getMessage());
         }
     }
 
@@ -193,6 +195,7 @@ public class QonversionPlugin extends AnnotatedCordovaPlugin implements Qonversi
             qonversionSandwich.remoteConfigList(keysList, includeEmptyContextKey, Utils.getResultListener(callbackContext));
         } catch (JSONException e) {
             e.printStackTrace();
+            callbackContext.error(e.getMessage());
         }
     }
 
