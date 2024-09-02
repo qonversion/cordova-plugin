@@ -58,6 +58,8 @@ import {ProductPricingPhase} from './ProductPricingPhase';
 import {ProductStoreDetails} from './ProductStoreDetails';
 import {PurchaseModel} from './PurchaseModel';
 import {PurchaseUpdateModel} from './PurchaseUpdateModel';
+import {PurchaseOptions} from './PurchaseOptions';
+import {PurchaseOptionsBuilder} from './PurchaseOptionsBuilder';
 
 export default class Qonversion {
   private constructor() {}
@@ -145,6 +147,8 @@ export default class Qonversion {
   static ProductStoreDetails = ProductStoreDetails;
   static PurchaseModel = PurchaseModel;
   static PurchaseUpdateModel = PurchaseUpdateModel;
+  static PurchaseOptions = PurchaseOptions;
+  static PurchaseOptionsBuilder = PurchaseOptionsBuilder;
   static QonversionError = QonversionError;
   static QonversionErrorCode = QonversionErrorCode;
   static User = User;
