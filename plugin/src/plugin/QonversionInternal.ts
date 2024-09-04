@@ -25,7 +25,8 @@ import {RemoteConfigList} from "./RemoteConfigList";
 import {UserProperties} from './UserProperties';
 import {PurchaseModel} from './PurchaseModel';
 import {PurchaseUpdateModel} from './PurchaseUpdateModel';
-import {PurchaseOptions} from "./PurchaseOptions";;
+import {PurchaseOptions} from "./PurchaseOptions";
+import {PurchaseOptionsBuilder} from './PurchaseOptionsBuilder';
 
 const sdkVersion = "6.1.0";
 
@@ -63,8 +64,12 @@ export default class QonversionInternal implements QonversionApi {
     }
   }
 
-  async purchaseProduct(product: Product, options: PurchaseOptions): Promise<Map<string, Entitlement>> {
+  async purchaseProduct(product: Product, options: PurchaseOptions | undefined): Promise<Map<string, Entitlement>> {
     try {
+      if (!options) {
+        options = new PurchaseOptionsBuilder().build();
+      }
+
       let args: any[] = [product.qonversionID]
       if (isIos()) {
         args = [...args, options.quantity, options.contextKeys];
