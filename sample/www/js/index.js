@@ -78,8 +78,8 @@ const app = {
         const products = await Qonversion.getSharedInstance().products();
         const product = products.get(productId);
         try {
-            const purchaseModel = product.toPurchaseModel(offerId);
-            const entitlements = await Qonversion.getSharedInstance().purchase(purchaseModel);
+            const purchaseOptions = !!offerId ? new Qonversion.PurchaseOptionsBuilder().setOfferId(offerId) : undefined;
+            const entitlements = await Qonversion.getSharedInstance().purchaseProduct(product, purchaseOptions);
             console.log('Qonversion purchase:', entitlements, productId);
         } catch (e) {
             console.log('Qonversion purchase failed', e);
