@@ -28,7 +28,7 @@ import {PurchaseUpdateModel} from './PurchaseUpdateModel';
 import {PurchaseOptions} from "./PurchaseOptions";
 import {PurchaseOptionsBuilder} from './PurchaseOptionsBuilder';
 
-const sdkVersion = "6.1.0";
+const sdkVersion = "6.1.1";
 
 export default class QonversionInternal implements QonversionApi {
 
