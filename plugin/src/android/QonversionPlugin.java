@@ -90,7 +90,10 @@ public class QonversionPlugin extends AnnotatedCordovaPlugin implements Qonversi
             CallbackContext callbackContext
     ) {
         try {
-            List<String> contextKeysList = EntitiesConverter.convertArrayToStringList(contextKeys);
+            List<String> contextKeysList = contextKeys == null
+                ? null
+                : EntitiesConverter.convertArrayToStringList(contextKeys);
+
             qonversionSandwich.purchase(
                     productId,
                     offerId,
