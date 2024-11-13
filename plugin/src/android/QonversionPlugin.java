@@ -21,14 +21,13 @@ import java.util.Map;
 
 import io.qonversion.sandwich.QonversionEventsListener;
 import io.qonversion.sandwich.QonversionSandwich;
-import io.qonversion.sandwich.ResultListener;
-import io.qonversion.sandwich.SandwichError;
 
 public class QonversionPlugin extends AnnotatedCordovaPlugin implements QonversionEventsListener {
 
     private QonversionSandwich qonversionSandwich;
 
     private @Nullable CallbackContext entitlementsUpdateDelegate = null;
+    private @Nullable CallbackContext automationsEventDelegate = null;
 
     @Override
     public void pluginInitialize() {
@@ -91,8 +90,8 @@ public class QonversionPlugin extends AnnotatedCordovaPlugin implements Qonversi
     ) {
         try {
             List<String> contextKeysList = contextKeys == null
-                ? null
-                : EntitiesConverter.convertArrayToStringList(contextKeys);
+                    ? null
+                    : EntitiesConverter.convertArrayToStringList(contextKeys);
 
             qonversionSandwich.purchase(
                     productId,

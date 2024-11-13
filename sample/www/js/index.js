@@ -20,6 +20,8 @@
 // Wait for the deviceready event before using any of Cordova's device APIs.
 // See https://cordova.apache.org/docs/en/latest/cordova/events/events.html#deviceready
 
+import {ScreenPresentationStyle} from "../../../plugin/src/plugin/enums";
+
 const app = {
     initialize: function () {
         document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
@@ -48,6 +50,9 @@ const app = {
         document.getElementById("collect-apple-search-ads-attribution").addEventListener("click", this.collectAppleSearchAdsAttribution);
         document.getElementById("set-promo-purchases-delegate").addEventListener("click", this.setPromoPurchasesDelegate);
         document.getElementById("present-code-redemption-sheet").addEventListener("click", this.presentCodeRedemptionSheet);
+        document.getElementById("set-delegate").addEventListener("click", this.setAutomationsDelegate);
+        document.getElementById("show-screen").addEventListener("click", this.showScreen);
+        document.getElementById("set-screen-presentation-config").addEventListener("click", this.setScreenPresentationConfig);
     },
 
     onDeviceReady: function() {
@@ -234,6 +239,42 @@ const app = {
     presentCodeRedemptionSheet() {
         Qonversion.getSharedInstance().presentCodeRedemptionSheet();
         console.log('Qonversion presentCodeRedemptionSheet');
+    },
+
+    setAutomationsDelegate() {
+        Qonversion.Automations.getSharedInstance().setDelegate({
+            automationsDidFailExecuting(actionResult) {
+                console.log('Qonversion automationsDidFailExecuting', actionResult);
+            },
+
+            automationsDidFinishExecuting(actionResult) {
+                console.log('Qonversion automationsDidFinishExecuting', actionResult);
+            },
+
+            automationsDidShowScreen(screenId) {
+                console.log('Qonversion automationsDidShowScreen', screenId);
+            },
+
+            automationsDidStartExecuting(actionResult) {
+                console.log('Qonversion automationsDidStartExecuting', actionResult);
+            },
+
+            automationsFinished() {
+                console.log('Qonversion automationsFinished');
+            }
+        });
+    },
+
+    showScreen() {
+        const screenId = document.getElementById('screen-id').value;
+        Qonversion.Automations.getSharedInstance().showScreen(screenId);
+        console.log('Qonversion showScreen', screenId);
+    },
+
+    setScreenPresentationConfig() {
+        const config = new Qonversion.ScreenPresentationConfig(Qonversion.ScreenPresentationStyle.PUSH);
+        Qonversion.Automations.getSharedInstance().setScreenPresentationConfig(config);
+        console.log('Qonversion setScreenPresentationConfig', config);
     },
 };
 
