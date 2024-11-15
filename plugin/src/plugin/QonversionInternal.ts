@@ -340,26 +340,29 @@ export default class QonversionInternal implements QonversionApi {
     }
 
     this.promoPurchasesListener = delegate;
-    callQonversionNative<string>('subscribeOnPromoPurchases').then(productId => {
-      if (this.promoPurchasesListener) {
-        const promoPurchaseExecutor = async () => {
-          const entitlements = await callQonversionNative<Record<string, QEntitlement>>(
-            'promoPurchase',
-            [productId],
+    subscribeOnQonversionNativeEvents<string>(
+      'subscribeOnPromoPurchases',
+      productId => {
+        if (this.promoPurchasesListener) {
+          const promoPurchaseExecutor = async () => {
+            const entitlements = await callQonversionNative<Record<string, QEntitlement>>(
+              'promoPurchase',
+              [productId],
+            );
+
+            // noinspection UnnecessaryLocalVariableJS
+            const mappedEntitlement: Map<string,
+              Entitlement> = Mapper.convertEntitlements(entitlements);
+
+            return mappedEntitlement;
+          };
+          this.promoPurchasesListener.onPromoPurchaseReceived(
+            productId,
+            promoPurchaseExecutor,
           );
-
-          // noinspection UnnecessaryLocalVariableJS
-          const mappedEntitlement: Map<string,
-            Entitlement> = Mapper.convertEntitlements(entitlements);
-
-          return mappedEntitlement;
-        };
-        this.promoPurchasesListener.onPromoPurchaseReceived(
-          productId,
-          promoPurchaseExecutor,
-        );
+        }
       }
-    });
+    );
   }
 
   presentCodeRedemptionSheet() {

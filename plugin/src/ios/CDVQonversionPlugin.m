@@ -6,6 +6,7 @@
 //
 
 #import "CDVQonversionPlugin.h"
+#import "QCUtils.h"
 @import QonversionSandwich;
 
 @interface CDVQonversionPlugin () <QonversionEventListener>
@@ -21,6 +22,7 @@
 - (void)qonversionDidReceiveUpdatedEntitlements:(NSDictionary<NSString *,id> *)entitlements {
     if (self.entitlementsUpdateDelegateId) {
         CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:entitlements];
+        [pluginResult setKeepCallbackAsBool:true];
         [self.commandDelegate sendPluginResult:pluginResult callbackId:self.entitlementsUpdateDelegateId];
     }
 }
@@ -28,6 +30,7 @@
 - (void)shouldPurchasePromoProductWith:(NSString *)productId {
     if (self.promoPurchaseDelegateId) {
         CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:productId];
+        [pluginResult setKeepCallbackAsBool:true];
         [self.commandDelegate sendPluginResult:pluginResult callbackId:self.promoPurchaseDelegateId];
     }
 }
@@ -91,7 +94,7 @@
 - (void)userProperties:(CDVInvokedUrlCommand *)command {
     __block __weak CDVQonversionPlugin *weakSelf = self;
     [self.qonversionSandwich userProperties:^(NSDictionary<NSString *,id> * _Nullable result, SandwichError * _Nullable error) {
-        [weakSelf returnCordovaResult:result error:error command:command];
+        [QONUtils returnCordovaResult:result error:error command:command delegate:weakSelf.commandDelegate];
     }];
 }
 
@@ -105,7 +108,7 @@
 - (void)checkEntitlements:(CDVInvokedUrlCommand *)command {
     __block __weak CDVQonversionPlugin *weakSelf = self;
     [self.qonversionSandwich checkEntitlements:^(NSDictionary<NSString *,id> * _Nullable result, SandwichError * _Nullable error) {
-        [weakSelf returnCordovaResult:result error:error command:command];
+        [QONUtils returnCordovaResult:result error:error command:command delegate:weakSelf.commandDelegate];
     }];
 }
 
@@ -115,28 +118,28 @@
     NSArray *contextKeys = [command argumentAtIndex:2];
     __block __weak CDVQonversionPlugin *weakSelf = self;
     [self.qonversionSandwich purchase:productId quantity:[quantityNumber integerValue] contextKeys:contextKeys completion:^(NSDictionary<NSString *,id> * _Nullable result, SandwichError * _Nullable error) {
-        [weakSelf returnCordovaResult:result error:error command:command];
+        [QONUtils returnCordovaResult:result error:error command:command delegate:weakSelf.commandDelegate];
     }];
 }
 
 - (void)products:(CDVInvokedUrlCommand *)command {
     __block __weak CDVQonversionPlugin *weakSelf = self;
     [self.qonversionSandwich products:^(NSDictionary<NSString *,id> * _Nullable result, SandwichError * _Nullable error) {
-        [weakSelf returnCordovaResult:result error:error command:command];
+        [QONUtils returnCordovaResult:result error:error command:command delegate:weakSelf.commandDelegate];
     }];
 }
 
 - (void)restore:(CDVInvokedUrlCommand *)command {
     __block __weak CDVQonversionPlugin *weakSelf = self;
     [self.qonversionSandwich restore:^(NSDictionary<NSString *,id> * _Nullable result, SandwichError * _Nullable error) {
-        [weakSelf returnCordovaResult:result error:error command:command];
+        [QONUtils returnCordovaResult:result error:error command:command delegate:weakSelf.commandDelegate];
     }];
 }
 
 - (void)offerings:(CDVInvokedUrlCommand *)command {
     __block __weak CDVQonversionPlugin *weakSelf = self;
     [self.qonversionSandwich offerings:^(NSDictionary<NSString *,id> * _Nullable result, SandwichError * _Nullable error) {
-        [weakSelf returnCordovaResult:result error:error command:command];
+        [QONUtils returnCordovaResult:result error:error command:command delegate:weakSelf.commandDelegate];
     }];
 }
 
@@ -144,7 +147,7 @@
     NSArray *data = [command argumentAtIndex:0];
     __block __weak CDVQonversionPlugin *weakSelf = self;
     [self.qonversionSandwich checkTrialIntroEligibility:data completion:^(NSDictionary<NSString *,id> * _Nullable result, SandwichError * _Nullable error) {
-        [weakSelf returnCordovaResult:result error:error command:command];
+        [QONUtils returnCordovaResult:result error:error command:command delegate:weakSelf.commandDelegate];
     }];
 }
 
@@ -152,14 +155,14 @@
     __block __weak CDVQonversionPlugin *weakSelf = self;
     NSString *contextKey = [command argumentAtIndex:0];
     [self.qonversionSandwich remoteConfig:contextKey :^(NSDictionary<NSString *,id> * _Nullable result, SandwichError * _Nullable error) {
-        [weakSelf returnCordovaResult:result error:error command:command];
+        [QONUtils returnCordovaResult:result error:error command:command delegate:weakSelf.commandDelegate];
     }];
 }
 
 - (void)remoteConfigList:(CDVInvokedUrlCommand *)command {
     __block __weak CDVQonversionPlugin *weakSelf = self;
     [_qonversionSandwich remoteConfigList:^(NSDictionary<NSString *,id> * _Nullable result, SandwichError * _Nullable error) {
-        [weakSelf returnCordovaResult:result error:error command:command];
+        [QONUtils returnCordovaResult:result error:error command:command delegate:weakSelf.commandDelegate];
     }];
 }
 
@@ -168,7 +171,7 @@
     NSArray *contextKeys = [command argumentAtIndex:0];
     BOOL includeEmptyContextKey = [[command argumentAtIndex:1] boolValue];
     [_qonversionSandwich remoteConfigList:contextKeys includeEmptyContextKey:includeEmptyContextKey :^(NSDictionary<NSString *,id> * _Nullable result, SandwichError * _Nullable error) {
-        [weakSelf returnCordovaResult:result error:error command:command];
+        [QONUtils returnCordovaResult:result error:error command:command delegate:weakSelf.commandDelegate];
     }];
 }
 
@@ -178,9 +181,9 @@
     NSString *groupId = [command argumentAtIndex:1];
     [self.qonversionSandwich attachUserToExperimentWith:experimentId groupId:groupId completion:^(NSDictionary<NSString *,id> * _Nullable result, SandwichError * _Nullable error) {
         if (error) {
-            [weakSelf returnCordovaResult:nil error:error command:command];
+            [QONUtils returnCordovaResult:nil error:error command:command delegate:weakSelf.commandDelegate];
         } else {
-            [weakSelf returnCordovaResult:@{} error:nil command:command];
+            [QONUtils returnCordovaResult:@{} error:nil command:command delegate:weakSelf.commandDelegate];
         }
     }];
 }
@@ -190,9 +193,9 @@
     NSString *experimentId = [command argumentAtIndex:0];
     [self.qonversionSandwich detachUserFromExperimentWith:experimentId completion:^(NSDictionary<NSString *,id> * _Nullable result, SandwichError * _Nullable error) {
         if (error) {
-            [weakSelf returnCordovaResult:nil error:error command:command];
+            [QONUtils returnCordovaResult:nil error:error command:command delegate:weakSelf.commandDelegate];
         } else {
-            [weakSelf returnCordovaResult:@{} error:nil command:command];
+            [QONUtils returnCordovaResult:@{} error:nil command:command delegate:weakSelf.commandDelegate];
         }
     }];
 }
@@ -202,9 +205,9 @@
     NSString *remoteConfigurationId = [command argumentAtIndex:0];
     [self.qonversionSandwich attachUserToRemoteConfigurationWith:remoteConfigurationId completion:^(NSDictionary<NSString *,id> * _Nullable result, SandwichError * _Nullable error) {
         if (error) {
-            [weakSelf returnCordovaResult:nil error:error command:command];
+            [QONUtils returnCordovaResult:nil error:error command:command delegate:weakSelf.commandDelegate];
         } else {
-            [weakSelf returnCordovaResult:@{} error:nil command:command];
+            [QONUtils returnCordovaResult:@{} error:nil command:command delegate:weakSelf.commandDelegate];
         }
     }];
 }
@@ -214,9 +217,9 @@
     NSString *remoteConfigurationId = [command argumentAtIndex:0];
     [self.qonversionSandwich detachUserFromRemoteConfigurationWith:remoteConfigurationId completion:^(NSDictionary<NSString *,id> * _Nullable result, SandwichError * _Nullable error) {
         if (error) {
-            [weakSelf returnCordovaResult:nil error:error command:command];
+            [QONUtils returnCordovaResult:nil error:error command:command delegate:weakSelf.commandDelegate];
         } else {
-            [weakSelf returnCordovaResult:@{} error:nil command:command];
+            [QONUtils returnCordovaResult:@{} error:nil command:command delegate:weakSelf.commandDelegate];
         }
     }];
 }
@@ -225,9 +228,9 @@
     __block __weak CDVQonversionPlugin *weakSelf = self;
     [self.qonversionSandwich isFallbackFileAccessibleWithCompletion:^(NSDictionary<NSString *,id> * _Nullable result, SandwichError * _Nullable error) {
         if (error) {
-            [weakSelf returnCordovaResult:nil error:error command:command];
+            [QONUtils returnCordovaResult:nil error:error command:command delegate:weakSelf.commandDelegate];
         } else {
-            [weakSelf returnCordovaResult:result error:nil command:command];
+            [QONUtils returnCordovaResult:result error:nil command:command delegate:weakSelf.commandDelegate];
         }
     }];
 }
@@ -236,7 +239,7 @@
     __block __weak CDVQonversionPlugin *weakSelf = self;
     NSString *identityId = [command argumentAtIndex:0];
     [self.qonversionSandwich identify:identityId :^(NSDictionary<NSString *,id> * _Nullable result, SandwichError * _Nullable error) {
-        [weakSelf returnCordovaResult:result error:error command:command];
+        [QONUtils returnCordovaResult:result error:error command:command delegate:weakSelf.commandDelegate];
     }];
 }
 
@@ -247,7 +250,7 @@
 - (void)userInfo:(CDVInvokedUrlCommand *)command {
     __block __weak CDVQonversionPlugin *weakSelf = self;
     [self.qonversionSandwich userInfo:^(NSDictionary<NSString *,id> * _Nullable result, SandwichError * _Nullable error) {
-        [weakSelf returnCordovaResult:result error:error command:command];
+        [QONUtils returnCordovaResult:result error:error command:command delegate:weakSelf.commandDelegate];
     }];
 }
 
@@ -263,7 +266,7 @@
     NSString *storeProductId = [command argumentAtIndex:0];
     __block __weak CDVQonversionPlugin *weakSelf = self;
     [self.qonversionSandwich promoPurchase:storeProductId completion:^(NSDictionary<NSString *,id> * _Nullable result, SandwichError * _Nullable error) {
-        [weakSelf returnCordovaResult:result error:error command:command];
+        [QONUtils returnCordovaResult:result error:error command:command delegate:weakSelf.commandDelegate];
     }];
 }
 
@@ -278,23 +281,6 @@
 
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_NO_RESULT];
     [pluginResult setKeepCallbackAsBool:true];
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-}
-
-- (void)returnCordovaResult:(NSDictionary *)result
-                      error:(SandwichError *)error
-                    command:(CDVInvokedUrlCommand *)command {
-    CDVPluginResult *pluginResult = nil;
-    if (error) {
-        NSMutableDictionary *errorInfo = [NSMutableDictionary new];
-        errorInfo[@"domain"] = error.domain;
-        errorInfo[@"description"] = error.details;
-        errorInfo[@"additionalMessage"] = error.additionalMessage;
-        errorInfo[@"code"] = error.code;
-        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:errorInfo];
-    } else {
-        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:result];
-    }
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 

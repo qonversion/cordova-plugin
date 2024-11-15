@@ -271,7 +271,9 @@ const app = {
     },
 
     setScreenPresentationConfig() {
-        const config = new Qonversion.ScreenPresentationConfig(Qonversion.ScreenPresentationStyle.NO_ANIMATION, false);
+        const config = device.platform === "iOS" ?
+          new Qonversion.ScreenPresentationConfig(Qonversion.ScreenPresentationStyle.PUSH, false) :
+          new Qonversion.ScreenPresentationConfig(Qonversion.ScreenPresentationStyle.NO_ANIMATION);
         Qonversion.Automations.getSharedInstance().setScreenPresentationConfig(config);
         console.log('Qonversion setScreenPresentationConfig', config);
     },

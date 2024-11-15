@@ -74,9 +74,16 @@
             <feature name="QonversionPlugin">
                 <param name="ios-package" value="CDVQonversionPlugin"/>
             </feature>
+            <feature name="AutomationsPlugin">
+                <param name="ios-package" value="CDVAutomationsPlugin"/>
+            </feature>
         </config-file>
         <header-file src="src/ios/CDVQonversionPlugin.h" />
         <source-file src="src/ios/CDVQonversionPlugin.m" />
+        <header-file src="src/ios/CDVAutomationsPlugin.h" />
+        <source-file src="src/ios/CDVAutomationsPlugin.m" />
+        <header-file src="src/ios/QCUtils.h" />
+        <source-file src="src/ios/QCUtils.m" />
         <podspec>
             <config>
                 <source url="https://github.com/CocoaPods/Specs.git"/>
