@@ -253,7 +253,9 @@ public class QonversionPlugin extends AnnotatedCordovaPlugin implements Qonversi
         if (entitlementsUpdateDelegate != null) {
             try {
                 final JSONObject payload = EntitiesConverter.convertMapToJson(map);
-                entitlementsUpdateDelegate.success(payload);
+                PluginResult result = new PluginResult(PluginResult.Status.OK, payload);
+                result.setKeepCallback(true);
+                entitlementsUpdateDelegate.sendPluginResult(result);
             } catch (JSONException e) {
                 e.printStackTrace();
             }

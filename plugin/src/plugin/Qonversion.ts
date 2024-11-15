@@ -62,7 +62,7 @@ import {PurchaseUpdateModel} from './PurchaseUpdateModel';
 import {PurchaseOptions} from './PurchaseOptions';
 import {PurchaseOptionsBuilder} from './PurchaseOptionsBuilder';
 import {ScreenPresentationConfig} from './ScreenPresentationConfig';
-import Automations from './Automations';
+import {Automations} from './Automations';
 
 export default class Qonversion {
   private constructor() {}

@@ -14,7 +14,7 @@ import Mapper, {
 import {Offerings} from "./Offerings";
 import {Entitlement} from "./Entitlement";
 import {Product} from "./Product";
-import {callQonversionNative, isAndroid, isIos, noop} from "./utils";
+import {callQonversionNative, isAndroid, isIos, noop, subscribeOnQonversionNativeEvents} from "./utils";
 import {PromoPurchasesListener} from './PromoPurchasesListener';
 import {User} from './User';
 import {QonversionApi} from './QonversionApi';
@@ -37,19 +37,23 @@ export default class QonversionInternal implements QonversionApi {
 
   constructor(qonversionConfig: QonversionConfig) {
     callQonversionNative('storeSDKInfo', ['cordova', sdkVersion]).then(noop);
-    callQonversionNative<Record<string, QEntitlement>>('initializeSdk', [
-      qonversionConfig.projectKey,
-      qonversionConfig.launchMode,
-      qonversionConfig.environment,
-      qonversionConfig.entitlementsCacheLifetime,
-      qonversionConfig.proxyUrl,
-      qonversionConfig.kidsMode
-    ]).then((updatedEntitlements) => {
-      if (this.entitlementsUpdateListener) {
-        const entitlements = Mapper.convertEntitlements(updatedEntitlements);
-        this.entitlementsUpdateListener.onEntitlementsUpdated(entitlements);
-      }
-    });
+    subscribeOnQonversionNativeEvents<Record<string, QEntitlement>>(
+      'initializeSdk',
+      (updatedEntitlements) => {
+        if (this.entitlementsUpdateListener) {
+          const entitlements = Mapper.convertEntitlements(updatedEntitlements);
+          this.entitlementsUpdateListener.onEntitlementsUpdated(entitlements);
+        }
+      },
+      [
+        qonversionConfig.projectKey,
+        qonversionConfig.launchMode,
+        qonversionConfig.environment,
+        qonversionConfig.entitlementsCacheLifetime,
+        qonversionConfig.proxyUrl,
+        qonversionConfig.kidsMode
+      ]
+    );
 
     this.entitlementsUpdateListener = qonversionConfig.entitlementsUpdateListener;
   }

@@ -11,6 +11,7 @@
     </js-module>
 
     <!--  Internal files  -->
+    <js-module src="www/AutomationsInternal.js" name="AutomationsInternal" />
     <js-module src="www/QonversionInternal.js" name="QonversionInternal" />
     <js-module src="www/Mapper.js" name="Mapper" />
     <js-module src="www/utils.js" name="utils" />
@@ -18,6 +19,7 @@
     <js-module src="www/QonversionConfig.js" name="QonversionConfig" />
     <js-module src="www/QonversionConfigBuilder.js" name="QonversionConfigBuilder" />
     <js-module src="www/enums.js" name="enums" />
+    <js-module src="www/Automations.js" name="Automations" />
     <js-module src="www/ActionResult.js" name="ActionResult" />
     <js-module src="www/AutomationsEvent.js" name="AutomationsEvent" />
     <js-module src="www/Entitlement.js" name="Entitlement" />
@@ -45,6 +47,7 @@
     <js-module src="www/User.js" name="User" />
     <js-module src="www/UserProperties.js" name="UserProperties" />
     <js-module src="www/UserProperty.js" name="UserProperty" />
+    <js-module src="www/ScreenPresentationConfig.js" name="ScreenPresentationConfig" />
     <js-module src="www/SKProduct.js" name="SKProduct" />
     <js-module src="www/SKProductDiscount.js" name="SKProductDiscount" />
     <js-module src="www/SKSubscriptionPeriod.js" name="SKSubscriptionPeriod" />

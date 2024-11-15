@@ -1,8 +1,7 @@
 import {AutomationsApi} from './AutomationsApi';
-import Qonversion from './Qonversion';
 import AutomationsInternal from './AutomationsInternal';
 
-export default class Automations {
+export class Automations {
   private constructor() {}
 
   private static backingInstance: AutomationsApi | undefined;
@@ -17,13 +16,6 @@ export default class Automations {
    */
   static getSharedInstance(): AutomationsApi {
     if (!this.backingInstance) {
-      try {
-        Qonversion.getSharedInstance();
-      } catch (e) {
-        throw "Qonversion has not been initialized. " +
-        "Automations should be used after Qonversion is initialized."
-      }
-
       this.backingInstance = new AutomationsInternal();
     }
 

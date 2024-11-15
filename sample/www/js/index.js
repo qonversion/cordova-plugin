@@ -20,8 +20,6 @@
 // Wait for the deviceready event before using any of Cordova's device APIs.
 // See https://cordova.apache.org/docs/en/latest/cordova/events/events.html#deviceready
 
-import {ScreenPresentationStyle} from "../../../plugin/src/plugin/enums";
-
 const app = {
     initialize: function () {
         document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
@@ -263,6 +261,7 @@ const app = {
                 console.log('Qonversion automationsFinished');
             }
         });
+        console.log('Qonversion Automations setDelegate');
     },
 
     showScreen() {
@@ -272,7 +271,7 @@ const app = {
     },
 
     setScreenPresentationConfig() {
-        const config = new Qonversion.ScreenPresentationConfig(Qonversion.ScreenPresentationStyle.PUSH);
+        const config = new Qonversion.ScreenPresentationConfig(Qonversion.ScreenPresentationStyle.NO_ANIMATION, false);
         Qonversion.Automations.getSharedInstance().setScreenPresentationConfig(config);
         console.log('Qonversion setScreenPresentationConfig', config);
     },

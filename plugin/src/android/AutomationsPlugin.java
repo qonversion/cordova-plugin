@@ -30,7 +30,7 @@ public class AutomationsPlugin extends AnnotatedCordovaPlugin implements Automat
         automationsSandwich = new AutomationsSandwich();
     }
 
-    @PluginAction(thread = ExecutionThread.WORKER, actionName = "subscribe")
+    @PluginAction(thread = ExecutionThread.MAIN, actionName = "subscribe", isAutofinish = false)
     public void subscribe(CallbackContext callbackContext) {
         automationsEventDelegate = callbackContext;
         automationsSandwich.setDelegate(this);
@@ -56,10 +56,11 @@ public class AutomationsPlugin extends AnnotatedCordovaPlugin implements Automat
     }
 
     @PluginAction(thread = ExecutionThread.WORKER, actionName = "setScreenPresentationConfig")
-    public void setScreenPresentationConfig(JSONObject configData, @Nullable String screenId) {
+    public void setScreenPresentationConfig(JSONObject configData, @Nullable String screenId, CallbackContext callbackContext) {
         try {
             final Map<String, Object> config = EntitiesConverter.toMap(configData);
             automationsSandwich.setScreenPresentationConfig(config, screenId);
+            callbackContext.success();
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -74,10 +75,13 @@ public class AutomationsPlugin extends AnnotatedCordovaPlugin implements Automat
                     payloadJson = EntitiesConverter.convertMapToJson(payload);
                 }
 
-                JSONObject result = new JSONObject();
-                result.put("event", event.getKey());
-                result.put("payload", payloadJson);
-                automationsEventDelegate.success(result);
+                JSONObject data = new JSONObject();
+                data.put("event", event.getKey());
+                data.put("payload", payloadJson);
+
+                PluginResult result = new PluginResult(PluginResult.Status.OK, data);
+                result.setKeepCallback(true);
+                automationsEventDelegate.sendPluginResult(result);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
