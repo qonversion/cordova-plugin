@@ -12,7 +12,7 @@
 + (void)returnCordovaResult:(NSDictionary *)result
                       error:(SandwichError *)error
                     command:(CDVInvokedUrlCommand *)command
-                   delegate:id <CDVCommandDelegate> commandDelegate {
+                   delegate:(id <CDVCommandDelegate>)commandDelegate {
     CDVPluginResult *pluginResult = nil;
     if (error) {
         NSMutableDictionary *errorInfo = [NSMutableDictionary new];

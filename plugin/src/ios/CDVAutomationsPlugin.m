@@ -52,7 +52,7 @@
     __block __weak CDVAutomationsPlugin *weakSelf = self;
     NSString *screenId = [command argumentAtIndex:0];
     [self.automationsSandwich showScreen:screenId completion:^(NSDictionary<NSString *,id> * _Nullable result, SandwichError * _Nullable error) {
-        [QONUtils returnCordovaResult:result error:error command:command delegate:weakSelf.commandDelegate];
+        [QCUtils returnCordovaResult:result error:error command:command delegate:weakSelf.commandDelegate];
     }];
 }
 
