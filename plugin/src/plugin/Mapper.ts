@@ -49,6 +49,7 @@ import {ProductInAppDetails} from "./ProductInAppDetails";
 import {ProductPrice} from "./ProductPrice";
 import {ProductPricingPhase} from "./ProductPricingPhase";
 import {ProductInstallmentPlanDetails} from "./ProductInstallmentPlanDetails";
+import {ScreenPresentationConfig} from './ScreenPresentationConfig';
 
 export type QProduct = {
   id: string;
@@ -292,6 +293,11 @@ type QUserProperty = {
 
 export type QUserProperties = {
   properties: QUserProperty[];
+};
+
+export type QAutomationEvent = {
+  event: string;
+  payload: Record<string, any>;
 };
 
 const priceMicrosRatio = 1000000;
@@ -1083,6 +1089,13 @@ class Mapper {
       default:
         return ExperimentGroupType.UNKNOWN;
     }
+  }
+
+  static convertScreenPresentationConfig(config: ScreenPresentationConfig): Object {
+    return {
+      presentationStyle: config.presentationStyle,
+      animated: config.animated ? '1' : '0',
+    };
   }
 
   static convertErrorCode(code: string): QonversionErrorCode {

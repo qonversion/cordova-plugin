@@ -14,7 +14,7 @@ import Mapper, {
 import {Offerings} from "./Offerings";
 import {Entitlement} from "./Entitlement";
 import {Product} from "./Product";
-import {callNative, isAndroid, isIos, noop} from "./utils";
+import {callQonversionNative, isAndroid, isIos, noop, subscribeOnQonversionNativeEvents} from "./utils";
 import {PromoPurchasesListener} from './PromoPurchasesListener';
 import {User} from './User';
 import {QonversionApi} from './QonversionApi';
@@ -36,31 +36,35 @@ export default class QonversionInternal implements QonversionApi {
   promoPurchasesListener: PromoPurchasesListener | undefined;
 
   constructor(qonversionConfig: QonversionConfig) {
-    callNative('storeSDKInfo', ['cordova', sdkVersion]).then(noop);
-    callNative<Record<string, QEntitlement>>('initializeSdk', [
-      qonversionConfig.projectKey,
-      qonversionConfig.launchMode,
-      qonversionConfig.environment,
-      qonversionConfig.entitlementsCacheLifetime,
-      qonversionConfig.proxyUrl,
-      qonversionConfig.kidsMode
-    ]).then((updatedEntitlements) => {
-      if (this.entitlementsUpdateListener) {
-        const entitlements = Mapper.convertEntitlements(updatedEntitlements);
-        this.entitlementsUpdateListener.onEntitlementsUpdated(entitlements);
-      }
-    });
+    callQonversionNative('storeSDKInfo', ['cordova', sdkVersion]).then(noop);
+    subscribeOnQonversionNativeEvents<Record<string, QEntitlement>>(
+      'initializeSdk',
+      (updatedEntitlements) => {
+        if (this.entitlementsUpdateListener) {
+          const entitlements = Mapper.convertEntitlements(updatedEntitlements);
+          this.entitlementsUpdateListener.onEntitlementsUpdated(entitlements);
+        }
+      },
+      [
+        qonversionConfig.projectKey,
+        qonversionConfig.launchMode,
+        qonversionConfig.environment,
+        qonversionConfig.entitlementsCacheLifetime,
+        qonversionConfig.proxyUrl,
+        qonversionConfig.kidsMode
+      ]
+    );
 
     this.entitlementsUpdateListener = qonversionConfig.entitlementsUpdateListener;
   }
 
   syncHistoricalData () {
-    callNative('syncHistoricalData').then(noop);
+    callQonversionNative('syncHistoricalData').then(noop);
   }
 
   syncStoreKit2Purchases() {
     if (isIos()) {
-      callNative('syncStoreKit2Purchases').then(noop);
+      callQonversionNative('syncStoreKit2Purchases').then(noop);
     }
   }
 
@@ -77,7 +81,7 @@ export default class QonversionInternal implements QonversionApi {
         args = [...args, options.offerId, options.applyOffer, options.oldProduct?.qonversionID, options.updatePolicy, options.contextKeys];
       }
 
-      const entitlements = await callNative<Record<string, QEntitlement>>('purchase', args);
+      const entitlements = await callQonversionNative<Record<string, QEntitlement>>('purchase', args);
 
       // noinspection UnnecessaryLocalVariableJS
       const mappedPermissions = Mapper.convertEntitlements(entitlements);
@@ -99,7 +103,7 @@ export default class QonversionInternal implements QonversionApi {
       if (isAndroid()) {
         args = [...args, purchaseModel.offerId, purchaseModel.applyOffer, null, null, []];
       }
-      const entitlements = await callNative<Record<string, QEntitlement>>('purchase', args);
+      const entitlements = await callQonversionNative<Record<string, QEntitlement>>('purchase', args);
 
       // noinspection UnnecessaryLocalVariableJS
       const mappedEntitlement = Mapper.convertEntitlements(entitlements);
@@ -121,7 +125,7 @@ export default class QonversionInternal implements QonversionApi {
     }
 
     try {
-      const entitlements = await callNative<Record<string, QEntitlement>>(
+      const entitlements = await callQonversionNative<Record<string, QEntitlement>>(
         'updatePurchase',
         [
           purchaseUpdateModel.productId,
@@ -148,7 +152,7 @@ export default class QonversionInternal implements QonversionApi {
   }
 
   async products(): Promise<Map<string, Product>> {
-    let products = await callNative<Record<string, QProduct>>('products');
+    let products = await callQonversionNative<Record<string, QProduct>>('products');
     // noinspection UnnecessaryLocalVariableJS
     const mappedProducts: Map<string, Product> = Mapper.convertProducts(
       products
@@ -158,7 +162,7 @@ export default class QonversionInternal implements QonversionApi {
   }
 
   async offerings(): Promise<Offerings | null> {
-    let offerings = await callNative<QOfferings>('offerings');
+    let offerings = await callQonversionNative<QOfferings>('offerings');
     // noinspection UnnecessaryLocalVariableJS
     const mappedOfferings = Mapper.convertOfferings(offerings);
 
@@ -168,7 +172,7 @@ export default class QonversionInternal implements QonversionApi {
   async checkTrialIntroEligibility(
     ids: string[]
   ): Promise<Map<string, IntroEligibility>> {
-    const eligibilityInfo = await callNative<Record<string, QTrialIntroEligibility>>(
+    const eligibilityInfo = await callQonversionNative<Record<string, QTrialIntroEligibility>>(
       'checkTrialIntroEligibilityForProductIds',
       [ids]
     );
@@ -183,7 +187,7 @@ export default class QonversionInternal implements QonversionApi {
   }
 
   async checkEntitlements(): Promise<Map<string, Entitlement>> {
-    const entitlements = await callNative<Record<string, QEntitlement>>('checkEntitlements');
+    const entitlements = await callQonversionNative<Record<string, QEntitlement>>('checkEntitlements');
 
     // noinspection UnnecessaryLocalVariableJS
     const mappedEntitlement: Map<
@@ -195,7 +199,7 @@ export default class QonversionInternal implements QonversionApi {
   }
 
   async restore(): Promise<Map<string, Entitlement>> {
-    const entitlements = await callNative<Record<string, QEntitlement>>('restore');
+    const entitlements = await callQonversionNative<Record<string, QEntitlement>>('restore');
 
     // noinspection UnnecessaryLocalVariableJS
     const mappedEntitlement: Map<
@@ -211,17 +215,17 @@ export default class QonversionInternal implements QonversionApi {
       return;
     }
 
-    callNative('syncPurchases').then(noop);
+    callQonversionNative('syncPurchases').then(noop);
   }
 
   async isFallbackFileAccessible(): Promise<Boolean> {
-    const isAccessibleResult = await callNative<QEmptySuccessResult>('isFallbackFileAccessible');
+    const isAccessibleResult = await callQonversionNative<QEmptySuccessResult>('isFallbackFileAccessible');
 
     return isAccessibleResult.success;
   }
 
   async identify(userID: string): Promise<User> {
-    const info = await callNative<QUser>('identify', [userID]);
+    const info = await callQonversionNative<QUser>('identify', [userID]);
 
     // noinspection UnnecessaryLocalVariableJS
     const mappedUserInfo: User = Mapper.convertUserInfo(info);
@@ -230,11 +234,11 @@ export default class QonversionInternal implements QonversionApi {
   }
 
   logout() {
-    callNative('logout').then(noop);
+    callQonversionNative('logout').then(noop);
   }
 
   async userInfo(): Promise<User> {
-    const info = await callNative<QUser>('userInfo');
+    const info = await callQonversionNative<QUser>('userInfo');
 
     // noinspection UnnecessaryLocalVariableJS
     const mappedUserInfo: User = Mapper.convertUserInfo(info);
@@ -243,7 +247,7 @@ export default class QonversionInternal implements QonversionApi {
   }
 
   async remoteConfig(contextKey: string | undefined): Promise<RemoteConfig> {
-    const remoteConfig = await callNative<QRemoteConfig>('remoteConfig', [contextKey]);
+    const remoteConfig = await callQonversionNative<QRemoteConfig>('remoteConfig', [contextKey]);
     // noinspection UnnecessaryLocalVariableJS
     const mappedRemoteConfig: RemoteConfig = Mapper.convertRemoteConfig(
         remoteConfig
@@ -253,7 +257,7 @@ export default class QonversionInternal implements QonversionApi {
   }
 
   async remoteConfigList(): Promise<RemoteConfigList> {
-    const remoteConfigList = await callNative<QRemoteConfigList>('remoteConfigList');
+    const remoteConfigList = await callQonversionNative<QRemoteConfigList>('remoteConfigList');
     // noinspection UnnecessaryLocalVariableJS
     const mappedRemoteConfigList: RemoteConfigList = Mapper.convertRemoteConfigList(remoteConfigList);
 
@@ -261,7 +265,7 @@ export default class QonversionInternal implements QonversionApi {
   }
 
   async remoteConfigListForContextKeys(contextKeys: string[], includeEmptyContextKey: boolean): Promise<RemoteConfigList> {
-    let remoteConfigList = await callNative<QRemoteConfigList>('remoteConfigListForContextKeys', [contextKeys, includeEmptyContextKey]);
+    let remoteConfigList = await callQonversionNative<QRemoteConfigList>('remoteConfigListForContextKeys', [contextKeys, includeEmptyContextKey]);
     // noinspection UnnecessaryLocalVariableJS
     const mappedRemoteConfigList: RemoteConfigList = Mapper.convertRemoteConfigList(remoteConfigList);
 
@@ -269,27 +273,27 @@ export default class QonversionInternal implements QonversionApi {
   }
 
   async attachUserToExperiment(experimentId: string, groupId: string): Promise<void> {
-    await callNative('attachUserToExperiment', [experimentId, groupId]);
+    await callQonversionNative('attachUserToExperiment', [experimentId, groupId]);
     return;
   }
 
   async detachUserFromExperiment(experimentId: string): Promise<void> {
-    await callNative('detachUserFromExperiment', [experimentId]);
+    await callQonversionNative('detachUserFromExperiment', [experimentId]);
     return;
   }
 
   async attachUserToRemoteConfiguration(remoteConfigurationId: string): Promise<void> {
-    await callNative('attachUserToRemoteConfiguration', [remoteConfigurationId]);
+    await callQonversionNative('attachUserToRemoteConfiguration', [remoteConfigurationId]);
     return;
   }
 
   async detachUserFromRemoteConfiguration(remoteConfigurationId: string): Promise<void> {
-    await callNative('detachUserFromRemoteConfiguration', [remoteConfigurationId]);
+    await callQonversionNative('detachUserFromRemoteConfiguration', [remoteConfigurationId]);
     return;
   }
 
   attribution(data: Object, provider: AttributionProvider) {
-    callNative('attribution', [data, provider]).then(noop);
+    callQonversionNative('attribution', [data, provider]).then(noop);
   }
 
   setUserProperty(property: UserPropertyKey, value: string) {
@@ -299,15 +303,15 @@ export default class QonversionInternal implements QonversionApi {
       return;
     }
 
-    callNative('setDefinedProperty', [property, value]).then(noop);
+    callQonversionNative('setDefinedProperty', [property, value]).then(noop);
   }
 
   setCustomUserProperty(property: string, value: string) {
-    callNative('setCustomProperty', [property, value]).then(noop);
+    callQonversionNative('setCustomProperty', [property, value]).then(noop);
   }
 
   async userProperties(): Promise<UserProperties> {
-    const properties = await callNative<QUserProperties>('userProperties');
+    const properties = await callQonversionNative<QUserProperties>('userProperties');
     // noinspection UnnecessaryLocalVariableJS
     const mappedUserProperties: UserProperties = Mapper.convertUserProperties(properties);
 
@@ -316,13 +320,13 @@ export default class QonversionInternal implements QonversionApi {
 
   collectAdvertisingId() {
     if (isIos()) {
-      callNative('collectAdvertisingId').then(noop);
+      callQonversionNative('collectAdvertisingId').then(noop);
     }
   }
 
   collectAppleSearchAdsAttribution() {
     if (isIos()) {
-      callNative('collectAppleSearchAdsAttribution').then(noop);
+      callQonversionNative('collectAppleSearchAdsAttribution').then(noop);
     }
   }
 
@@ -336,31 +340,34 @@ export default class QonversionInternal implements QonversionApi {
     }
 
     this.promoPurchasesListener = delegate;
-    callNative<string>('subscribeOnPromoPurchases').then(productId => {
-      if (this.promoPurchasesListener) {
-        const promoPurchaseExecutor = async () => {
-          const entitlements = await callNative<Record<string, QEntitlement>>(
-            'promoPurchase',
-            [productId],
+    subscribeOnQonversionNativeEvents<string>(
+      'subscribeOnPromoPurchases',
+      productId => {
+        if (this.promoPurchasesListener) {
+          const promoPurchaseExecutor = async () => {
+            const entitlements = await callQonversionNative<Record<string, QEntitlement>>(
+              'promoPurchase',
+              [productId],
+            );
+
+            // noinspection UnnecessaryLocalVariableJS
+            const mappedEntitlement: Map<string,
+              Entitlement> = Mapper.convertEntitlements(entitlements);
+
+            return mappedEntitlement;
+          };
+          this.promoPurchasesListener.onPromoPurchaseReceived(
+            productId,
+            promoPurchaseExecutor,
           );
-
-          // noinspection UnnecessaryLocalVariableJS
-          const mappedEntitlement: Map<string,
-            Entitlement> = Mapper.convertEntitlements(entitlements);
-
-          return mappedEntitlement;
-        };
-        this.promoPurchasesListener.onPromoPurchaseReceived(
-          productId,
-          promoPurchaseExecutor,
-        );
+        }
       }
-    });
+    );
   }
 
   presentCodeRedemptionSheet() {
     if (isIos()) {
-      callNative('presentCodeRedemptionSheet').then(noop);
+      callQonversionNative('presentCodeRedemptionSheet').then(noop);
     }
   }
 }

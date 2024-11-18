@@ -26,6 +26,7 @@ import {
   ProductType,
   PurchaseUpdatePolicy,
   QonversionErrorCode,
+  ScreenPresentationStyle,
   SKPeriodUnit,
   SKProductDiscountPaymentMode,
   SKProductDiscountType,
@@ -60,11 +61,18 @@ import {PurchaseModel} from './PurchaseModel';
 import {PurchaseUpdateModel} from './PurchaseUpdateModel';
 import {PurchaseOptions} from './PurchaseOptions';
 import {PurchaseOptionsBuilder} from './PurchaseOptionsBuilder';
+import {ScreenPresentationConfig} from './ScreenPresentationConfig';
+import {Automations} from './Automations';
 
 export default class Qonversion {
   private constructor() {}
 
   private static backingInstance: QonversionApi | undefined;
+
+  /**
+   * Use this variable to access Automations part of the Qonversion SDK.
+   */
+  static Automations = Automations;
 
   /**
    * Use this variable to get a current initialized instance of the Qonversion SDK.
@@ -149,6 +157,8 @@ export default class Qonversion {
   static PurchaseUpdateModel = PurchaseUpdateModel;
   static PurchaseOptions = PurchaseOptions;
   static PurchaseOptionsBuilder = PurchaseOptionsBuilder;
+  static ScreenPresentationConfig = ScreenPresentationConfig;
+  static ScreenPresentationStyle = ScreenPresentationStyle;
   static QonversionError = QonversionError;
   static QonversionErrorCode = QonversionErrorCode;
   static User = User;

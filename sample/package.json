@@ -17,7 +17,7 @@
   "author": "Apache Cordova Team",
   "license": "Apache-2.0",
   "devDependencies": {
-    "cordova-android": "^11.0.0",
+    "cordova-android": "^13.0.0",
     "cordova-annotated-plugin-android": "^1.0.4",
     "cordova-ios": "^6.3.0",
     "cordova-plugin-device": "^3.0.0",
@@ -25,8 +25,8 @@
   },
   "cordova": {
     "platforms": [
-      "android",
-      "ios"
+      "ios",
+      "android"
     ],
     "plugins": {
       "cordova-plugin-qonversion": {}
