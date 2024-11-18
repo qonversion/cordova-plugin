@@ -10,18 +10,45 @@ export const isAndroid = (): boolean => {
     return device.platform === "Android"
 }
 
-export const NATIVE_MODULE_NAME = 'QonversionPlugin';
+const QONVERSION_NATIVE_MODULE_NAME = 'QonversionPlugin';
+const AUTOMATIONS_NATIVE_MODULE_NAME = 'AutomationsPlugin';
 
-export const callNative = <T>(methodName: string, args?: any[]): Promise<T> => {
+export const callQonversionNative = <T>(methodName: string, args?: any[]): Promise<T> => {
+    return callNative(QONVERSION_NATIVE_MODULE_NAME, methodName, args);
+}
+
+export const subscribeOnQonversionNativeEvents = <T>(methodName: string, callback: (event: T) => void, args?: any[]) => {
+    return subscribeOnNativeEvents(QONVERSION_NATIVE_MODULE_NAME, methodName, callback, args);
+}
+
+export const callAutomationsNative = <T>(methodName: string, args?: any[]): Promise<T> => {
+    return callNative(AUTOMATIONS_NATIVE_MODULE_NAME, methodName, args);
+}
+
+export const subscribeOnAutomationsNativeEvents = <T>(methodName: string, callback: (event: T) => void, args?: any[]) => {
+    return subscribeOnNativeEvents(AUTOMATIONS_NATIVE_MODULE_NAME, methodName, callback, args);
+}
+
+const callNative = <T>(moduleName: string, methodName: string, args?: any[]): Promise<T> => {
     return new Promise((resolve, reject) => {
         window.cordova.exec(
           (result: any) => resolve(result),
           (error: any) => reject(error),
-          NATIVE_MODULE_NAME,
+          moduleName,
           methodName,
           args ?? [],
         );
     });
+}
+
+const subscribeOnNativeEvents = <T>(moduleName: string, methodName: string, callback: (event: T) => void, args?: any[]) => {
+    window.cordova.exec(
+      callback,
+      () => console.log('Error occurred while receiving native event'),
+      moduleName,
+      methodName,
+      args ?? [],
+    );
 }
 
 export const noop = () => {};

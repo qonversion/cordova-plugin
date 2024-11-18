@@ -48,6 +48,9 @@ const app = {
         document.getElementById("collect-apple-search-ads-attribution").addEventListener("click", this.collectAppleSearchAdsAttribution);
         document.getElementById("set-promo-purchases-delegate").addEventListener("click", this.setPromoPurchasesDelegate);
         document.getElementById("present-code-redemption-sheet").addEventListener("click", this.presentCodeRedemptionSheet);
+        document.getElementById("set-delegate").addEventListener("click", this.setAutomationsDelegate);
+        document.getElementById("show-screen").addEventListener("click", this.showScreen);
+        document.getElementById("set-screen-presentation-config").addEventListener("click", this.setScreenPresentationConfig);
     },
 
     onDeviceReady: function() {
@@ -234,6 +237,45 @@ const app = {
     presentCodeRedemptionSheet() {
         Qonversion.getSharedInstance().presentCodeRedemptionSheet();
         console.log('Qonversion presentCodeRedemptionSheet');
+    },
+
+    setAutomationsDelegate() {
+        Qonversion.Automations.getSharedInstance().setDelegate({
+            automationsDidFailExecuting(actionResult) {
+                console.log('Qonversion automationsDidFailExecuting', actionResult);
+            },
+
+            automationsDidFinishExecuting(actionResult) {
+                console.log('Qonversion automationsDidFinishExecuting', actionResult);
+            },
+
+            automationsDidShowScreen(screenId) {
+                console.log('Qonversion automationsDidShowScreen', screenId);
+            },
+
+            automationsDidStartExecuting(actionResult) {
+                console.log('Qonversion automationsDidStartExecuting', actionResult);
+            },
+
+            automationsFinished() {
+                console.log('Qonversion automationsFinished');
+            }
+        });
+        console.log('Qonversion Automations setDelegate');
+    },
+
+    showScreen() {
+        const screenId = document.getElementById('screen-id').value;
+        Qonversion.Automations.getSharedInstance().showScreen(screenId);
+        console.log('Qonversion showScreen', screenId);
+    },
+
+    setScreenPresentationConfig() {
+        const config = device.platform === "iOS" ?
+          new Qonversion.ScreenPresentationConfig(Qonversion.ScreenPresentationStyle.PUSH, false) :
+          new Qonversion.ScreenPresentationConfig(Qonversion.ScreenPresentationStyle.NO_ANIMATION);
+        Qonversion.Automations.getSharedInstance().setScreenPresentationConfig(config);
+        console.log('Qonversion setScreenPresentationConfig', config);
     },
 };
 

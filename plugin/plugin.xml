@@ -11,6 +11,7 @@
     </js-module>
 
     <!--  Internal files  -->
+    <js-module src="www/AutomationsInternal.js" name="AutomationsInternal" />
     <js-module src="www/QonversionInternal.js" name="QonversionInternal" />
     <js-module src="www/Mapper.js" name="Mapper" />
     <js-module src="www/utils.js" name="utils" />
@@ -18,6 +19,7 @@
     <js-module src="www/QonversionConfig.js" name="QonversionConfig" />
     <js-module src="www/QonversionConfigBuilder.js" name="QonversionConfigBuilder" />
     <js-module src="www/enums.js" name="enums" />
+    <js-module src="www/Automations.js" name="Automations" />
     <js-module src="www/ActionResult.js" name="ActionResult" />
     <js-module src="www/AutomationsEvent.js" name="AutomationsEvent" />
     <js-module src="www/Entitlement.js" name="Entitlement" />
@@ -45,6 +47,7 @@
     <js-module src="www/User.js" name="User" />
     <js-module src="www/UserProperties.js" name="UserProperties" />
     <js-module src="www/UserProperty.js" name="UserProperty" />
+    <js-module src="www/ScreenPresentationConfig.js" name="ScreenPresentationConfig" />
     <js-module src="www/SKProduct.js" name="SKProduct" />
     <js-module src="www/SKProductDiscount.js" name="SKProductDiscount" />
     <js-module src="www/SKSubscriptionPeriod.js" name="SKSubscriptionPeriod" />
@@ -56,8 +59,12 @@
             <feature name="QonversionPlugin" >
                 <param name="android-package" value="com.qonversion.android.sdk.QonversionPlugin"/>
             </feature>
+            <feature name="AutomationsPlugin" >
+                <param name="android-package" value="com.qonversion.android.sdk.AutomationsPlugin"/>
+            </feature>
         </config-file>
         <framework src="io.qonversion.sandwich:sandwich:5.1.7" />
+        <source-file src="src/android/AutomationsPlugin.java" target-dir="src/com/qonversion/android/sdk" />
         <source-file src="src/android/QonversionPlugin.java" target-dir="src/com/qonversion/android/sdk" />
         <source-file src="src/android/EntitiesConverter.java" target-dir="src/com/qonversion/android/sdk" />
         <source-file src="src/android/Utils.java" target-dir="src/com/qonversion/android/sdk" />
@@ -67,9 +74,16 @@
             <feature name="QonversionPlugin">
                 <param name="ios-package" value="CDVQonversionPlugin"/>
             </feature>
+            <feature name="AutomationsPlugin">
+                <param name="ios-package" value="CDVAutomationsPlugin"/>
+            </feature>
         </config-file>
         <header-file src="src/ios/CDVQonversionPlugin.h" />
         <source-file src="src/ios/CDVQonversionPlugin.m" />
+        <header-file src="src/ios/CDVAutomationsPlugin.h" />
+        <source-file src="src/ios/CDVAutomationsPlugin.m" />
+        <header-file src="src/ios/QCUtils.h" />
+        <source-file src="src/ios/QCUtils.m" />
         <podspec>
             <config>
                 <source url="https://github.com/CocoaPods/Specs.git"/>
