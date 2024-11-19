@@ -50,6 +50,8 @@ import {ProductPrice} from "./ProductPrice";
 import {ProductPricingPhase} from "./ProductPricingPhase";
 import {ProductInstallmentPlanDetails} from "./ProductInstallmentPlanDetails";
 import {ScreenPresentationConfig} from './ScreenPresentationConfig';
+import {SKPaymentDiscount} from './SKPaymentDiscount';
+import {PromotionalOffer} from './PromotionalOffer';
 
 export type QProduct = {
   id: string;
@@ -178,6 +180,19 @@ type QSKSubscriptionPeriod = {
   unit: keyof typeof SKPeriodUnit;
 };
 
+export type QPromotionalOffer = {
+  productDiscount: QProductDiscount,
+  paymentDiscount: QPaymentDiscount,
+}
+
+type QPaymentDiscount = {
+  identifier: string;
+  keyIdentifier: string;
+  nonce: string;
+  signature: string;
+  timestamp: number;
+};
+
 type QProductDiscount = {
   subscriptionPeriod: null | QSKSubscriptionPeriod;
   price: string;
@@ -222,6 +237,7 @@ export type QTransaction = {
   environment: string;
   ownershipType: string;
   type: string;
+  promoOfferId: string;
 }
 
 export type QOfferings = {
@@ -303,6 +319,15 @@ export type QAutomationEvent = {
 const priceMicrosRatio = 1000000;
 
 class Mapper {
+  static convertPromoOffer(
+      promoOffer: QPromotionalOffer
+  ): PromotionalOffer {
+    const productDiscount = this.convertProductDiscount(promoOffer.productDiscount);
+    const paymentDiscount = this.convertPaymentDiscount(promoOffer.paymentDiscount);
+
+    return new PromotionalOffer(productDiscount, paymentDiscount);
+  }
+
   static convertEntitlements(
     entitlements: Record<string, QEntitlement> | null | undefined
   ): Map<string, Entitlement> {
@@ -383,6 +408,7 @@ class Mapper {
         transaction.expirationTimestamp,
         transaction.transactionRevocationTimestamp,
         transaction.offerCode,
+        transaction.promoOfferId,
     );
   }
 
@@ -928,6 +954,10 @@ class Mapper {
       subscriptionPeriod.numberOfUnits,
       SKPeriodUnit[subscriptionPeriod.unit]
     );
+  }
+
+  static convertPaymentDiscount(discount: QPaymentDiscount): SKPaymentDiscount {
+    return new SKPaymentDiscount(discount.identifier, discount.keyIdentifier, discount.nonce, discount.signature, discount.timestamp)
   }
 
   static convertProductDiscount(discount: QProductDiscount): SKProductDiscount {

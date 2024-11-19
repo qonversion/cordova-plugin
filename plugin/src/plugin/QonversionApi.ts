@@ -12,6 +12,8 @@ import {UserProperties} from './UserProperties';
 import {PurchaseModel} from './PurchaseModel';
 import {PurchaseUpdateModel} from './PurchaseUpdateModel';
 import {PurchaseOptions} from "./PurchaseOptions";
+import {SKProductDiscount} from './SKProductDiscount';
+import {PromotionalOffer} from './PromotionalOffer';
 
 export interface QonversionApi {
 
@@ -26,6 +28,19 @@ export interface QonversionApi {
    * Call this function to sync purchases if you are using StoreKit2 and our SDK in Analytics mode.
    */
   syncStoreKit2Purchases(): void;
+
+  /**
+   * iOS only.
+   * Retrieve the promotional offer for the product if it exists.
+   * Make sure to call this function before displaying product details to the user.
+   * The generated signature for the promotional offer is valid for a single transaction.
+   * If the purchase fails, you need to call this function again to obtain a new promotional offer signature.
+   * Use this signature to complete the purchase through the purchase function, along with the purchase options object.
+   * @param product - product you want to purchase.
+   * @param discount - discount to create promotional offer signature.
+   * @returns the promise with the PromotionalOffer.
+   */
+  getPromotionalOffer(product: Product, discount: SKProductDiscount): Promise<PromotionalOffer | null>;
 
   /**
    * Make a purchase and validate it through server-to-server using Qonversion's Backend
