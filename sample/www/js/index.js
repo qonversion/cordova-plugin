@@ -27,6 +27,7 @@ const app = {
         document.getElementById("initialize-sdk").addEventListener("click", this.initializeSdk);
         document.getElementById("purchase").addEventListener("click", this.purchase);
         document.getElementById("update-purchase").addEventListener("click", this.updatePurchase);
+        document.getElementById("get-promo-offer").addEventListener("click", this.getPromoOffer);
         document.getElementById("get-products").addEventListener("click", this.getProducts);
         document.getElementById("get-remote-config").addEventListener("click", this.getRemoteConfig);
         document.getElementById("get-remote-config-list").addEventListener("click", this.getRemoteConfigList);
@@ -104,6 +105,31 @@ const app = {
             }
         } catch (e) {
             console.log('Qonversion updatePurchase failed', e);
+        }
+    },
+
+    async getPromoOffer() {
+        const productId = document.getElementById('product-id-promo').value;
+        const discountId = document.getElementById('discount-id-promo').value;
+        const products = await Qonversion.getSharedInstance().products();
+
+        const product = products.get(productId);
+        if (!product) {
+            console.log('Qonversion product not found: ', productId);
+            return;
+        }
+
+        const discount = product.skProduct.discounts.find(discount => discount.identifier === discountId);
+        if (!discount) {
+            console.log('Qonversion discount not found for requested product: ', discountId);
+            return;
+        }
+
+        try {
+            const promoOffer = await Qonversion.getSharedInstance().getPromotionalOffer(product, discount);
+            console.log('Qonversion getPromotionalOffer:', promoOffer);
+        } catch (e) {
+            console.log('Qonversion getPromotionalOffer failed', e);
         }
     },
 
