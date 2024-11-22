@@ -91,7 +91,7 @@
                 <source url="https://github.com/CocoaPods/Specs.git"/>
             </config>
             <pods use-frameworks="true">
-                <pod name="QonversionSandwich" spec="5.1.7" />
+                <pod name="QonversionSandwich" spec="5.2.0" />
             </pods>
         </podspec>
     </platform>

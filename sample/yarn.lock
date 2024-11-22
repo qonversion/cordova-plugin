@@ -221,7 +221,7 @@ cordova-plugin-device@^3.0.0:
   integrity sha512-g8fFYOvleeYpklWvHwZ/T8/IzJe/3O0MGVDIUoqBru4v8SNDAbNVD3oOqoOQANBWGFQMg7GIkAAl8errCHZ7zQ==
 
 "cordova-plugin-qonversion@file:../plugin":
-  version "6.1.4"
+  version "6.2.0"
   resolved "file:../plugin"
 
 cross-spawn@^7.0.1, cross-spawn@^7.0.3:

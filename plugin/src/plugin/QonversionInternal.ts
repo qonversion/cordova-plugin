@@ -75,8 +75,9 @@ export default class QonversionInternal implements QonversionApi {
     if (isAndroid()) {
       return null;
     }
+
     const args = [product.qonversionID, discount.identifier];
-    let promoOffer = await callQonversionNative<QPromotionalOffer>('getPromotionalOffer', args);
+    let promoOffer = await callQonversionNative<QPromotionalOffer | null>('getPromotionalOffer', args);
     const mappedPromoOffer: PromotionalOffer | null = Mapper.convertPromoOffer(promoOffer);
 
     return mappedPromoOffer;
