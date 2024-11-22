@@ -9,7 +9,8 @@ import Mapper, {
   QRemoteConfigList,
   QTrialIntroEligibility,
   QUser,
-  QUserProperties
+  QUserProperties,
+  QPromotionalOffer
 } from "./Mapper";
 import {Offerings} from "./Offerings";
 import {Entitlement} from "./Entitlement";
@@ -27,8 +28,10 @@ import {PurchaseModel} from './PurchaseModel';
 import {PurchaseUpdateModel} from './PurchaseUpdateModel';
 import {PurchaseOptions} from "./PurchaseOptions";
 import {PurchaseOptionsBuilder} from './PurchaseOptionsBuilder';
+import {SKProductDiscount} from './SKProductDiscount';
+import {PromotionalOffer} from './PromotionalOffer';
 
-const sdkVersion = "6.2.0";
+const sdkVersion = "6.3.0";
 
 export default class QonversionInternal implements QonversionApi {
 
@@ -68,15 +71,35 @@ export default class QonversionInternal implements QonversionApi {
     }
   }
 
+  async getPromotionalOffer(product: Product, discount: SKProductDiscount): Promise<PromotionalOffer | null> {
+    if (isAndroid()) {
+      return null;
+    }
+
+    const args = [product.qonversionID, discount.identifier];
+    let promoOffer = await callQonversionNative<QPromotionalOffer | null>('getPromotionalOffer', args);
+    const mappedPromoOffer: PromotionalOffer | null = Mapper.convertPromoOffer(promoOffer);
+
+    return mappedPromoOffer;
+  }
+
   async purchaseProduct(product: Product, options: PurchaseOptions | undefined): Promise<Map<string, Entitlement>> {
     try {
       if (!options) {
         options = new PurchaseOptionsBuilder().build();
       }
 
+      const promoOffer = {
+        productDiscountId: options.promotionalOffer?.productDiscount.identifier,
+        keyIdentifier: options.promotionalOffer?.paymentDiscount.keyIdentifier,
+        nonce: options.promotionalOffer?.paymentDiscount.nonce,
+        signature: options.promotionalOffer?.paymentDiscount.signature,
+        timestamp: options.promotionalOffer?.paymentDiscount.timestamp
+      };
+
       let args: any[] = [product.qonversionID]
       if (isIos()) {
-        args = [...args, options.quantity, options.contextKeys];
+        args = [...args, options.quantity, options.contextKeys, promoOffer];
       } else {
         args = [...args, options.offerId, options.applyOffer, options.oldProduct?.qonversionID, options.updatePolicy, options.contextKeys];
       }
