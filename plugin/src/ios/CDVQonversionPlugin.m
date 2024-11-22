@@ -115,6 +115,11 @@
 - (void)getPromotionalOffer:(CDVInvokedUrlCommand *)command {
     NSString *productId = [command argumentAtIndex:0];
     NSString *discountId = [command argumentAtIndex:1];
+    __block __weak CDVQonversionPlugin *weakSelf = self;
+
+    [self.qonversionSandwich getPromotionalOffer:productId productDiscountId:discountId completion:^(NSDictionary<NSString *,id> * _Nullable result, SandwichError * _Nullable error) {
+        [QCUtils returnCordovaResult:result error:error command:command delegate:weakSelf.commandDelegate];
+    }];
 }
 
 - (void)purchase:(CDVInvokedUrlCommand *)command {
