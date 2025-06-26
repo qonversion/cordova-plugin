@@ -16,8 +16,8 @@ end
 
 def upgrade_sandwich_android(new_version)
   path = "../plugin/plugin.xml"
-  regex = /<framework src=\"io\.qonversion\.sandwich:sandwich:.*\" \/>/
-  result_value = "<framework src=\"io.qonversion.sandwich:sandwich:#{new_version}\" />"
+  regex = /<framework src=\"io\.qonversion:sandwich:.*\" \/>/
+  result_value = "<framework src=\"io.qonversion:sandwich:#{new_version}\" />"
 
   update_file(path, regex, result_value)
 end
