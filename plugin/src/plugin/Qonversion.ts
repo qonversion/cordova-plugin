@@ -5,13 +5,10 @@ import {SKProduct} from './SKProduct';
 import {SKProductDiscount} from './SKProductDiscount';
 import {SKSubscriptionPeriod} from './SKSubscriptionPeriod';
 import {SkuDetails} from './SkuDetails';
-import {ActionResult} from './ActionResult';
-import {AutomationsEvent} from './AutomationsEvent';
 import {Entitlement} from './Entitlement';
 import {
-  ActionResultType,
+  ActionType,
   AttributionProvider,
-  AutomationsEventType,
   EntitlementGrantType,
   EntitlementRenewState,
   EntitlementsCacheLifetime,
@@ -20,6 +17,7 @@ import {
   ExperimentGroupType,
   IntroEligibilityStatus,
   LaunchMode,
+  NoCodesErrorCode,
   OfferingTag,
   PricingPhaseRecurrenceMode,
   PricingPhaseType,
@@ -62,7 +60,11 @@ import {PurchaseUpdateModel} from './PurchaseUpdateModel';
 import {PurchaseOptions} from './PurchaseOptions';
 import {PurchaseOptionsBuilder} from './PurchaseOptionsBuilder';
 import {ScreenPresentationConfig} from './ScreenPresentationConfig';
-import {Automations} from './Automations';
+import {NoCodes} from './NoCodes';
+import {NoCodesConfig} from './NoCodesConfig';
+import {NoCodesConfigBuilder} from './NoCodesConfigBuilder';
+import {NoCodesAction} from './NoCodesAction';
+import {NoCodesError} from './NoCodesError';
 
 export default class Qonversion {
   private constructor() {}
@@ -70,9 +72,9 @@ export default class Qonversion {
   private static backingInstance: QonversionApi | undefined;
 
   /**
-   * Use this variable to access Automations part of the Qonversion SDK.
+   * Use this variable to access NoCodes part of the SDK.
    */
-  static Automations = Automations;
+  static NoCodes = NoCodes;
 
   /**
    * Use this variable to get a current initialized instance of the Qonversion SDK.
@@ -109,8 +111,6 @@ export default class Qonversion {
    * Exports of library classes and enums to be accessible from Cordova application.
    */
   // DTO
-  static ActionResult = ActionResult;
-  static AutomationsEvent = AutomationsEvent;
   static Entitlement = Entitlement;
   static Transaction = Transaction;
   static RemoteConfig = RemoteConfig;
@@ -138,8 +138,12 @@ export default class Qonversion {
   static SKProductDiscountPaymentMode = SKProductDiscountPaymentMode;
   static OfferingTag = OfferingTag;
   static IntroEligibilityStatus = IntroEligibilityStatus;
-  static ActionResultType = ActionResultType;
-  static AutomationsEventType = AutomationsEventType;
+  static ActionType = ActionType;
+  static NoCodesAction = NoCodesAction;
+  static NoCodesError = NoCodesError;
+  static NoCodesErrorCode = NoCodesErrorCode;
+  static NoCodesConfig = NoCodesConfig;
+  static NoCodesConfigBuilder = NoCodesConfigBuilder;
   static IntroEligibility = IntroEligibility;
   static Offering = Offering;
   static Offerings = Offerings;
