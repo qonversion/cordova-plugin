@@ -1,102 +1,288 @@
 <!DOCTYPE html>
-<!--
-    Licensed to the Apache Software Foundation (ASF) under one
-    or more contributor license agreements.  See the NOTICE file
-    distributed with this work for additional information
-    regarding copyright ownership.  The ASF licenses this file
-    to you under the Apache License, Version 2.0 (the
-    "License"); you may not use this file except in compliance
-    with the License.  You may obtain a copy of the License at
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *; img-src 'self' data: content:;">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
+    <meta name="color-scheme" content="light dark">
+    <link rel="stylesheet" href="css/index.css">
+    <title>Qonversion SDK Demo</title>
+</head>
+<body>
+    <div class="app">
+        <!-- Header -->
+        <header class="header">
+            <button id="back-button" class="back-button hidden">← Back</button>
+            <h1 id="header-title">Qonversion SDK Demo</h1>
+        </header>
 
-    http://www.apache.org/licenses/LICENSE-2.0
+        <!-- Main Screen -->
+        <section id="main-screen" class="screen active">
+            <div class="logo-container">
+                <img src="img/logo.png" alt="Qonversion" class="logo">
+            </div>
+            
+            <div id="init-status" class="init-status">
+                <div class="status-indicator gray"></div>
+                <span>Not Initialized</span>
+            </div>
 
-    Unless required by applicable law or agreed to in writing,
-    software distributed under the License is distributed on an
-    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-     KIND, either express or implied.  See the License for the
-    specific language governing permissions and limitations
-    under the License.
--->
-<html>
-    <head>
-        <meta charset="utf-8">
-        <!--
-        Customize this policy to fit your own app's needs. For more guidance, please refer to the docs:
-            https://cordova.apache.org/docs/en/latest/
-        Some notes:
-            * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
-            * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
-                * Enable inline JS: add 'unsafe-inline' to default-src
-        -->
-        <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *; img-src 'self' data: content:;">
-        <meta name="format-detection" content="telephone=no">
-        <meta name="msapplication-tap-highlight" content="no">
-        <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
-        <meta name="color-scheme" content="light dark">
-        <link rel="stylesheet" href="css/index.css">
-        <title>Hello World</title>
-    </head>
-    <body>
-        <div class="app">
-            <h1>Qonversion Cordova Plugin</h1>
-            <div id="deviceready" class="blink">
-                <p class="event listening">Connecting to Device</p>
-                <p class="event received">Device is Ready</p>
+            <div id="user-info-section" class="user-info-section hidden">
+                <h3>Current User</h3>
+                <div class="user-info-row">
+                    <span class="label">Qonversion ID:</span>
+                    <span id="main-qonversion-id" class="value copy-text">-</span>
+                </div>
+                <div class="user-info-row">
+                    <span class="label">Identity ID:</span>
+                    <span id="main-identity-id" class="value copy-text">Anonymous</span>
+                </div>
             </div>
-            <div class="button-container">
-                <button id="initialize-sdk" type="button" class="qon-button top-margin">Initialize SDK</button>
-                <div class="row top-margin">
-                    <input placeholder="Product id" id="product-id" type="text" class="qon-input" name="product-id" />
-                    <input placeholder="Android Offer id" id="offer-id" type="text" class="qon-input" name="offer-id" />
-                    <button id="purchase" type="button" class="qon-button">Purchase</button>
-                </div>
-                <div class="row top-margin">
-                    <input placeholder="Product id" id="update-product-id" type="text" class="qon-input" name="update-product-id" />
-                    <input placeholder="Old Product id" id="update-product-old-id" type="text" class="qon-input" name="update-product-old-id" />
-                    <button id="update-purchase" type="button" class="qon-button">Update Purchase</button>
-                </div>
-                <button id="get-products" type="button" class="qon-button top-margin">Get Products</button>
-                <div class="row top-margin">
-                    <input placeholder="Product id" id="product-id-promo" type="text" class="qon-input" name="product-id" />
-                    <input placeholder="Discount id" id="discount-id-promo" type="text" class="qon-input" name="discount-id" />
-                    <button id="get-promo-offer" type="button" class="qon-button">Get Promo Offer</button>
-                </div>
-                <button id="get-remote-config" type="button" class="qon-button top-margin">Get Remote Config</button>
-                <button id="get-remote-config-list" type="button" class="qon-button top-margin">Get Remote Config List</button>
-                <button id="get-offerings" type="button" class="qon-button top-margin">Get Offerings</button>
-                <div class="row top-margin">
-                    <input placeholder="id1, id2, ..." id="product-ids" type="text" class="qon-input" name="product-ids" />
-                    <button id="check-trial-into" type="button" class="qon-button">Check trial/intro</button>
-                </div>
-                <button id="check-entitlements" type="button" class="qon-button top-margin">Check Entitlements</button>
-                <button id="restore" type="button" class="qon-button top-margin">Restore</button>
-                <button id="sync-purchases" type="button" class="qon-button top-margin">Sync Purchases</button>
-                <button id="sync-historical-data" type="button" class="qon-button top-margin">Sync Historical Data</button>
-                <div class="row top-margin">
-                    <input placeholder="User id" id="user-id" type="text" class="qon-input" name="user-id" />
-                    <button id="identify" type="button" class="qon-button">Identify</button>
-                </div>
-                <button id="logout" type="button" class="qon-button top-margin">Logout</button>
-                <button id="user-info" type="button" class="qon-button top-margin">User Info</button>
-                <button id="attribution" type="button" class="qon-button top-margin">Attribution</button>
-                <button id="set-user-property" type="button" class="qon-button top-margin">Set User Property</button>
-                <button id="set-custom-user-property" type="button" class="qon-button top-margin">Set Custom User Property</button>
-                <button id="user-properties" type="button" class="qon-button top-margin">User Properties</button>
-                <button id="set-entitlements-update-listener" type="button" class="qon-button top-margin">Set Entitlements Update Listener</button>
-                <button id="collect-advertising-id" type="button" class="qon-button top-margin">Collect Advertising Id</button>
-                <button id="collect-apple-search-ads-attribution" type="button" class="qon-button top-margin">Collect ASA Attribution</button>
-                <button id="set-promo-purchases-delegate" type="button" class="qon-button top-margin">Set Promo Purchases Delegate</button>
-                <button id="present-code-redemption-sheet" type="button" class="qon-button top-margin">Present Code Redemption Sheet</button>
-                <h3 class="top-margin">Automations</h3>
-                <button id="set-delegate" type="button" class="qon-button top-margin">Set Delegate</button>
-                <div class="row top-margin">
-                    <input placeholder="Screen id" id="screen-id" type="text" class="qon-input" name="screen-id" />
-                    <button id="show-screen" type="button" class="qon-button">Show Screen</button>
-                </div>
-                <button id="set-screen-presentation-config" type="button" class="qon-button top-margin">Set Screen Presentation Config</button>
+
+            <div class="menu-container">
+                <button class="menu-item" data-screen="products">Products</button>
+                <button class="menu-item" data-screen="entitlements">Entitlements</button>
+                <button class="menu-item" data-screen="offerings">Offerings</button>
+                <button class="menu-item" data-screen="remote-configs">Remote Configs</button>
+                <button class="menu-item" data-screen="user">User</button>
+                <button class="menu-item" data-screen="nocodes">No-Codes</button>
+                <button class="menu-item" data-screen="other">Other</button>
             </div>
+        </section>
+
+        <!-- Products Screen -->
+        <section id="products-screen" class="screen">
+            <div class="screen-content">
+                <button id="load-products" class="primary-button">Load Products</button>
+                <div id="products-list" class="list-container"></div>
+                
+                <div class="input-section">
+                    <h3>Purchase</h3>
+                    <input type="text" id="product-id" placeholder="Product ID" class="text-input">
+                    <input type="text" id="offer-id" placeholder="Android Offer ID (optional)" class="text-input">
+                    <button id="purchase-btn" class="primary-button">Purchase</button>
+                </div>
+
+                <div class="input-section">
+                    <h3>Update Purchase (Android)</h3>
+                    <input type="text" id="update-product-id" placeholder="New Product ID" class="text-input">
+                    <input type="text" id="old-product-id" placeholder="Old Product ID" class="text-input">
+                    <button id="update-purchase-btn" class="primary-button">Update Purchase</button>
+                </div>
+
+                <div class="input-section">
+                    <h3>Promo Offer (iOS)</h3>
+                    <input type="text" id="promo-product-id" placeholder="Product ID" class="text-input">
+                    <input type="text" id="discount-id" placeholder="Discount ID" class="text-input">
+                    <button id="get-promo-offer-btn" class="primary-button">Get Promo Offer</button>
+                </div>
+
+                <div class="input-section">
+                    <h3>Trial/Intro Eligibility</h3>
+                    <input type="text" id="eligibility-ids" placeholder="product1, product2, ..." class="text-input">
+                    <button id="check-eligibility-btn" class="primary-button">Check Eligibility</button>
+                    <div id="eligibility-result" class="result-container"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Entitlements Screen -->
+        <section id="entitlements-screen" class="screen">
+            <div class="screen-content">
+                <button id="check-entitlements" class="primary-button">Check Entitlements</button>
+                <button id="restore-purchases" class="primary-button">Restore Purchases</button>
+                <button id="sync-purchases" class="primary-button">Sync Purchases</button>
+                <button id="sync-historical" class="primary-button">Sync Historical Data</button>
+                <button id="set-entitlements-listener" class="primary-button">Set Entitlements Update Listener</button>
+                <div id="entitlements-list" class="list-container"></div>
+            </div>
+        </section>
+
+        <!-- Offerings Screen -->
+        <section id="offerings-screen" class="screen">
+            <div class="screen-content">
+                <button id="load-offerings" class="primary-button">Load Offerings</button>
+                <div id="offerings-list" class="list-container"></div>
+            </div>
+        </section>
+
+        <!-- Remote Configs Screen -->
+        <section id="remote-configs-screen" class="screen">
+            <div class="screen-content">
+                <button id="load-remote-config" class="primary-button">Load Remote Config</button>
+                <button id="load-remote-config-list" class="primary-button">Load Remote Config List</button>
+                <div id="remote-config-result" class="result-container"></div>
+            </div>
+        </section>
+
+        <!-- User Screen -->
+        <section id="user-screen" class="screen">
+            <div class="screen-content">
+                <div class="user-info-card">
+                    <h3>User Info</h3>
+                    <div class="user-info-row">
+                        <span class="label">Qonversion ID:</span>
+                        <span id="user-qonversion-id" class="value copy-text">-</span>
+                    </div>
+                    <div class="user-info-row">
+                        <span class="label">Identity ID:</span>
+                        <span id="user-identity-id" class="value copy-text">Anonymous</span>
+                    </div>
+                    <button id="load-user-info" class="secondary-button">Refresh User Info</button>
+                </div>
+
+                <div class="input-section">
+                    <h3>Identify / Logout</h3>
+                    <input type="text" id="identity-input" placeholder="User ID" class="text-input">
+                    <button id="identify-btn" class="primary-button">Identify</button>
+                    <button id="logout-btn" class="secondary-button">Logout</button>
+                </div>
+
+                <div class="input-section">
+                    <h3>User Properties</h3>
+                    <button id="load-user-properties" class="primary-button">Load Properties</button>
+                    <div id="user-properties-list" class="result-container"></div>
+
+                    <h4>Set Property</h4>
+                    <div class="radio-group">
+                        <label><input type="radio" name="property-type" value="email" checked> Email</label>
+                        <label><input type="radio" name="property-type" value="name"> Name</label>
+                        <label><input type="radio" name="property-type" value="advertisingId"> Advertising ID</label>
+                        <label><input type="radio" name="property-type" value="appsFlyerUserId"> AppsFlyer User ID</label>
+                        <label><input type="radio" name="property-type" value="adjustAdId"> Adjust Ad ID</label>
+                        <label><input type="radio" name="property-type" value="firebaseAppInstanceId"> Firebase ID</label>
+                        <label><input type="radio" name="property-type" value="custom"> Custom</label>
+                    </div>
+                    <input type="text" id="custom-property-key" placeholder="Custom Key" class="text-input hidden">
+                    <input type="text" id="property-value" placeholder="Property Value" class="text-input">
+                    <button id="set-property-btn" class="primary-button">Set Property</button>
+                </div>
+
+                <div class="input-section">
+                    <h3>Attribution</h3>
+                    <div class="radio-group">
+                        <label><input type="radio" name="attribution-provider" value="appsFlyer" checked> AppsFlyer</label>
+                        <label><input type="radio" name="attribution-provider" value="branch"> Branch</label>
+                        <label><input type="radio" name="attribution-provider" value="adjust"> Adjust</label>
+                        <label><input type="radio" name="attribution-provider" value="appleSearchAds"> Apple Search Ads</label>
+                        <label><input type="radio" name="attribution-provider" value="appleAdServices"> Apple Ad Services</label>
+                    </div>
+                    <textarea id="attribution-data" placeholder='{"key": "value"}' class="text-input textarea"></textarea>
+                    <button id="send-attribution-btn" class="primary-button">Send Attribution</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- No-Codes Screen -->
+        <section id="nocodes-screen" class="screen">
+            <div class="screen-content">
+                <div class="input-section">
+                    <h3>Initialize No-Codes</h3>
+                    <button id="init-nocodes-btn" class="primary-button">Initialize No-Codes SDK</button>
+                </div>
+
+                <div class="input-section">
+                    <h3>Show Screen</h3>
+                    <input type="text" id="context-key" placeholder="Context Key" class="text-input" value="kamo_test">
+                    <button id="show-screen-btn" class="primary-button">Show No-Code Screen</button>
+                </div>
+
+                <div class="input-section">
+                    <h3>Presentation Config</h3>
+                    <div class="radio-group">
+                        <label><input type="radio" name="presentation-style" value="fullScreen" checked> Full Screen</label>
+                        <label><input type="radio" name="presentation-style" value="popover"> Popover</label>
+                        <label><input type="radio" name="presentation-style" value="push"> Push</label>
+                        <label><input type="radio" name="presentation-style" value="noAnimation"> No Animation</label>
+                    </div>
+                    <label class="checkbox-label ios-only">
+                        <input type="checkbox" id="animated-checkbox"> Animated (iOS only)
+                    </label>
+                    <button id="set-presentation-config-btn" class="primary-button">Set Presentation Config</button>
+                </div>
+
+                <div class="input-section">
+                    <h3>Locale</h3>
+                    <input type="text" id="locale-input" placeholder="en, de, fr..." class="text-input">
+                    <button id="set-locale-btn" class="primary-button">Set Locale</button>
+                    <button id="reset-locale-btn" class="secondary-button">Reset to Device Default</button>
+                </div>
+
+                <button id="close-nocodes-btn" class="secondary-button">Close No-Codes Screen</button>
+
+                <div class="events-section">
+                    <h3>No-Codes Events</h3>
+                    <div id="nocodes-events" class="events-list"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Product Detail Screen -->
+        <section id="product-detail-screen" class="screen">
+            <div class="screen-content">
+                <div class="product-header">
+                    <h2 id="product-detail-title">Product</h2>
+                    <div id="product-detail-price" class="product-price"></div>
+                </div>
+
+                <div class="input-section">
+                    <h3>Basic Information</h3>
+                    <div id="product-basic-info"></div>
+                </div>
+
+                <div class="input-section">
+                    <h3>Pricing</h3>
+                    <div id="product-pricing-info"></div>
+                </div>
+
+                <div class="input-section">
+                    <h3>Store Information</h3>
+                    <div id="product-store-info"></div>
+                </div>
+
+                <div class="input-section">
+                    <h3>Subscription Details</h3>
+                    <div id="product-subscription-info"></div>
+                </div>
+
+                <div class="input-section">
+                    <h3>Android Offer (optional)</h3>
+                    <input type="text" id="detail-offer-id" placeholder="Offer ID for subscription" class="text-input">
+                </div>
+
+                <button id="purchase-product-btn" class="primary-button purchase-button">Purchase Product</button>
+            </div>
+        </section>
+
+        <!-- Other Screen -->
+        <section id="other-screen" class="screen">
+            <div class="screen-content">
+                <button id="check-fallback-file" class="primary-button">Check Fallback File Accessibility</button>
+                <div id="fallback-result" class="result-container"></div>
+
+                <div class="section-divider">
+                    <h3>iOS Only Methods</h3>
+                </div>
+                
+                <button id="collect-advertising-id" class="primary-button ios-only-btn">Collect Advertising ID</button>
+                <button id="collect-asa-attribution" class="primary-button ios-only-btn">Collect Apple Search Ads Attribution</button>
+                <button id="present-code-redemption" class="primary-button ios-only-btn">Present Code Redemption Sheet</button>
+                <button id="set-promo-delegate" class="primary-button ios-only-btn">Set Promo Purchases Delegate</button>
+            </div>
+        </section>
+
+        <!-- Toast -->
+        <div id="toast" class="toast hidden"></div>
+        
+        <!-- Loading Overlay -->
+        <div id="loading" class="loading-overlay hidden">
+            <div class="spinner"></div>
         </div>
-        <script src="cordova.js"></script>
-        <script src="js/index.js"></script>
-    </body>
+    </div>
+
+    <script src="cordova.js"></script>
+    <script src="js/index.js"></script>
+</body>
 </html>
