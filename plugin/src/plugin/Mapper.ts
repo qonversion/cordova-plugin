@@ -1,6 +1,7 @@
 import {
-  AutomationsEventType,
+  ActionType,
   EntitlementRenewState,
+  NoCodesErrorCode,
   EntitlementSource,
   ExperimentGroupType,
   IntroEligibilityStatus,
@@ -30,9 +31,9 @@ import {SKProduct} from "./SKProduct";
 import {SKProductDiscount} from "./SKProductDiscount";
 import {SKSubscriptionPeriod} from "./SKSubscriptionPeriod";
 import {SkuDetails} from "./SkuDetails";
-import {ActionResult} from "./ActionResult";
+import {NoCodesAction} from "./NoCodesAction";
+import {NoCodesError} from "./NoCodesError";
 import {QonversionError} from "./QonversionError";
-import {AutomationsEvent} from "./AutomationsEvent";
 import {User} from './User';
 import {Experiment} from "./Experiment";
 import {ExperimentGroup} from "./ExperimentGroup";
@@ -258,9 +259,30 @@ export type QTrialIntroEligibility = {
     | "intro_or_trial_ineligible";
 };
 
-type QAutomationsEvent = {
-  type: AutomationsEventType;
-  timestamp: number;
+export type QNoCodeEvent = {
+  event: string;
+  payload: Record<string, any>;
+};
+
+export type QNoCodeAction = {
+  type: ActionType;
+  parameters: Map<string, string | undefined>;
+  error: QNoCodesError | undefined;
+};
+
+export type QNoCodesError = {
+  code: string | undefined;
+  description: string | null | undefined;
+  additionalMessage: string | null | undefined;
+  domain: string | null | undefined;
+  qonversionError?: QQonversionError | null;
+};
+
+type QQonversionError = {
+  code: string | undefined;
+  description: string | null | undefined;
+  additionalMessage: string | null | undefined;
+  domain: string | null | undefined;
 };
 
 export type QEmptySuccessResult = {
@@ -309,11 +331,6 @@ type QUserProperty = {
 
 export type QUserProperties = {
   properties: QUserProperty[];
-};
-
-export type QAutomationEvent = {
-  event: string;
-  payload: Record<string, any>;
 };
 
 const priceMicrosRatio = 1000000;
@@ -1026,13 +1043,29 @@ class Mapper {
     }
   }
 
-  static convertActionResult(
+  static convertAction(
     payload: Record<string, any>
-  ): ActionResult {
-    return new ActionResult(
+  ): NoCodesAction {
+    return new NoCodesAction(
       payload["type"],
-      payload["value"],
-      this.convertQonversionError(payload["error"])
+      payload["parameters"],
+      this.convertNoCodesError(payload["error"])
+    );
+  }
+
+  static convertNoCodesError(
+    payload: Record<string, any> | undefined
+  ): NoCodesError | undefined {
+    if (!payload) return undefined;
+
+    const code = this.convertNoCodesErrorCode(payload["code"]);
+    const error = payload["qonversionError"] ? this.convertQonversionError(payload["qonversionError"]) : undefined;
+    return new NoCodesError(
+      code,
+      payload["description"],
+      payload["additionalMessage"],
+      payload["domain"],
+      error,
     );
   }
 
@@ -1050,13 +1083,35 @@ class Mapper {
     );
   }
 
-  static convertAutomationsEvent(
-    automationsEvent: QAutomationsEvent
-  ): AutomationsEvent {
-    return new AutomationsEvent(
-      automationsEvent.type,
-      automationsEvent.timestamp
-    );
+  static convertNoCodesErrorCode(code: string | undefined): NoCodesErrorCode {
+    if (!code) {
+      return NoCodesErrorCode.UNKNOWN;
+    }
+
+    switch (code) {
+      case NoCodesErrorCode.UNKNOWN: return NoCodesErrorCode.UNKNOWN;
+      case NoCodesErrorCode.BAD_NETWORK_REQUEST: return NoCodesErrorCode.BAD_NETWORK_REQUEST;
+      case NoCodesErrorCode.BAD_RESPONSE: return NoCodesErrorCode.BAD_RESPONSE;
+      case NoCodesErrorCode.ACTIVITY_START: return NoCodesErrorCode.ACTIVITY_START;
+      case NoCodesErrorCode.NETWORK_REQUEST_EXECUTION: return NoCodesErrorCode.NETWORK_REQUEST_EXECUTION;
+      case NoCodesErrorCode.SERIALIZATION: return NoCodesErrorCode.SERIALIZATION;
+      case NoCodesErrorCode.DESERIALIZATION: return NoCodesErrorCode.DESERIALIZATION;
+      case NoCodesErrorCode.REQUEST_DENIED: return NoCodesErrorCode.REQUEST_DENIED;
+      case NoCodesErrorCode.MAPPING: return NoCodesErrorCode.MAPPING;
+      case NoCodesErrorCode.BACKEND_ERROR: return NoCodesErrorCode.BACKEND_ERROR;
+      case NoCodesErrorCode.SCREEN_NOT_FOUND: return NoCodesErrorCode.SCREEN_NOT_FOUND;
+      case NoCodesErrorCode.QONVERSION_ERROR: return NoCodesErrorCode.QONVERSION_ERROR;
+      case NoCodesErrorCode.INTERNAL: return NoCodesErrorCode.INTERNAL;
+      case NoCodesErrorCode.AUTHORIZATION_FAILED: return NoCodesErrorCode.AUTHORIZATION_FAILED;
+      case NoCodesErrorCode.CRITICAL: return NoCodesErrorCode.CRITICAL;
+      case NoCodesErrorCode.PRODUCT_NOT_FOUND: return NoCodesErrorCode.PRODUCT_NOT_FOUND;
+      case NoCodesErrorCode.PRODUCTS_LOADING_FAILED: return NoCodesErrorCode.PRODUCTS_LOADING_FAILED;
+      case NoCodesErrorCode.RATE_LIMIT_EXCEEDED: return NoCodesErrorCode.RATE_LIMIT_EXCEEDED;
+      case NoCodesErrorCode.SCREEN_LOADING_FAILED: return NoCodesErrorCode.SCREEN_LOADING_FAILED;
+      case NoCodesErrorCode.SDK_INITIALIZATION_ERROR: return NoCodesErrorCode.SDK_INITIALIZATION_ERROR;
+    }
+
+    return NoCodesErrorCode.UNKNOWN;
   }
 
   static convertUserInfo(user: QUser): User {

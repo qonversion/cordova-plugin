@@ -1,0 +1,16 @@
+{
+    "ios": {
+        "debug": {
+            "codeSignIdentity": "Apple Development",
+            "developmentTeam": "5ZBNSPDUJ2",
+            "packageType": "development",
+            "automaticProvisioning": true
+        },
+        "release": {
+            "codeSignIdentity": "Apple Development",
+            "developmentTeam": "5ZBNSPDUJ2",
+            "packageType": "development",
+            "automaticProvisioning": true
+        }
+    }
+}
