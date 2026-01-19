@@ -93,7 +93,7 @@ public class QonversionPlugin extends AnnotatedCordovaPlugin implements Qonversi
                     ? null
                     : EntitiesConverter.convertArrayToStringList(contextKeys);
 
-            qonversionSandwich.purchase(
+            qonversionSandwich.purchaseWithResult(
                     productId,
                     offerId,
                     applyOffer,
@@ -105,19 +105,6 @@ public class QonversionPlugin extends AnnotatedCordovaPlugin implements Qonversi
             e.printStackTrace();
             callbackContext.error(e.getMessage());
         }
-    }
-
-    @PluginAction(thread = ExecutionThread.UI, actionName = "updatePurchase", isAutofinish = false)
-    public void updatePurchase(
-            String productId,
-            @Nullable String offerId,
-            @Nullable Boolean applyOffer,
-            String oldProductId,
-            @Nullable String updatePolicyKey,
-            @Nullable JSONArray contextKeys,
-            CallbackContext callbackContext
-    ) {
-        purchase(productId, offerId, applyOffer, oldProductId, updatePolicyKey, contextKeys, callbackContext);
     }
 
     @PluginAction(thread = ExecutionThread.WORKER, actionName = "setDefinedProperty")

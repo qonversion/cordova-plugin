@@ -39,9 +39,9 @@
     <js-module src="www/ProductPrice.js" name="ProductPrice" />
     <js-module src="www/ProductPricingPhase.js" name="ProductPricingPhase" />
     <js-module src="www/ProductStoreDetails.js" name="ProductStoreDetails" />
-    <js-module src="www/PurchaseModel.js" name="PurchaseModel" />
-    <js-module src="www/PurchaseUpdateModel.js" name="PurchaseUpdateModel" />
     <js-module src="www/PurchaseOptions.js" name="PurchaseOptions" />
+    <js-module src="www/PurchaseResult.js" name="PurchaseResult" />
+    <js-module src="www/StoreTransaction.js" name="StoreTransaction" />
     <js-module src="www/PromotionalOffer.js" name="PromotionalOffer" />
     <js-module src="www/PurchaseOptionsBuilder.js" name="PurchaseOptionsBuilder" />
     <js-module src="www/Experiment.js" name="Experiment" />

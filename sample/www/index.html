@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *; img-src 'self' data: content:;">
-    <meta name="format-detection" content="telephone=no">
-    <meta name="msapplication-tap-highlight" content="no">
-    <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
-    <meta name="color-scheme" content="light dark">
-    <link rel="stylesheet" href="css/index.css">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *; img-src 'self' data: content:;">
+        <meta name="format-detection" content="telephone=no">
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
+        <meta name="color-scheme" content="light dark">
+        <link rel="stylesheet" href="css/index.css">
     <title>Qonversion SDK Demo</title>
-</head>
-<body>
-    <div class="app">
+    </head>
+    <body>
+        <div class="app">
         <!-- Header -->
         <header class="header">
             <button id="back-button" class="back-button hidden">← Back</button>
@@ -210,6 +210,16 @@
                     <button id="reset-locale-btn" class="secondary-button">Reset to Device Default</button>
                 </div>
 
+                <div class="input-section">
+                    <h3>Custom Purchase Delegate</h3>
+                    <p class="hint-text">When enabled, purchases from No-Code screens will be handled by custom delegate instead of default SDK flow.</p>
+                    <div id="purchase-delegate-status" class="delegate-status">
+                        <span class="status-indicator gray"></span>
+                        <span>Disabled</span>
+                    </div>
+                    <button id="enable-purchase-delegate-btn" class="primary-button">Enable Purchase Delegate</button>
+                </div>
+
                 <button id="close-nocodes-btn" class="secondary-button">Close No-Codes Screen</button>
 
                 <div class="events-section">
@@ -280,9 +290,49 @@
         <div id="loading" class="loading-overlay hidden">
             <div class="spinner"></div>
         </div>
+
+        <!-- Purchase Result Modal -->
+        <div id="purchase-result-modal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span id="purchase-result-icon" class="status-icon"></span>
+                    <h2>Purchase Result</h2>
+                </div>
+                <div class="modal-body">
+                    <div class="result-section">
+                        <h4>Status</h4>
+                        <div class="result-row"><span class="label">Status:</span><span id="pr-status" class="value"></span></div>
+                        <div class="result-row"><span class="label">Source:</span><span id="pr-source" class="value"></span></div>
+                        <div class="result-row"><span class="label">Is Fallback:</span><span id="pr-is-fallback" class="value"></span></div>
+                    </div>
+                    <div id="pr-error-section" class="result-section hidden">
+                        <h4>Error</h4>
+                        <div class="result-row"><span class="label">Code:</span><span id="pr-error-code" class="value"></span></div>
+                        <div class="result-row"><span class="label">Message:</span><span id="pr-error-message" class="value"></span></div>
+                    </div>
+                    <div id="pr-transaction-section" class="result-section hidden">
+                        <h4>Store Transaction</h4>
+                        <div class="result-row"><span class="label">Transaction ID:</span><span id="pr-tx-id" class="value"></span></div>
+                        <div class="result-row"><span class="label">Original TX ID:</span><span id="pr-tx-original-id" class="value"></span></div>
+                        <div class="result-row"><span class="label">Product ID:</span><span id="pr-tx-product-id" class="value"></span></div>
+                        <div class="result-row"><span class="label">Quantity:</span><span id="pr-tx-quantity" class="value"></span></div>
+                        <div class="result-row"><span class="label">TX Date:</span><span id="pr-tx-date" class="value"></span></div>
+                        <div class="result-row"><span class="label">Promo Offer ID:</span><span id="pr-tx-promo-offer" class="value"></span></div>
+                        <div class="result-row"><span class="label">Purchase Token:</span><span id="pr-tx-token" class="value truncate"></span></div>
+                    </div>
+                    <div id="pr-entitlements-section" class="result-section hidden">
+                        <h4>Entitlements</h4>
+                        <div id="pr-entitlements-list"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="close-purchase-result-modal" class="primary-button">OK</button>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <script src="cordova.js"></script>
-    <script src="js/index.js"></script>
-</body>
+        <script src="cordova.js"></script>
+        <script src="js/index.js"></script>
+    </body>
 </html>

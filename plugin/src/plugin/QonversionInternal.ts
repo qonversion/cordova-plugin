@@ -1,4 +1,4 @@
-import {AttributionProvider, QonversionErrorCode, UserPropertyKey} from "./enums";
+import {AttributionProvider, UserPropertyKey} from "./enums";
 import {IntroEligibility} from "./IntroEligibility";
 import Mapper, {
   QEmptySuccessResult,
@@ -10,8 +10,10 @@ import Mapper, {
   QTrialIntroEligibility,
   QUser,
   QUserProperties,
-  QPromotionalOffer
+  QPromotionalOffer,
+  QPurchaseResult
 } from "./Mapper";
+import {PurchaseResult} from './PurchaseResult';
 import {Offerings} from "./Offerings";
 import {Entitlement} from "./Entitlement";
 import {Product} from "./Product";
@@ -24,8 +26,6 @@ import {EntitlementsUpdateListener} from './EntitlementsUpdateListener';
 import {RemoteConfig} from "./RemoteConfig";
 import {RemoteConfigList} from "./RemoteConfigList";
 import {UserProperties} from './UserProperties';
-import {PurchaseModel} from './PurchaseModel';
-import {PurchaseUpdateModel} from './PurchaseUpdateModel';
 import {PurchaseOptions} from "./PurchaseOptions";
 import {PurchaseOptionsBuilder} from './PurchaseOptionsBuilder';
 import {SKProductDiscount} from './SKProductDiscount';
@@ -83,8 +83,7 @@ export default class QonversionInternal implements QonversionApi {
     return mappedPromoOffer;
   }
 
-  async purchaseProduct(product: Product, options: PurchaseOptions | undefined): Promise<Map<string, Entitlement>> {
-    try {
+  async purchase(product: Product, options?: PurchaseOptions): Promise<PurchaseResult> {
       if (!options) {
         options = new PurchaseOptionsBuilder().build();
       }
@@ -104,74 +103,15 @@ export default class QonversionInternal implements QonversionApi {
         args = [...args, options.offerId, options.applyOffer, options.oldProduct?.qonversionID, options.updatePolicy, options.contextKeys];
       }
 
-      const entitlements = await callQonversionNative<Record<string, QEntitlement>>('purchase', args);
+    const purchaseResult = await callQonversionNative<QPurchaseResult>('purchase', args);
 
-      // noinspection UnnecessaryLocalVariableJS
-      const mappedPermissions = Mapper.convertEntitlements(entitlements);
+    const mappedPurchaseResult = Mapper.convertPurchaseResult(purchaseResult);
 
-      return mappedPermissions;
-    } catch (e: any) {
-      if (e) {
-        e.userCanceled = e.code === QonversionErrorCode.PURCHASE_CANCELED;
-        throw e;
-      } else {
-        throw 'Unknown error occurred while purchase';
-      }
-    }
-  }
-
-  async purchase(purchaseModel: PurchaseModel): Promise<Map<string, Entitlement>> {
-    try {
-      let args: any[] = [purchaseModel.productId]
-      if (isAndroid()) {
-        args = [...args, purchaseModel.offerId, purchaseModel.applyOffer, null, null, []];
-      }
-      const entitlements = await callQonversionNative<Record<string, QEntitlement>>('purchase', args);
-
-      // noinspection UnnecessaryLocalVariableJS
-      const mappedEntitlement = Mapper.convertEntitlements(entitlements);
-
-      return mappedEntitlement;
-    } catch (e: any) {
-      if (e) {
-        e.userCanceled = e.code === QonversionErrorCode.PURCHASE_CANCELED;
-        throw e;
-      } else {
-        throw 'Unknown error occurred while purchase';
-      }
-    }
-  }
-
-  async updatePurchase(purchaseUpdateModel: PurchaseUpdateModel): Promise<Map<string, Entitlement> | null> {
-    if (!isAndroid()) {
-      return null;
+    if (!mappedPurchaseResult) {
+      throw new Error('Failed to process purchase result');
     }
 
-    try {
-      const entitlements = await callQonversionNative<Record<string, QEntitlement>>(
-        'updatePurchase',
-        [
-          purchaseUpdateModel.productId,
-          purchaseUpdateModel.offerId,
-          purchaseUpdateModel.applyOffer,
-          purchaseUpdateModel.oldProductId,
-          purchaseUpdateModel.updatePolicy,
-          []
-        ]
-      );
-
-      // noinspection UnnecessaryLocalVariableJS
-      const mappedEntitlement: Map<string, Entitlement> = Mapper.convertEntitlements(entitlements);
-
-      return mappedEntitlement;
-    } catch (e: any) {
-      if (e) {
-        e.userCanceled = e.code === QonversionErrorCode.PURCHASE_CANCELED;
-        throw e;
-      } else {
-        throw 'Unknown error occurred while purchase';
-      }
-    }
+    return mappedPurchaseResult;
   }
 
   async products(): Promise<Map<string, Product>> {

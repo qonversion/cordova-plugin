@@ -128,7 +128,7 @@
     NSArray *contextKeys = [command argumentAtIndex:2];
     NSDictionary *promoOffer = [command argumentAtIndex:3];
     __block __weak CDVQonversionPlugin *weakSelf = self;
-    [self.qonversionSandwich purchase:productId quantity:[quantityNumber integerValue] contextKeys:contextKeys promoOffer:promoOffer completion:^(NSDictionary<NSString *,id> * _Nullable result, SandwichError * _Nullable error) {
+    [self.qonversionSandwich purchaseWithResult:productId quantity:[quantityNumber integerValue] contextKeys:contextKeys promoOffer:promoOffer completion:^(NSDictionary<NSString *,id> * _Nullable result, SandwichError * _Nullable error) {
         [QCUtils returnCordovaResult:result error:error command:command delegate:weakSelf.commandDelegate];
     }];
 }

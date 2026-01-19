@@ -9,6 +9,7 @@ const App = {
     // State
     isQonversionInitialized: false,
     isNoCodesInitialized: false,
+    isPurchaseDelegateEnabled: false,
     currentScreen: 'main',
     screenHistory: [],
     products: null,
@@ -89,6 +90,7 @@ const App = {
         document.getElementById('set-presentation-config-btn').addEventListener('click', () => this.setScreenPresentationConfig());
         document.getElementById('set-locale-btn').addEventListener('click', () => this.setLocale());
         document.getElementById('reset-locale-btn').addEventListener('click', () => this.resetLocale());
+        document.getElementById('enable-purchase-delegate-btn').addEventListener('click', () => this.enablePurchaseDelegate());
         document.getElementById('close-nocodes-btn').addEventListener('click', () => this.closeNoCodes());
 
         // Product Detail Screen
@@ -387,16 +389,95 @@ const App = {
             console.log('🔄 Purchasing product:', this.selectedProduct.qonversionId);
             
             const purchaseOptions = offerId ? new Qonversion.PurchaseOptionsBuilder().setOfferId(offerId).build() : undefined;
-            const entitlements = await Qonversion.getSharedInstance().purchaseProduct(this.selectedProduct, purchaseOptions);
+            const purchaseResult = await Qonversion.getSharedInstance().purchase(this.selectedProduct, purchaseOptions);
             
-            console.log('✅ Purchase successful:', entitlements);
-            this.showToast('Purchase successful!', 'success');
+            console.log('✅ Purchase result:', purchaseResult);
+            
+            // Show full purchase result in modal
+            this.showPurchaseResultModal(purchaseResult);
         } catch (error) {
             console.error('❌ Purchase failed:', error);
             this.showToast('Purchase failed: ' + error.message, 'error');
         } finally {
             this.hideLoading();
         }
+    },
+    
+    showPurchaseResultModal(result) {
+        const modal = document.getElementById('purchase-result-modal');
+        const icon = document.getElementById('purchase-result-icon');
+        
+        // Set status icon
+        if (result.isSuccess) {
+            icon.textContent = '✅';
+            icon.className = 'status-icon success';
+        } else if (result.isCanceled) {
+            icon.textContent = '⚠️';
+            icon.className = 'status-icon warning';
+        } else if (result.isPending) {
+            icon.textContent = '⏳';
+            icon.className = 'status-icon pending';
+        } else {
+            icon.textContent = '❌';
+            icon.className = 'status-icon error';
+        }
+        
+        // Status section
+        document.getElementById('pr-status').textContent = result.status || 'Unknown';
+        document.getElementById('pr-source').textContent = result.source || 'N/A';
+        document.getElementById('pr-is-fallback').textContent = result.isFallbackGenerated ? 'Yes' : 'No';
+        
+        // Error section
+        const errorSection = document.getElementById('pr-error-section');
+        if (result.error) {
+            errorSection.classList.remove('hidden');
+            document.getElementById('pr-error-code').textContent = result.error.code || 'N/A';
+            document.getElementById('pr-error-message').textContent = result.error.description || result.error.message || 'N/A';
+        } else {
+            errorSection.classList.add('hidden');
+        }
+        
+        // Store Transaction section
+        const txSection = document.getElementById('pr-transaction-section');
+        const tx = result.storeTransaction;
+        if (tx) {
+            txSection.classList.remove('hidden');
+            document.getElementById('pr-tx-id').textContent = tx.transactionId || 'N/A';
+            document.getElementById('pr-tx-original-id').textContent = tx.originalTransactionId || 'N/A';
+            document.getElementById('pr-tx-product-id').textContent = tx.productId || 'N/A';
+            document.getElementById('pr-tx-quantity').textContent = tx.quantity != null ? tx.quantity.toString() : 'N/A';
+            document.getElementById('pr-tx-date').textContent = tx.transactionDate ? tx.transactionDate.toISOString() : 'N/A';
+            document.getElementById('pr-tx-promo-offer').textContent = tx.promoOfferId || 'N/A';
+            document.getElementById('pr-tx-token').textContent = tx.purchaseToken 
+                ? (tx.purchaseToken.length > 30 ? tx.purchaseToken.substring(0, 30) + '...' : tx.purchaseToken) 
+                : 'N/A';
+        } else {
+            txSection.classList.add('hidden');
+        }
+        
+        // Entitlements section
+        const entSection = document.getElementById('pr-entitlements-section');
+        const entList = document.getElementById('pr-entitlements-list');
+        if (result.entitlements && result.entitlements.size > 0) {
+            entSection.classList.remove('hidden');
+            entList.innerHTML = '';
+            result.entitlements.forEach((ent, id) => {
+                const div = document.createElement('div');
+                div.className = 'entitlement-item';
+                div.textContent = `• ${id} (active: ${ent.isActive})`;
+                entList.appendChild(div);
+            });
+        } else {
+            entSection.classList.add('hidden');
+        }
+        
+        // Show modal
+        modal.classList.remove('hidden');
+        
+        // Close handler
+        document.getElementById('close-purchase-result-modal').onclick = () => {
+            modal.classList.add('hidden');
+        };
     },
 
     async purchase() {
@@ -422,10 +503,12 @@ const App = {
             }
 
             const purchaseOptions = offerId ? new Qonversion.PurchaseOptionsBuilder().setOfferId(offerId).build() : undefined;
-            const entitlements = await Qonversion.getSharedInstance().purchaseProduct(product, purchaseOptions);
+            const purchaseResult = await Qonversion.getSharedInstance().purchase(product, purchaseOptions);
             
-            console.log('✅ Purchase successful:', entitlements);
-            this.showToast('Purchase successful!', 'success');
+            console.log('✅ Purchase result:', purchaseResult);
+            
+            // Show full purchase result in modal
+            this.showPurchaseResultModal(purchaseResult);
         } catch (error) {
             console.error('❌ Purchase failed:', error);
             this.showToast('Purchase failed: ' + error.message, 'error');
@@ -979,6 +1062,106 @@ const App = {
         } catch (error) {
             console.error('❌ Close failed:', error);
             this.showToast('Error: ' + error.message, 'error');
+        }
+    },
+
+    enablePurchaseDelegate() {
+        if (!this.isNoCodesInitialized) {
+            this.showToast('Please initialize No-Codes first', 'error');
+            return;
+        }
+
+        if (this.isPurchaseDelegateEnabled) {
+            this.showToast('Purchase delegate is already enabled', 'error');
+            return;
+        }
+
+        try {
+            console.log('🔄 Enabling custom purchase delegate...');
+            
+            const self = this;
+            const purchaseDelegate = {
+                async purchase(product) {
+                    console.log('🛒 [PurchaseDelegate] purchase() called for:', product.qonversionId);
+                    self.addNoCodesEvent(`🛒 [Delegate] Purchase called: ${product.qonversionId}`);
+                    self.addNoCodesEvent(`   Store ID: ${product.storeId}`);
+                    self.addNoCodesEvent(`   Price: ${product.prettyPrice}`);
+                    
+                    // Use Qonversion SDK for actual purchase
+                    const result = await Qonversion.getSharedInstance().purchase(product);
+                    console.log('📦 [PurchaseDelegate] Purchase result:', result);
+                    self.addNoCodesEvent(`📦 [Delegate] Result status: ${result.status}`);
+                    
+                    // Check purchase result
+                    if (result.isSuccess) {
+                        console.log('✅ [PurchaseDelegate] Purchase successful');
+                        self.addNoCodesEvent(`✅ [Delegate] Purchase successful!`);
+                        // Success - just return, no need to throw
+                    } else if (result.isCanceled) {
+                        console.log('⚠️ [PurchaseDelegate] Purchase canceled by user');
+                        self.addNoCodesEvent(`⚠️ [Delegate] Purchase canceled by user`);
+                        throw new Error('Purchase canceled by user');
+                    } else if (result.isPending) {
+                        console.log('⏳ [PurchaseDelegate] Purchase pending');
+                        self.addNoCodesEvent(`⏳ [Delegate] Purchase pending`);
+                        // Pending might be considered success for delegate purposes
+                    } else if (result.isError) {
+                        const errorMsg = result.error?.description || result.error?.message || 'Unknown error';
+                        console.error('❌ [PurchaseDelegate] Purchase error:', errorMsg);
+                        self.addNoCodesEvent(`❌ [Delegate] Purchase error: ${errorMsg}`);
+                        throw new Error(errorMsg);
+                    }
+                },
+                async restore() {
+                    console.log('🔄 [PurchaseDelegate] restore() called');
+                    self.addNoCodesEvent('🔄 [Delegate] Restore called');
+                    
+                    // Use Qonversion SDK for actual restore
+                    try {
+                        const entitlements = await Qonversion.getSharedInstance().restore();
+                        console.log('✅ [PurchaseDelegate] Restore completed:', entitlements);
+                        self.addNoCodesEvent(`✅ [Delegate] Restore completed: ${entitlements.size} entitlements`);
+                    } catch (error) {
+                        console.error('❌ [PurchaseDelegate] Restore failed:', error);
+                        self.addNoCodesEvent(`❌ [Delegate] Restore failed: ${error.message}`);
+                        throw error;
+                    }
+                }
+            };
+
+            Qonversion.NoCodes.getSharedInstance().setPurchaseDelegate(purchaseDelegate);
+            
+            this.isPurchaseDelegateEnabled = true;
+            this.updatePurchaseDelegateStatus();
+            
+            console.log('✅ Custom purchase delegate enabled');
+            this.addNoCodesEvent('✅ Custom Purchase Delegate ENABLED');
+            this.showToast('Custom purchase delegate enabled!', 'success');
+        } catch (error) {
+            console.error('❌ Enable purchase delegate failed:', error);
+            this.showToast('Error: ' + error.message, 'error');
+        }
+    },
+
+    updatePurchaseDelegateStatus() {
+        const statusEl = document.getElementById('purchase-delegate-status');
+        const indicator = statusEl.querySelector('.status-indicator');
+        const text = statusEl.querySelector('span:last-child');
+        const btn = document.getElementById('enable-purchase-delegate-btn');
+        
+        indicator.className = 'status-indicator';
+        if (this.isPurchaseDelegateEnabled) {
+            indicator.classList.add('green');
+            text.textContent = 'Enabled';
+            btn.textContent = 'Purchase Delegate Enabled';
+            btn.disabled = true;
+            btn.style.opacity = '0.6';
+        } else {
+            indicator.classList.add('gray');
+            text.textContent = 'Disabled';
+            btn.textContent = 'Enable Purchase Delegate';
+            btn.disabled = false;
+            btn.style.opacity = '1';
         }
     },
 
