@@ -27,8 +27,6 @@
     "platforms": [
       "android"
     ],
-    "plugins": {
-      "cordova-plugin-qonversion": {}
-    }
+    "plugins": {}
   }
 }
