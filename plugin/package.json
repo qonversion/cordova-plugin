@@ -38,7 +38,8 @@
   },
   "homepage": "https://github.com/qonversion/cordova-plugin#readme",
   "publishConfig": {
-    "registry": "https://registry.npmjs.org/"
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
   },
   "devDependencies": {
     "typescript": "^4.9.4"
