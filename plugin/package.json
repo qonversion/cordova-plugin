@@ -1,9 +1,10 @@
 {
-  "name": "cordova-plugin-qonversion",
+  "name": "@qonversion/cordova-plugin",
+  "title": "Cordova Qonversion Plugin",
   "version": "7.0.0",
-  "description": "Qonversion Cordova Plugin",
+  "description": "Qonversion provides full in-app purchases infrastructure, so you do not need to build your own server for receipt validation. Implement in-app subscriptions, validate user receipts, check subscription status, and provide access to your app features and content using our StoreKit wrapper and Google Play Billing wrapper.",
   "cordova": {
-    "id": "cordova-plugin-qonversion",
+    "id": "@qonversion/cordova-plugin",
     "platforms": [
       "android",
       "ios"
@@ -12,21 +13,33 @@
   "scripts": {
     "build": "rm -rf ./www && tsc"
   },
-  "repository": "github:qonversion/cordova-plugin",
-  "bugs": "https://github.com/qonversion/cordova-plugin/issues",
   "keywords": [
     "cordova",
-    "inapp",
-    "Google billing",
-    "StoreKit",
-    "in-app",
     "qonversion",
-    "purchases",
+    "StoreKit",
+    "SKStoreKit",
+    "Google",
+    "Play",
+    "Billing",
+    "in-app",
+    "Purchases",
+    "inapp",
     "cordova-android",
     "cordova-ios"
   ],
-  "author": "Qonversion, Inc.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/qonversion/cordova-plugin.git"
+  },
+  "author": "Qonversion <hi@qonversion.io> (https://qonversion.io)",
   "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/qonversion/cordova-plugin/issues"
+  },
+  "homepage": "https://github.com/qonversion/cordova-plugin#readme",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
   "devDependencies": {
     "typescript": "^4.9.4"
   }
