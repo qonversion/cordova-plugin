@@ -58,18 +58,18 @@ export default class NoCodesInternal implements NoCodesApi {
     callNoCodesNative('setLocale', [locale]).then(noop);
   }
 
+  setPurchaseDelegate(delegate: PurchaseDelegate): void {
+    this.purchaseDelegate = delegate;
+    subscribeOnNoCodesNativeEvents<QProduct>('subscribePurchase', this.onPurchaseEvent);
+    subscribeOnNoCodesNativeEvents<void>('subscribeRestore', this.onRestoreEvent);
+    callNoCodesNative('setPurchaseDelegate').then(noop);
+  }
+
   private setNoCodesListener(listener: NoCodesListener) {
     if (this.noCodesListener == null) {
       subscribeOnNoCodesNativeEvents<QNoCodeEvent>('subscribe', this.onNativeEvent);
     }
     this.noCodesListener = listener;
-  }
-
-  private setPurchaseDelegate(delegate: PurchaseDelegate) {
-    this.purchaseDelegate = delegate;
-    subscribeOnNoCodesNativeEvents<QProduct>('subscribePurchase', this.onPurchaseEvent);
-    subscribeOnNoCodesNativeEvents<void>('subscribeRestore', this.onRestoreEvent);
-    callNoCodesNative('setPurchaseDelegate').then(noop);
   }
 
   private onNativeEvent = (event: QNoCodeEvent) => {

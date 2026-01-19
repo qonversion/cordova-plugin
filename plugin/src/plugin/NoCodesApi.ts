@@ -1,3 +1,4 @@
+import {PurchaseDelegate} from './PurchaseDelegate';
 import {ScreenPresentationConfig} from './ScreenPresentationConfig';
 
 export interface NoCodesApi {
@@ -28,4 +29,13 @@ export interface NoCodesApi {
    * @param locale the locale to use (e.g. "en", "de", "fr"), or null to reset to device default.
    */
   setLocale(locale: string | null): void;
+
+  /**
+   * Set a custom purchase delegate to handle purchases and restores from No-Code screens.
+   * When this delegate is set, it replaces the default Qonversion SDK purchase flow,
+   * allowing you to use your own purchase system.
+   *
+   * @param delegate the purchase delegate to handle purchase and restore events.
+   */
+  setPurchaseDelegate(delegate: PurchaseDelegate): void;
 }

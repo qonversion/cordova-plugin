@@ -20,7 +20,9 @@ import {
   TransactionOwnershipType,
   TransactionEnvironment,
   EntitlementGrantType,
-  QonversionErrorCode
+  QonversionErrorCode,
+  PurchaseResultStatus,
+  PurchaseResultSource,
 } from "./enums";
 import {IntroEligibility} from "./IntroEligibility";
 import {Offering} from "./Offering";
@@ -53,6 +55,8 @@ import {ProductInstallmentPlanDetails} from "./ProductInstallmentPlanDetails";
 import {ScreenPresentationConfig} from './ScreenPresentationConfig';
 import {SKPaymentDiscount} from './SKPaymentDiscount';
 import {PromotionalOffer} from './PromotionalOffer';
+import {PurchaseResult} from './PurchaseResult';
+import {StoreTransaction} from './StoreTransaction';
 
 export type QProduct = {
   id: string;
@@ -331,6 +335,25 @@ type QUserProperty = {
 
 export type QUserProperties = {
   properties: QUserProperty[];
+};
+
+export type QStoreTransaction = {
+  transactionId?: string | null;
+  originalTransactionId?: string | null;
+  transactionTimestamp?: number | null;
+  productId?: string | null;
+  quantity?: number | null;
+  promoOfferId?: string | null;
+  purchaseToken?: string | null;
+};
+
+export type QPurchaseResult = {
+  status: string;
+  entitlements: Record<string, QEntitlement> | null;
+  error: QQonversionError | null | undefined;
+  isFallbackGenerated: boolean;
+  source: string;
+  storeTransaction: QStoreTransaction | null | undefined;
 };
 
 const priceMicrosRatio = 1000000;
@@ -1231,6 +1254,79 @@ class Mapper {
 
     return QonversionErrorCode.UNKNOWN;
   }
+
+  // region PurchaseResult Mappers
+
+  static convertPurchaseResult(
+    purchaseResult: QPurchaseResult | null | undefined
+  ): PurchaseResult | null {
+    if (!purchaseResult) {
+      return null;
+    }
+
+    const status = this.convertPurchaseResultStatus(purchaseResult.status);
+    const entitlements = purchaseResult.entitlements
+      ? this.convertEntitlements(purchaseResult.entitlements)
+      : null;
+    const error = purchaseResult.error ? this.convertQonversionError(purchaseResult.error as unknown as Record<string, string>) : null;
+    const source = this.convertPurchaseResultSource(purchaseResult.source);
+    const storeTransaction = this.convertStoreTransaction(purchaseResult.storeTransaction);
+
+    return new PurchaseResult(
+      status,
+      entitlements,
+      error ?? null,
+      purchaseResult.isFallbackGenerated ?? false,
+      source,
+      storeTransaction
+    );
+  }
+
+  static convertPurchaseResultStatus(status: string | null | undefined): PurchaseResultStatus {
+    switch (status) {
+      case "Success":
+        return PurchaseResultStatus.SUCCESS;
+      case "UserCanceled":
+        return PurchaseResultStatus.USER_CANCELED;
+      case "Pending":
+        return PurchaseResultStatus.PENDING;
+      case "Error":
+        return PurchaseResultStatus.ERROR;
+      default:
+        return PurchaseResultStatus.ERROR;
+    }
+  }
+
+  static convertPurchaseResultSource(source: string | null | undefined): PurchaseResultSource {
+    switch (source) {
+      case "Api":
+        return PurchaseResultSource.API;
+      case "Local":
+        return PurchaseResultSource.LOCAL;
+      default:
+        return PurchaseResultSource.LOCAL;
+    }
+  }
+
+  static convertStoreTransaction(
+    storeTransaction: QStoreTransaction | null | undefined
+  ): StoreTransaction | null {
+    if (!storeTransaction) {
+      return null;
+    }
+
+    return new StoreTransaction(
+      storeTransaction.transactionId ?? undefined,
+      storeTransaction.originalTransactionId ?? undefined,
+      storeTransaction.transactionTimestamp ?? undefined,
+      storeTransaction.productId ?? undefined,
+      storeTransaction.quantity ?? undefined,
+      storeTransaction.promoOfferId ?? undefined,
+      storeTransaction.purchaseToken ?? undefined
+    );
+  }
+
+  // endregion
 }
 
 export default Mapper;

@@ -23,6 +23,8 @@ import {
   PricingPhaseType,
   ProductType,
   PurchaseUpdatePolicy,
+  PurchaseResultStatus,
+  PurchaseResultSource,
   QonversionErrorCode,
   ScreenPresentationStyle,
   SKPeriodUnit,
@@ -55,8 +57,6 @@ import {ProductOfferDetails} from './ProductOfferDetails';
 import {ProductPrice} from './ProductPrice';
 import {ProductPricingPhase} from './ProductPricingPhase';
 import {ProductStoreDetails} from './ProductStoreDetails';
-import {PurchaseModel} from './PurchaseModel';
-import {PurchaseUpdateModel} from './PurchaseUpdateModel';
 import {PurchaseOptions} from './PurchaseOptions';
 import {PurchaseOptionsBuilder} from './PurchaseOptionsBuilder';
 import {ScreenPresentationConfig} from './ScreenPresentationConfig';
@@ -65,6 +65,8 @@ import {NoCodesConfig} from './NoCodesConfig';
 import {NoCodesConfigBuilder} from './NoCodesConfigBuilder';
 import {NoCodesAction} from './NoCodesAction';
 import {NoCodesError} from './NoCodesError';
+import {PurchaseResult} from './PurchaseResult';
+import {StoreTransaction} from './StoreTransaction';
 
 export default class Qonversion {
   private constructor() {}
@@ -157,10 +159,12 @@ export default class Qonversion {
   static ProductPrice = ProductPrice;
   static ProductPricingPhase = ProductPricingPhase;
   static ProductStoreDetails = ProductStoreDetails;
-  static PurchaseModel = PurchaseModel;
-  static PurchaseUpdateModel = PurchaseUpdateModel;
   static PurchaseOptions = PurchaseOptions;
   static PurchaseOptionsBuilder = PurchaseOptionsBuilder;
+  static PurchaseResult = PurchaseResult;
+  static PurchaseResultStatus = PurchaseResultStatus;
+  static PurchaseResultSource = PurchaseResultSource;
+  static StoreTransaction = StoreTransaction;
   static ScreenPresentationConfig = ScreenPresentationConfig;
   static ScreenPresentationStyle = ScreenPresentationStyle;
   static QonversionError = QonversionError;
