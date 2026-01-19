@@ -30,7 +30,7 @@
     }
 }
 
-- (void)purchaseWithProduct:(NSDictionary<NSString *,id> * _Nonnull)productData {
+- (void)purchase:(NSDictionary<NSString *,id> * _Nonnull)productData {
     if (self.purchaseEventDelegateId) {
         CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:productData];
         [pluginResult setKeepCallbackAsBool:true];
