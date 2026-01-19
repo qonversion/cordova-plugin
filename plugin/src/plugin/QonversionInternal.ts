@@ -31,7 +31,7 @@ import {PurchaseOptionsBuilder} from './PurchaseOptionsBuilder';
 import {SKProductDiscount} from './SKProductDiscount';
 import {PromotionalOffer} from './PromotionalOffer';
 
-const sdkVersion = "6.3.2";
+const sdkVersion = "7.0.0";
 
 export default class QonversionInternal implements QonversionApi {
 
@@ -76,7 +76,7 @@ export default class QonversionInternal implements QonversionApi {
       return null;
     }
 
-    const args = [product.qonversionID, discount.identifier];
+    const args = [product.qonversionId, discount.identifier];
     let promoOffer = await callQonversionNative<QPromotionalOffer | null>('getPromotionalOffer', args);
     const mappedPromoOffer: PromotionalOffer | null = Mapper.convertPromoOffer(promoOffer);
 
@@ -96,11 +96,11 @@ export default class QonversionInternal implements QonversionApi {
         timestamp: options.promotionalOffer?.paymentDiscount.timestamp
       };
 
-      let args: any[] = [product.qonversionID]
+      let args: any[] = [product.qonversionId]
       if (isIos()) {
         args = [...args, options.quantity, options.contextKeys, promoOffer];
       } else {
-        args = [...args, options.offerId, options.applyOffer, options.oldProduct?.qonversionID, options.updatePolicy, options.contextKeys];
+        args = [...args, options.offerId, options.applyOffer, options.oldProduct?.qonversionId, options.updatePolicy, options.contextKeys];
       }
 
     const purchaseResult = await callQonversionNative<QPurchaseResult>('purchase', args);
@@ -187,8 +187,8 @@ export default class QonversionInternal implements QonversionApi {
     return isAccessibleResult.success;
   }
 
-  async identify(userID: string): Promise<User> {
-    const info = await callQonversionNative<QUser>('identify', [userID]);
+  async identify(userId: string): Promise<User> {
+    const info = await callQonversionNative<QUser>('identify', [userId]);
 
     // noinspection UnnecessaryLocalVariableJS
     const mappedUserInfo: User = Mapper.convertUserInfo(info);
