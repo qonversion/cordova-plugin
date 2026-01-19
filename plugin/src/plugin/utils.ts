@@ -11,7 +11,7 @@ export const isAndroid = (): boolean => {
 }
 
 const QONVERSION_NATIVE_MODULE_NAME = 'QonversionPlugin';
-const AUTOMATIONS_NATIVE_MODULE_NAME = 'AutomationsPlugin';
+const NOCODES_NATIVE_MODULE_NAME = 'NoCodesPlugin';
 
 export const callQonversionNative = <T>(methodName: string, args?: any[]): Promise<T> => {
     return callNative(QONVERSION_NATIVE_MODULE_NAME, methodName, args);
@@ -21,12 +21,12 @@ export const subscribeOnQonversionNativeEvents = <T>(methodName: string, callbac
     return subscribeOnNativeEvents(QONVERSION_NATIVE_MODULE_NAME, methodName, callback, args);
 }
 
-export const callAutomationsNative = <T>(methodName: string, args?: any[]): Promise<T> => {
-    return callNative(AUTOMATIONS_NATIVE_MODULE_NAME, methodName, args);
+export const callNoCodesNative = <T>(methodName: string, args?: any[]): Promise<T> => {
+    return callNative(NOCODES_NATIVE_MODULE_NAME, methodName, args);
 }
 
-export const subscribeOnAutomationsNativeEvents = <T>(methodName: string, callback: (event: T) => void, args?: any[]) => {
-    return subscribeOnNativeEvents(AUTOMATIONS_NATIVE_MODULE_NAME, methodName, callback, args);
+export const subscribeOnNoCodesNativeEvents = <T>(methodName: string, callback: (event: T) => void, args?: any[]) => {
+    return subscribeOnNativeEvents(NOCODES_NATIVE_MODULE_NAME, methodName, callback, args);
 }
 
 const callNative = <T>(moduleName: string, methodName: string, args?: any[]): Promise<T> => {

@@ -259,34 +259,46 @@ export enum RemoteConfigurationAssignmentType {
   MANUAL = "manual",
 }
 
-export enum ActionResultType {
-  UNKNOWN = "unknown",
-  URL = "url",
-  DEEPLINK = "deeplink",
-  NAVIGATION = "navigate",
-  PURCHASE = "purchase",
-  RESTORE = "restore",
-  CLOSE = "close",
-}
+export enum ActionType {
+  /**
+   * Unspecified action type
+   */
+  UNKNOWN = 'unknown',
 
-export enum AutomationsEventType {
-  UNKNOWN = "unknown",
-  TRIAL_STARTED = "trial_started",
-  TRIAL_CONVERTED = "trial_converted",
-  TRIAL_CANCELED = "trial_canceled",
-  TRIAL_BILLING_RETRY = "trial_billing_retry_entered",
-  SUBSCRIPTION_STARTED = "subscription_started",
-  SUBSCRIPTION_RENEWED = "subscription_renewed",
-  SUBSCRIPTION_REFUNDED = "subscription_refunded",
-  SUBSCRIPTION_CANCELED = "subscription_canceled",
-  SUBSCRIPTION_BILLING_RETRY = "subscription_billing_retry_entered",
-  IN_APP_PURCHASE = "in_app_purchase",
-  SUBSCRIPTION_UPGRADED = "subscription_upgraded",
-  TRIAL_STILL_ACTIVE = "trial_still_active",
-  TRIAL_EXPIRED = "trial_expired",
-  SUBSCRIPTION_EXPIRED = "subscription_expired",
-  SUBSCRIPTION_DOWNGRADED = "subscription_downgraded",
-  SUBSCRIPTION_PRODUCT_CHANGED = "subscription_product_changed",
+  /**
+   * URL action that opens the URL using SafariViewController
+   */
+  URL = 'url',
+
+  /**
+   * Deeplink action that opens if Application can open specified deeplink
+   */
+  DEEPLINK = 'deeplink',
+
+  /**
+   * Navigation to another No-Codes screen
+   */
+  NAVIGATION = 'navigation',
+
+  /**
+   * Purchase the product
+   */
+  PURCHASE = 'purchase',
+
+  /**
+   * Restore all purchases
+   */
+  RESTORE = 'restore',
+
+  /**
+   * Close current screen
+   */
+  CLOSE = 'close',
+
+  /**
+   * Close all No-Code screens
+   */
+  CLOSE_ALL = 'closeAll',
 }
 
 export enum ScreenPresentationStyle {
@@ -310,6 +322,69 @@ export enum ScreenPresentationStyle {
    * For iOS consider providing the {@link ScreenPresentationConfig.animated} flag.
    */
   NO_ANIMATION = 'NoAnimation',
+}
+
+export enum NoCodesErrorCode {
+  UNKNOWN = "Unknown",
+  BAD_NETWORK_REQUEST = "BadNetworkRequest",
+  BAD_RESPONSE = "BadResponse",
+  ACTIVITY_START = "ActivityStart", // Android
+  NETWORK_REQUEST_EXECUTION = "NetworkRequestExecution", // Android
+  SERIALIZATION = "Serialization", // Android
+  DESERIALIZATION = "Deserialization", // Android
+  REQUEST_DENIED = "RequestDenied", // Android
+  MAPPING = "Mapping", // Android
+  BACKEND_ERROR = "BackendError", // Android
+  SCREEN_NOT_FOUND = "ScreenNotFound", // Android
+  QONVERSION_ERROR = "QonversionError",
+  INTERNAL = "Internal", // iOS
+  AUTHORIZATION_FAILED = "AuthorizationFailed", // iOS
+  CRITICAL = "Critical", // iOS
+  PRODUCT_NOT_FOUND = "ProductNotFound", // iOS
+  PRODUCTS_LOADING_FAILED = "ProductsLoadingFailed", // iOS
+  RATE_LIMIT_EXCEEDED = "RateLimitExceeded", // iOS
+  SCREEN_LOADING_FAILED = "ScreenLoadingFailed", // iOS
+  SDK_INITIALIZATION_ERROR = "SDKInitializationError" // iOS
+}
+
+/**
+ * Status of the purchase result.
+ */
+export enum PurchaseResultStatus {
+  /**
+   * The purchase was successful.
+   */
+  SUCCESS = "Success",
+
+  /**
+   * The purchase was canceled by the user.
+   */
+  USER_CANCELED = "UserCanceled",
+
+  /**
+   * The purchase is pending (e.g., waiting for parental approval).
+   */
+  PENDING = "Pending",
+
+  /**
+   * An error occurred during the purchase.
+   */
+  ERROR = "Error",
+}
+
+/**
+ * Source of the purchase result data.
+ */
+export enum PurchaseResultSource {
+  /**
+   * The result was obtained from the Qonversion API.
+   */
+  API = "Api",
+
+  /**
+   * The result was obtained from the local store.
+   */
+  LOCAL = "Local",
 }
 
 export enum QonversionErrorCode {

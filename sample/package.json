@@ -25,11 +25,8 @@
   },
   "cordova": {
     "platforms": [
-      "ios",
       "android"
     ],
-    "plugins": {
-      "cordova-plugin-qonversion": {}
-    }
+    "plugins": {}
   }
 }
