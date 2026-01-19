@@ -4,7 +4,6 @@ import QonversionInternal from './QonversionInternal';
 import {SKProduct} from './SKProduct';
 import {SKProductDiscount} from './SKProductDiscount';
 import {SKSubscriptionPeriod} from './SKSubscriptionPeriod';
-import {SkuDetails} from './SkuDetails';
 import {Entitlement} from './Entitlement';
 import {
   ActionType,
@@ -173,7 +172,6 @@ export default class Qonversion {
   static SKProduct = SKProduct;
   static SKProductDiscount = SKProductDiscount;
   static SKSubscriptionPeriod = SKSubscriptionPeriod;
-  static SkuDetails = SkuDetails;
   static SubscriptionPeriod = SubscriptionPeriod;
 
   // The rest

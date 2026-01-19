@@ -58,7 +58,6 @@
     <js-module src="www/SKProductDiscount.js" name="SKProductDiscount" />
     <js-module src="www/SKPaymentDiscount.js" name="SKPaymentDiscount" />
     <js-module src="www/SKSubscriptionPeriod.js" name="SKSubscriptionPeriod" />
-    <js-module src="www/SkuDetails.js" name="SkuDetails" />
     <js-module src="www/SubscriptionPeriod.js" name="SubscriptionPeriod" />
 
     <platform name="android">
