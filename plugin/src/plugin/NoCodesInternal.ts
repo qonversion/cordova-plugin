@@ -5,7 +5,7 @@ import {NoCodesApi} from './NoCodesApi';
 import {NoCodesConfig} from './NoCodesConfig';
 import {ScreenPresentationConfig} from './ScreenPresentationConfig';
 import {NoCodesError} from './NoCodesError';
-import {NoCodesErrorCode} from './enums';
+import {NoCodesErrorCode, NoCodesTheme} from './enums';
 import {callNoCodesNative, noop, subscribeOnNoCodesNativeEvents} from './utils';
 
 const EVENT_SCREEN_SHOWN = "nocodes_screen_shown";
@@ -29,7 +29,8 @@ export default class NoCodesInternal implements NoCodesApi {
       SDK_SOURCE,
       SDK_VERSION,
       config.proxyUrl ?? null,
-      config.locale ?? null
+      config.locale ?? null,
+      config.theme ?? null
     ]).then(noop);
 
     if (config.noCodesListener) {
@@ -56,6 +57,10 @@ export default class NoCodesInternal implements NoCodesApi {
 
   setLocale(locale: string | null): void {
     callNoCodesNative('setLocale', [locale]).then(noop);
+  }
+
+  setTheme(theme: NoCodesTheme): void {
+    callNoCodesNative('setTheme', [theme]).then(noop);
   }
 
   setPurchaseDelegate(delegate: PurchaseDelegate): void {

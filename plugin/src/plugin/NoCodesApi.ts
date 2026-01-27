@@ -1,5 +1,6 @@
 import {PurchaseDelegate} from './PurchaseDelegate';
 import {ScreenPresentationConfig} from './ScreenPresentationConfig';
+import {NoCodesTheme} from './enums';
 
 export interface NoCodesApi {
   /**
@@ -38,4 +39,16 @@ export interface NoCodesApi {
    * @param delegate the purchase delegate to handle purchase and restore events.
    */
   setPurchaseDelegate(delegate: PurchaseDelegate): void;
+
+  /**
+   * Set the theme mode for No-Code screens.
+   * Controls how screens adapt to light/dark themes.
+   *
+   * You may set the theme both after No-Codes SDK initialization with this method
+   * and during initialization via NoCodesConfigBuilder.setTheme().
+   *
+   * @param theme the desired theme mode. Use AUTO to follow device settings,
+   *              LIGHT to force light theme, or DARK to force dark theme.
+   */
+  setTheme(theme: NoCodesTheme): void;
 }
