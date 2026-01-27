@@ -17,6 +17,7 @@
   "author": "Apache Cordova Team",
   "license": "Apache-2.0",
   "devDependencies": {
+    "@qonversion/cordova-plugin": "file:../plugin",
     "cordova-android": "^13.0.0",
     "cordova-annotated-plugin-android": "^1.0.4",
     "cordova-ios": "^6.3.0",

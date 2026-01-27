@@ -38,6 +38,7 @@ public class NoCodesPlugin extends AnnotatedCordovaPlugin implements NoCodesEven
             String version,
             @Nullable String proxyUrl,
             @Nullable String locale,
+            @Nullable String theme,
             CallbackContext callbackContext
     ) {
         noCodesSandwich.storeSdkInfo(cordova.getActivity(), source, version);
@@ -47,7 +48,8 @@ public class NoCodesPlugin extends AnnotatedCordovaPlugin implements NoCodesEven
                 proxyUrl,
                 null, // logLevelKey
                 null, // logTag
-                locale
+                locale,
+                theme
         );
         noCodesSandwich.setDelegate(this);
         callbackContext.success();
@@ -107,6 +109,12 @@ public class NoCodesPlugin extends AnnotatedCordovaPlugin implements NoCodesEven
     @PluginAction(thread = ExecutionThread.WORKER, actionName = "setLocale")
     public void setLocale(@Nullable String locale, CallbackContext callbackContext) {
         noCodesSandwich.setLocale(locale);
+        callbackContext.success();
+    }
+
+    @PluginAction(thread = ExecutionThread.WORKER, actionName = "setTheme")
+    public void setTheme(@Nullable String theme, CallbackContext callbackContext) {
+        noCodesSandwich.setTheme(theme);
         callbackContext.success();
     }
 

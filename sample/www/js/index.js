@@ -88,6 +88,7 @@ const App = {
         document.getElementById('init-nocodes-btn').addEventListener('click', () => this.initializeNoCodes());
         document.getElementById('show-screen-btn').addEventListener('click', () => this.showNoCodesScreen());
         document.getElementById('set-presentation-config-btn').addEventListener('click', () => this.setScreenPresentationConfig());
+        document.getElementById('set-theme-btn').addEventListener('click', () => this.setNoCodesTheme());
         document.getElementById('set-locale-btn').addEventListener('click', () => this.setLocale());
         document.getElementById('reset-locale-btn').addEventListener('click', () => this.resetLocale());
         document.getElementById('enable-purchase-delegate-btn').addEventListener('click', () => this.enablePurchaseDelegate());
@@ -1007,6 +1008,34 @@ const App = {
             this.showToast('Config set!', 'success');
         } catch (error) {
             console.error('❌ Set presentation config failed:', error);
+            this.showToast('Error: ' + error.message, 'error');
+        }
+    },
+
+    setNoCodesTheme() {
+        if (!this.isNoCodesInitialized) {
+            this.showToast('Please initialize No-Codes first', 'error');
+            return;
+        }
+
+        const themeValue = document.querySelector('input[name="theme-mode"]:checked').value;
+
+        try {
+            console.log('🔄 Setting theme:', themeValue);
+            
+            const themeMap = {
+                'auto': Qonversion.NoCodesTheme.AUTO,
+                'light': Qonversion.NoCodesTheme.LIGHT,
+                'dark': Qonversion.NoCodesTheme.DARK
+            };
+            
+            Qonversion.NoCodes.getSharedInstance().setTheme(themeMap[themeValue]);
+            
+            console.log('✅ Theme set');
+            this.addNoCodesEvent(`Theme set: ${themeValue}`);
+            this.showToast(`Theme set to: ${themeValue}`, 'success');
+        } catch (error) {
+            console.error('❌ Set theme failed:', error);
             this.showToast('Error: ' + error.message, 'error');
         }
     },

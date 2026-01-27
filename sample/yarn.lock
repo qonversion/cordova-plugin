@@ -32,6 +32,10 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
+"@qonversion/cordova-plugin@file:../plugin":
+  version "7.0.0"
+  resolved "file:../plugin"
+
 "@xmldom/xmldom@^0.8.8":
   version "0.8.11"
   resolved "https://registry.npmjs.org/@xmldom/xmldom/-/xmldom-0.8.11.tgz"
