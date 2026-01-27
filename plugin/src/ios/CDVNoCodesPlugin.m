@@ -60,9 +60,10 @@
     NSString *version = [command argumentAtIndex:2];
     NSString *proxyUrl = [command argumentAtIndex:3];
     NSString *locale = [command argumentAtIndex:4];
+    NSString *theme = [command argumentAtIndex:5];
     
     [self.noCodesSandwich storeSdkInfoWithSource:source version:version];
-    [self.noCodesSandwich initializeWithProjectKey:projectKey proxyUrl:proxyUrl locale:locale];
+    [self.noCodesSandwich initializeWithProjectKey:projectKey proxyUrl:proxyUrl locale:locale theme:theme];
     
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
@@ -126,6 +127,14 @@
 - (void)setLocale:(CDVInvokedUrlCommand *)command {
     NSString *locale = [command argumentAtIndex:0];
     [self.noCodesSandwich setLocale:locale];
+    
+    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
+- (void)setTheme:(CDVInvokedUrlCommand *)command {
+    NSString *theme = [command argumentAtIndex:0];
+    [self.noCodesSandwich setTheme:theme];
     
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];

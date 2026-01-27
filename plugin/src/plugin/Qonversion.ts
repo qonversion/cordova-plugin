@@ -17,6 +17,7 @@ import {
   IntroEligibilityStatus,
   LaunchMode,
   NoCodesErrorCode,
+  NoCodesTheme,
   OfferingTag,
   PricingPhaseRecurrenceMode,
   PricingPhaseType,
@@ -143,6 +144,7 @@ export default class Qonversion {
   static NoCodesAction = NoCodesAction;
   static NoCodesError = NoCodesError;
   static NoCodesErrorCode = NoCodesErrorCode;
+  static NoCodesTheme = NoCodesTheme;
   static NoCodesConfig = NoCodesConfig;
   static NoCodesConfigBuilder = NoCodesConfigBuilder;
   static IntroEligibility = IntroEligibility;
