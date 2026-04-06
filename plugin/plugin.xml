@@ -27,6 +27,7 @@
     <js-module src="www/NoCodesError.js" name="NoCodesError" />
     <js-module src="www/NoCodesListener.js" name="NoCodesListener" />
     <js-module src="www/PurchaseDelegate.js" name="PurchaseDelegate" />
+    <js-module src="www/DeferredPurchasesListener.js" name="DeferredPurchasesListener" />
     <js-module src="www/Entitlement.js" name="Entitlement" />
     <js-module src="www/Transaction.js" name="Transaction" />
     <js-module src="www/IntroEligibility.js" name="IntroEligibility" />

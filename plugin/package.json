@@ -11,7 +11,8 @@
     ]
   },
   "scripts": {
-    "build": "rm -rf ./www && tsc"
+    "build": "rm -rf ./www && tsc",
+    "test": "jest"
   },
   "keywords": [
     "cordova",
@@ -42,6 +43,9 @@
     "access": "public"
   },
   "devDependencies": {
+    "@types/jest": "^30.0.0",
+    "jest": "^30.3.0",
+    "ts-jest": "^29.4.9",
     "typescript": "^4.9.4"
   }
 }
