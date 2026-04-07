@@ -258,6 +258,8 @@ export interface QonversionApi {
    * with {@link Qonversion.initialize}.
    *
    * @param listener listener to be called when entitlements update
+   * @deprecated Use {@link QonversionApi.setDeferredPurchasesListener} instead, which provides
+   * detailed purchase result information for deferred purchase completions.
    */
   setEntitlementsUpdateListener(listener: EntitlementsUpdateListener): void;
 

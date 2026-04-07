@@ -72,6 +72,7 @@
                                              proxyUrl:proxyUrl];
 
     self.entitlementsUpdateDelegateId = command.callbackId;
+    self.deferredPurchasesDelegateId = command.callbackId;
 
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_NO_RESULT];
     [pluginResult setKeepCallbackAsBool:true];
@@ -298,14 +299,6 @@
 
 - (void)subscribeOnPromoPurchases:(CDVInvokedUrlCommand *)command {
     self.promoPurchaseDelegateId = command.callbackId;
-
-    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_NO_RESULT];
-    [pluginResult setKeepCallbackAsBool:true];
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-}
-
-- (void)subscribeDeferredPurchases:(CDVInvokedUrlCommand *)command {
-    self.deferredPurchasesDelegateId = command.callbackId;
 
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_NO_RESULT];
     [pluginResult setKeepCallbackAsBool:true];

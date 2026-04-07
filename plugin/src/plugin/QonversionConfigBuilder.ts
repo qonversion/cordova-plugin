@@ -53,6 +53,8 @@ export class QonversionConfigBuilder {
    *
    * @param entitlementsUpdateListener listener to be called when entitlements update.
    * @return builder instance for chain calls.
+   * @deprecated Use {@link QonversionConfigBuilder.setDeferredPurchasesListener} instead, which
+   * provides detailed purchase result information for deferred purchase completions.
    */
   setEntitlementsUpdateListener(entitlementsUpdateListener: EntitlementsUpdateListener): QonversionConfigBuilder {
     this.entitlementsUpdateListener = entitlementsUpdateListener;
