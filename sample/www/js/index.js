@@ -59,7 +59,7 @@ const App = {
         document.getElementById('restore-purchases').addEventListener('click', () => this.restore());
         document.getElementById('sync-purchases').addEventListener('click', () => this.syncPurchases());
         document.getElementById('sync-historical').addEventListener('click', () => this.syncHistoricalData());
-        document.getElementById('set-entitlements-listener').addEventListener('click', () => this.setEntitlementsUpdateListener());
+        document.getElementById('set-deferred-purchases-listener').addEventListener('click', () => this.setDeferredPurchasesListener());
 
         // Offerings Screen
         document.getElementById('load-offerings').addEventListener('click', () => this.loadOfferings());
@@ -243,10 +243,10 @@ const App = {
         )
           .setEnvironment(Qonversion.Environment.SANDBOX)
           .setEntitlementsCacheLifetime(Qonversion.EntitlementsCacheLifetime.MONTH)
-          .setEntitlementsUpdateListener({
-                    onEntitlementsUpdated: (entitlements) => {
-                        console.log('📡 Entitlements updated!', entitlements);
-                        this.showToast('Entitlements updated!', 'success');
+          .setDeferredPurchasesListener({
+                    onDeferredPurchaseCompleted: (purchaseResult) => {
+                        console.log('📡 Deferred purchase completed!', purchaseResult);
+                        this.showToast('Deferred purchase completed!', 'success');
                     }
           })
           .build();
@@ -699,14 +699,14 @@ const App = {
         }
     },
 
-    setEntitlementsUpdateListener() {
-        Qonversion.getSharedInstance().setEntitlementsUpdateListener({
-            onEntitlementsUpdated: (entitlements) => {
-                console.log('📡 Entitlements updated!', entitlements);
-                this.showToast('Entitlements updated!', 'success');
+    setDeferredPurchasesListener() {
+        Qonversion.getSharedInstance().setDeferredPurchasesListener({
+            onDeferredPurchaseCompleted: (purchaseResult) => {
+                console.log('📡 Deferred purchase completed!', purchaseResult);
+                this.showToast('Deferred purchase completed!', 'success');
             }
         });
-        console.log('✅ Entitlements update listener set');
+        console.log('✅ Deferred purchases listener set');
         this.showToast('Listener set!', 'success');
     },
 
