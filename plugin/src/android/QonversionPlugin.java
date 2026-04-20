@@ -73,11 +73,19 @@ public class QonversionPlugin extends AnnotatedCordovaPlugin implements Qonversi
         );
 
         entitlementsUpdateDelegate = entitlementsUpdateCallbackContext;
-        deferredPurchasesDelegate = entitlementsUpdateCallbackContext;
 
         PluginResult result = new PluginResult(PluginResult.Status.NO_RESULT);
         result.setKeepCallback(true);
         entitlementsUpdateCallbackContext.sendPluginResult(result);
+    }
+
+    @PluginAction(thread = ExecutionThread.MAIN, actionName = "subscribeDeferredPurchases", isAutofinish = false)
+    public void subscribeDeferredPurchases(CallbackContext deferredPurchasesCallbackContext) {
+        deferredPurchasesDelegate = deferredPurchasesCallbackContext;
+
+        PluginResult result = new PluginResult(PluginResult.Status.NO_RESULT);
+        result.setKeepCallback(true);
+        deferredPurchasesCallbackContext.sendPluginResult(result);
     }
 
     @PluginAction(thread = ExecutionThread.UI, actionName = "purchase", isAutofinish = false)

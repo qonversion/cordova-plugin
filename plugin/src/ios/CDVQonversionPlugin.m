@@ -36,9 +36,9 @@
     }
 }
 
-- (void)qonversionDidCompleteDeferredPurchase:(NSDictionary<NSString *,id> *)transaction {
+- (void)qonversionDidCompleteDeferredPurchase:(NSDictionary<NSString *,id> *)purchaseResult {
     if (self.deferredPurchasesDelegateId) {
-        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:transaction];
+        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:purchaseResult];
         [pluginResult setKeepCallbackAsBool:true];
         [self.commandDelegate sendPluginResult:pluginResult callbackId:self.deferredPurchasesDelegateId];
     }
@@ -72,6 +72,13 @@
                                              proxyUrl:proxyUrl];
 
     self.entitlementsUpdateDelegateId = command.callbackId;
+
+    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_NO_RESULT];
+    [pluginResult setKeepCallbackAsBool:true];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
+- (void)subscribeDeferredPurchases:(CDVInvokedUrlCommand *)command {
     self.deferredPurchasesDelegateId = command.callbackId;
 
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_NO_RESULT];

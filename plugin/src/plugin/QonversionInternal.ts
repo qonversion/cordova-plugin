@@ -42,18 +42,11 @@ export default class QonversionInternal implements QonversionApi {
 
   constructor(qonversionConfig: QonversionConfig) {
     callQonversionNative('storeSDKInfo', ['cordova', sdkVersion]).then(noop);
-    subscribeOnQonversionNativeEvents<Record<string, any>>(
+    subscribeOnQonversionNativeEvents<Record<string, QEntitlement>>(
       'initializeSdk',
       (event) => {
-        if (event && 'isFallbackGenerated' in event) {
-          if (this.deferredPurchasesListener) {
-            const purchaseResult = Mapper.convertPurchaseResult(event as QPurchaseResult);
-            if (purchaseResult) {
-              this.deferredPurchasesListener.onDeferredPurchaseCompleted(purchaseResult);
-            }
-          }
-        } else if (this.entitlementsUpdateListener) {
-          const entitlements = Mapper.convertEntitlements(event as Record<string, QEntitlement>);
+        if (this.entitlementsUpdateListener) {
+          const entitlements = Mapper.convertEntitlements(event);
           this.entitlementsUpdateListener.onEntitlementsUpdated(entitlements);
         }
       },
@@ -65,6 +58,18 @@ export default class QonversionInternal implements QonversionApi {
         qonversionConfig.proxyUrl,
         qonversionConfig.kidsMode
       ]
+    );
+
+    subscribeOnQonversionNativeEvents<QPurchaseResult>(
+      'subscribeDeferredPurchases',
+      (event) => {
+        if (this.deferredPurchasesListener) {
+          const purchaseResult = Mapper.convertPurchaseResult(event);
+          if (purchaseResult) {
+            this.deferredPurchasesListener.onDeferredPurchaseCompleted(purchaseResult);
+          }
+        }
+      }
     );
 
     this.entitlementsUpdateListener = qonversionConfig.entitlementsUpdateListener;
