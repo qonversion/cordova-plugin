@@ -260,10 +260,10 @@ public class QonversionPlugin extends AnnotatedCordovaPlugin implements Qonversi
     }
 
     @Override
-    public void onDeferredPurchaseCompleted(@NonNull Map<String, ?> map) {
+    public void onDeferredPurchaseCompleted(@NonNull Map<String, ?> purchaseResult) {
         if (deferredPurchasesDelegate != null) {
             try {
-                final JSONObject payload = EntitiesConverter.convertMapToJson(map);
+                final JSONObject payload = EntitiesConverter.convertMapToJson(purchaseResult);
                 PluginResult result = new PluginResult(PluginResult.Status.OK, payload);
                 result.setKeepCallback(true);
                 deferredPurchasesDelegate.sendPluginResult(result);
