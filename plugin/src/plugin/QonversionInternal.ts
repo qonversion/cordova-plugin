@@ -42,6 +42,19 @@ export default class QonversionInternal implements QonversionApi {
 
   constructor(qonversionConfig: QonversionConfig) {
     callQonversionNative('storeSDKInfo', ['cordova', sdkVersion]).then(noop);
+
+    subscribeOnQonversionNativeEvents<QPurchaseResult>(
+      'subscribeDeferredPurchases',
+      (event) => {
+        if (this.deferredPurchasesListener) {
+          const purchaseResult = Mapper.convertPurchaseResult(event);
+          if (purchaseResult) {
+            this.deferredPurchasesListener.onDeferredPurchaseCompleted(purchaseResult);
+          }
+        }
+      }
+    );
+
     subscribeOnQonversionNativeEvents<Record<string, QEntitlement>>(
       'initializeSdk',
       (event) => {
@@ -58,18 +71,6 @@ export default class QonversionInternal implements QonversionApi {
         qonversionConfig.proxyUrl,
         qonversionConfig.kidsMode
       ]
-    );
-
-    subscribeOnQonversionNativeEvents<QPurchaseResult>(
-      'subscribeDeferredPurchases',
-      (event) => {
-        if (this.deferredPurchasesListener) {
-          const purchaseResult = Mapper.convertPurchaseResult(event);
-          if (purchaseResult) {
-            this.deferredPurchasesListener.onDeferredPurchaseCompleted(purchaseResult);
-          }
-        }
-      }
     );
 
     this.entitlementsUpdateListener = qonversionConfig.entitlementsUpdateListener;
