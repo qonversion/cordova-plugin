@@ -270,9 +270,8 @@ export interface QonversionApi {
    * such as SCA (Strong Customer Authentication), Ask to Buy, or other pending transactions.
    * This listener will be called when such purchases are finalized.
    *
-   * You may set this listener both *after* Qonversion SDK initializing
-   * with {@link QonversionApi.setDeferredPurchasesListener} and *while* Qonversion initializing
-   * with {@link Qonversion.initialize}.
+   * You may set this listener *after* Qonversion SDK initialization using this method,
+   * or *during* Qonversion initialization via {@link QonversionConfigBuilder.setDeferredPurchasesListener}.
    *
    * @param listener listener to be called when a deferred purchase completes
    */
