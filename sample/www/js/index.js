@@ -60,6 +60,7 @@ const App = {
         document.getElementById('sync-purchases').addEventListener('click', () => this.syncPurchases());
         document.getElementById('sync-historical').addEventListener('click', () => this.syncHistoricalData());
         document.getElementById('set-entitlements-listener').addEventListener('click', () => this.setEntitlementsUpdateListener());
+        document.getElementById('set-deferred-purchases-listener').addEventListener('click', () => this.setDeferredPurchasesListener());
 
         // Offerings Screen
         document.getElementById('load-offerings').addEventListener('click', () => this.loadOfferings());
@@ -247,6 +248,12 @@ const App = {
                     onEntitlementsUpdated: (entitlements) => {
                         console.log('📡 Entitlements updated!', entitlements);
                         this.showToast('Entitlements updated!', 'success');
+                    }
+          })
+          .setDeferredPurchasesListener({
+                    onDeferredPurchaseCompleted: (purchaseResult) => {
+                        console.log('📡 Deferred purchase completed!', purchaseResult);
+                        this.showToast('Deferred purchase completed!', 'success');
                     }
           })
           .build();
@@ -707,6 +714,17 @@ const App = {
             }
         });
         console.log('✅ Entitlements update listener set');
+        this.showToast('Listener set!', 'success');
+    },
+
+    setDeferredPurchasesListener() {
+        Qonversion.getSharedInstance().setDeferredPurchasesListener({
+            onDeferredPurchaseCompleted: (purchaseResult) => {
+                console.log('📡 Deferred purchase completed!', purchaseResult);
+                this.showToast('Deferred purchase completed!', 'success');
+            }
+        });
+        console.log('✅ Deferred purchases listener set');
         this.showToast('Listener set!', 'success');
     },
 

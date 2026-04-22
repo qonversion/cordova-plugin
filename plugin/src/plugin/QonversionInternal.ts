@@ -23,6 +23,7 @@ import {User} from './User';
 import {QonversionApi} from './QonversionApi';
 import {QonversionConfig} from './QonversionConfig';
 import {EntitlementsUpdateListener} from './EntitlementsUpdateListener';
+import {DeferredPurchasesListener} from './DeferredPurchasesListener';
 import {RemoteConfig} from "./RemoteConfig";
 import {RemoteConfigList} from "./RemoteConfigList";
 import {UserProperties} from './UserProperties';
@@ -31,20 +32,34 @@ import {PurchaseOptionsBuilder} from './PurchaseOptionsBuilder';
 import {SKProductDiscount} from './SKProductDiscount';
 import {PromotionalOffer} from './PromotionalOffer';
 
-const sdkVersion = "7.4.0";
+const sdkVersion = "7.5.0";
 
 export default class QonversionInternal implements QonversionApi {
 
   entitlementsUpdateListener: EntitlementsUpdateListener | undefined;
+  deferredPurchasesListener: DeferredPurchasesListener | undefined;
   promoPurchasesListener: PromoPurchasesListener | undefined;
 
   constructor(qonversionConfig: QonversionConfig) {
     callQonversionNative('storeSDKInfo', ['cordova', sdkVersion]).then(noop);
+
+    subscribeOnQonversionNativeEvents<QPurchaseResult>(
+      'subscribeDeferredPurchases',
+      (event) => {
+        if (this.deferredPurchasesListener) {
+          const purchaseResult = Mapper.convertPurchaseResult(event);
+          if (purchaseResult) {
+            this.deferredPurchasesListener.onDeferredPurchaseCompleted(purchaseResult);
+          }
+        }
+      }
+    );
+
     subscribeOnQonversionNativeEvents<Record<string, QEntitlement>>(
       'initializeSdk',
-      (updatedEntitlements) => {
+      (event) => {
         if (this.entitlementsUpdateListener) {
-          const entitlements = Mapper.convertEntitlements(updatedEntitlements);
+          const entitlements = Mapper.convertEntitlements(event);
           this.entitlementsUpdateListener.onEntitlementsUpdated(entitlements);
         }
       },
@@ -59,6 +74,7 @@ export default class QonversionInternal implements QonversionApi {
     );
 
     this.entitlementsUpdateListener = qonversionConfig.entitlementsUpdateListener;
+    this.deferredPurchasesListener = qonversionConfig.deferredPurchasesListener;
   }
 
   syncHistoricalData () {
@@ -295,6 +311,10 @@ export default class QonversionInternal implements QonversionApi {
 
   setEntitlementsUpdateListener(listener: EntitlementsUpdateListener): void {
     this.entitlementsUpdateListener = listener;
+  }
+
+  setDeferredPurchasesListener(listener: DeferredPurchasesListener): void {
+    this.deferredPurchasesListener = listener;
   }
 
   setPromoPurchasesDelegate(delegate: PromoPurchasesListener) {
