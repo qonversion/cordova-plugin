@@ -27,6 +27,7 @@ public class QonversionPlugin extends AnnotatedCordovaPlugin implements Qonversi
     private QonversionSandwich qonversionSandwich;
 
     private @Nullable CallbackContext entitlementsUpdateDelegate = null;
+    private @Nullable CallbackContext deferredPurchasesDelegate = null;
     private @Nullable CallbackContext automationsEventDelegate = null;
 
     @Override
@@ -76,6 +77,15 @@ public class QonversionPlugin extends AnnotatedCordovaPlugin implements Qonversi
         PluginResult result = new PluginResult(PluginResult.Status.NO_RESULT);
         result.setKeepCallback(true);
         entitlementsUpdateCallbackContext.sendPluginResult(result);
+    }
+
+    @PluginAction(thread = ExecutionThread.MAIN, actionName = "subscribeDeferredPurchases", isAutofinish = false)
+    public void subscribeDeferredPurchases(CallbackContext deferredPurchasesCallbackContext) {
+        deferredPurchasesDelegate = deferredPurchasesCallbackContext;
+
+        PluginResult result = new PluginResult(PluginResult.Status.NO_RESULT);
+        result.setKeepCallback(true);
+        deferredPurchasesCallbackContext.sendPluginResult(result);
     }
 
     @PluginAction(thread = ExecutionThread.UI, actionName = "purchase", isAutofinish = false)
@@ -243,6 +253,20 @@ public class QonversionPlugin extends AnnotatedCordovaPlugin implements Qonversi
                 PluginResult result = new PluginResult(PluginResult.Status.OK, payload);
                 result.setKeepCallback(true);
                 entitlementsUpdateDelegate.sendPluginResult(result);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public void onDeferredPurchaseCompleted(@NonNull Map<String, ?> map) {
+        if (deferredPurchasesDelegate != null) {
+            try {
+                final JSONObject payload = EntitiesConverter.convertMapToJson(map);
+                PluginResult result = new PluginResult(PluginResult.Status.OK, payload);
+                result.setKeepCallback(true);
+                deferredPurchasesDelegate.sendPluginResult(result);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
