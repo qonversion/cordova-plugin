@@ -47,8 +47,8 @@ export default class NoCodesInternal implements NoCodesApi {
     callNoCodesNative('setScreenPresentationConfig', [data, contextKey]).then(noop);
   }
 
-  async showScreen(contextKey: string): Promise<void> {
-    return await callNoCodesNative('showScreen', [contextKey]);
+  async showScreen(contextKey: string, customVariables?: Record<string, string>): Promise<void> {
+    return await callNoCodesNative('showScreen', [contextKey, customVariables ?? null]);
   }
 
   async close(): Promise<void> {

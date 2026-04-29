@@ -134,6 +134,14 @@ public class QonversionPlugin extends AnnotatedCordovaPlugin implements Qonversi
         qonversionSandwich.userProperties(Utils.getResultListener(callbackContext));
     }
 
+    @PluginAction(thread = ExecutionThread.UI, actionName = "forceSendProperties", isAutofinish = false)
+    public void forceSendProperties(CallbackContext callbackContext) {
+        qonversionSandwich.forceSendProperties(() -> {
+            callbackContext.success();
+            return null;
+        });
+    }
+
     @PluginAction(thread = ExecutionThread.WORKER, actionName = "attribution")
     public void attribution(JSONObject data, String provider, CallbackContext callbackContext) {
         try {

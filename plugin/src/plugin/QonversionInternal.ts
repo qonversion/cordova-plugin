@@ -297,6 +297,10 @@ export default class QonversionInternal implements QonversionApi {
     return mappedUserProperties;
   }
 
+  async forceSendProperties(): Promise<void> {
+    return await callQonversionNative('forceSendProperties');
+  }
+
   collectAdvertisingId() {
     if (isIos()) {
       callQonversionNative('collectAdvertisingId').then(noop);
