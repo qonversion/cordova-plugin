@@ -12,6 +12,8 @@ import org.apache.cordova.PluginResult;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import io.qonversion.sandwich.NoCodesEventListener;
@@ -83,8 +85,17 @@ public class NoCodesPlugin extends AnnotatedCordovaPlugin implements NoCodesEven
     }
 
     @PluginAction(thread = ExecutionThread.UI, actionName = "showScreen", isAutofinish = false)
-    public void showScreen(String contextKey, CallbackContext callbackContext) {
-        noCodesSandwich.showScreen(contextKey);
+    public void showScreen(String contextKey, @Nullable JSONObject customVariablesJson, CallbackContext callbackContext) {
+        Map<String, String> customVariables = null;
+        if (customVariablesJson != null) {
+            customVariables = new HashMap<>();
+            Iterator<String> keys = customVariablesJson.keys();
+            while (keys.hasNext()) {
+                String key = keys.next();
+                customVariables.put(key, customVariablesJson.optString(key));
+            }
+        }
+        noCodesSandwich.showScreen(contextKey, customVariables);
         callbackContext.success();
     }
 
