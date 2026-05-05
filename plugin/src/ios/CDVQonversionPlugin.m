@@ -115,6 +115,14 @@
     }];
 }
 
+- (void)forceSendProperties:(CDVInvokedUrlCommand *)command {
+    __block __weak CDVQonversionPlugin *weakSelf = self;
+    [self.qonversionSandwich forceSendProperties:^{
+        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+        [weakSelf.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+    }];
+}
+
 - (void)attribution:(CDVInvokedUrlCommand *)command {
     NSDictionary *data = [command argumentAtIndex:0];
     NSString *provider = [command argumentAtIndex:1];

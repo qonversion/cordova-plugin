@@ -32,7 +32,7 @@ import {PurchaseOptionsBuilder} from './PurchaseOptionsBuilder';
 import {SKProductDiscount} from './SKProductDiscount';
 import {PromotionalOffer} from './PromotionalOffer';
 
-const sdkVersion = "7.5.0";
+const sdkVersion = "7.6.0";
 
 export default class QonversionInternal implements QonversionApi {
 
@@ -295,6 +295,10 @@ export default class QonversionInternal implements QonversionApi {
     const mappedUserProperties: UserProperties = Mapper.convertUserProperties(properties);
 
     return mappedUserProperties;
+  }
+
+  async forceSendProperties(): Promise<void> {
+    return await callQonversionNative('forceSendProperties');
   }
 
   collectAdvertisingId() {

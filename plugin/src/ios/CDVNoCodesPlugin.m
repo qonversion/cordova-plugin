@@ -95,10 +95,12 @@
 
 - (void)showScreen:(CDVInvokedUrlCommand *)command {
     NSString *contextKey = [command argumentAtIndex:0];
+    NSDictionary *customVariablesRaw = [command argumentAtIndex:1];
+    NSDictionary<NSString *, NSString *> *customVariables = [customVariablesRaw isKindOfClass:[NSDictionary class]] ? customVariablesRaw : nil;
     dispatch_async(dispatch_get_main_queue(), ^{
-        [self.noCodesSandwich showScreen:contextKey];
+        [self.noCodesSandwich showScreen:contextKey customVariables:customVariables];
     });
-    
+
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
