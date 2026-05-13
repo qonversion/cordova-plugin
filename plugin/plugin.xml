@@ -75,7 +75,7 @@
         <source-file src="src/android/EntitiesConverter.java" target-dir="src/com/qonversion/android/sdk" />
         <source-file src="src/android/Utils.java" target-dir="src/com/qonversion/android/sdk" />
     </platform>
-    <platform name="ios">
+    <platform name="ios" package="swift">
         <config-file target="config.xml" parent="/*">
             <feature name="QonversionPlugin">
                 <param name="ios-package" value="CDVQonversionPlugin"/>
@@ -90,12 +90,13 @@
         <source-file src="src/ios/CDVNoCodesPlugin.m" />
         <header-file src="src/ios/QCUtils.h" />
         <source-file src="src/ios/QCUtils.m" />
+        <!-- nospm="true": excluded on cordova-ios 8+ (SPM mode); used as fallback on 7.x. -->
         <podspec>
             <config>
                 <source url="https://github.com/CocoaPods/Specs.git"/>
             </config>
             <pods use-frameworks="true">
-                <pod name="QonversionSandwich" spec="7.9.0" />
+                <pod name="QonversionSandwich" spec="7.10.0" nospm="true" />
             </pods>
         </podspec>
     </platform>
