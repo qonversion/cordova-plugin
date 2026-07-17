@@ -23,6 +23,7 @@ import {
   QonversionErrorCode,
   PurchaseResultStatus,
   PurchaseResultSource,
+  NoCodesScreenVariableKind,
 } from "./enums";
 import {IntroEligibility} from "./IntroEligibility";
 import {Offering} from "./Offering";
@@ -33,6 +34,7 @@ import {SKProduct} from "./SKProduct";
 import {SKProductDiscount} from "./SKProductDiscount";
 import {SKSubscriptionPeriod} from "./SKSubscriptionPeriod";
 import {NoCodesAction} from "./NoCodesAction";
+import {NoCodesScreen, NoCodesScreenVariable} from "./NoCodesScreen";
 import {NoCodesError} from "./NoCodesError";
 import {QonversionError} from "./QonversionError";
 import {User} from './User';
@@ -1015,6 +1017,34 @@ class Mapper {
     );
   }
 
+  static convertScreen(
+    payload: Record<string, any>
+  ): NoCodesScreen {
+    const rawVariables: Record<string, any>[] = payload["defaultVariables"] ?? [];
+    const variables = rawVariables.map(variable => new NoCodesScreenVariable(
+      this.convertScreenVariableKind(variable["kind"]),
+      variable["key"],
+      variable["type"],
+      variable["value"] ?? null,
+      variable["stringValue"] ?? "",
+    ));
+    return new NoCodesScreen(
+      payload["id"],
+      payload["contextKey"],
+      payload["defaultSelectedProductId"] ?? undefined,
+      variables,
+    );
+  }
+
+  static convertScreenVariableKind(kind: string | undefined): NoCodesScreenVariableKind {
+    switch (kind) {
+      case NoCodesScreenVariableKind.CUSTOM: return NoCodesScreenVariableKind.CUSTOM;
+      case NoCodesScreenVariableKind.PRODUCT: return NoCodesScreenVariableKind.PRODUCT;
+      case NoCodesScreenVariableKind.SELECTED_PRODUCT: return NoCodesScreenVariableKind.SELECTED_PRODUCT;
+      default: return NoCodesScreenVariableKind.UNKNOWN;
+    }
+  }
+
   static convertNoCodesError(
     payload: Record<string, any> | undefined
   ): NoCodesError | undefined {
@@ -1071,6 +1101,7 @@ class Mapper {
       case NoCodesErrorCode.RATE_LIMIT_EXCEEDED: return NoCodesErrorCode.RATE_LIMIT_EXCEEDED;
       case NoCodesErrorCode.SCREEN_LOADING_FAILED: return NoCodesErrorCode.SCREEN_LOADING_FAILED;
       case NoCodesErrorCode.SDK_INITIALIZATION_ERROR: return NoCodesErrorCode.SDK_INITIALIZATION_ERROR;
+      case NoCodesErrorCode.CLIENT_ERROR: return NoCodesErrorCode.CLIENT_ERROR;
     }
 
     return NoCodesErrorCode.UNKNOWN;

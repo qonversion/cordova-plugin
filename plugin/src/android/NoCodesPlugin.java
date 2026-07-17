@@ -99,6 +99,11 @@ public class NoCodesPlugin extends AnnotatedCordovaPlugin implements NoCodesEven
         callbackContext.success();
     }
 
+    @PluginAction(thread = ExecutionThread.UI, actionName = "loadScreen", isAutofinish = false)
+    public void loadScreen(String contextKey, CallbackContext callbackContext) {
+        noCodesSandwich.loadScreen(contextKey, Utils.getResultListener(callbackContext));
+    }
+
     @PluginAction(thread = ExecutionThread.UI, actionName = "close")
     public void close(CallbackContext callbackContext) {
         noCodesSandwich.close();

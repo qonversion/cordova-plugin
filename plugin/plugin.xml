@@ -26,6 +26,7 @@
     <js-module src="www/NoCodesAction.js" name="NoCodesAction" />
     <js-module src="www/NoCodesError.js" name="NoCodesError" />
     <js-module src="www/NoCodesListener.js" name="NoCodesListener" />
+    <js-module src="www/NoCodesScreen.js" name="NoCodesScreen" />
     <js-module src="www/PurchaseDelegate.js" name="PurchaseDelegate" />
     <js-module src="www/Entitlement.js" name="Entitlement" />
     <js-module src="www/Transaction.js" name="Transaction" />
@@ -69,7 +70,7 @@
                 <param name="android-package" value="com.qonversion.android.sdk.NoCodesPlugin"/>
             </feature>
         </config-file>
-        <framework src="io.qonversion:sandwich:7.9.0" />
+        <framework src="io.qonversion:sandwich:7.10.1" />
         <source-file src="src/android/NoCodesPlugin.java" target-dir="src/com/qonversion/android/sdk" />
         <source-file src="src/android/QonversionPlugin.java" target-dir="src/com/qonversion/android/sdk" />
         <source-file src="src/android/EntitiesConverter.java" target-dir="src/com/qonversion/android/sdk" />
@@ -95,7 +96,7 @@
                 <source url="https://github.com/CocoaPods/Specs.git"/>
             </config>
             <pods use-frameworks="true">
-                <pod name="QonversionSandwich" spec="7.9.0" />
+                <pod name="QonversionSandwich" spec="7.10.1" />
             </pods>
         </podspec>
     </platform>
