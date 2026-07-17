@@ -1,6 +1,7 @@
 import {NoCodesListener} from "./NoCodesListener";
 import {PurchaseDelegate} from "./PurchaseDelegate";
 import Mapper, {QNoCodeEvent, QProduct} from "./Mapper";
+import {NoCodesScreen} from './NoCodesScreen';
 import {NoCodesApi} from './NoCodesApi';
 import {NoCodesConfig} from './NoCodesConfig';
 import {ScreenPresentationConfig} from './ScreenPresentationConfig';
@@ -14,6 +15,7 @@ const EVENT_ACTION_STARTED = "nocodes_action_started";
 const EVENT_ACTION_FAILED = "nocodes_action_failed";
 const EVENT_ACTION_FINISHED = "nocodes_action_finished";
 const EVENT_SCREEN_FAILED_TO_LOAD = "nocodes_screen_failed_to_load";
+const EVENT_CUSTOM_ACTION = "nocodes_custom_action";
 
 const SDK_VERSION = "1.0.0";
 const SDK_SOURCE = "cordova";
@@ -49,6 +51,11 @@ export default class NoCodesInternal implements NoCodesApi {
 
   async showScreen(contextKey: string, customVariables?: Record<string, string>): Promise<void> {
     return await callNoCodesNative('showScreen', [contextKey, customVariables ?? null]);
+  }
+
+  async loadScreen(contextKey: string): Promise<NoCodesScreen> {
+    const screenData = await callNoCodesNative<Record<string, any>>('loadScreen', [contextKey]);
+    return Mapper.convertScreen(screenData);
   }
 
   async close(): Promise<void> {
@@ -94,6 +101,10 @@ export default class NoCodesInternal implements NoCodesApi {
       case EVENT_ACTION_FINISHED:
         const actionFinished = Mapper.convertAction(event.payload);
         this.noCodesListener?.onActionFinishedExecuting(actionFinished);
+        break;
+      case EVENT_CUSTOM_ACTION:
+        const value = event.payload?.value ?? "";
+        this.noCodesListener?.onCustomAction?.(value);
         break;
       case EVENT_FINISHED:
         this.noCodesListener?.onFinished();

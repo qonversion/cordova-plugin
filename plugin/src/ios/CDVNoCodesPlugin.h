@@ -12,6 +12,7 @@
 - (void)subscribePurchase:(CDVInvokedUrlCommand *)command;
 - (void)subscribeRestore:(CDVInvokedUrlCommand *)command;
 - (void)showScreen:(CDVInvokedUrlCommand *)command;
+- (void)loadScreen:(CDVInvokedUrlCommand *)command;
 - (void)close:(CDVInvokedUrlCommand *)command;
 - (void)setScreenPresentationConfig:(CDVInvokedUrlCommand *)command;
 - (void)setLocale:(CDVInvokedUrlCommand *)command;

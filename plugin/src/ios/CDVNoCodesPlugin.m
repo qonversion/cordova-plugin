@@ -105,6 +105,16 @@
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
+- (void)loadScreen:(CDVInvokedUrlCommand *)command {
+    NSString *contextKey = [command argumentAtIndex:0];
+    __block __weak CDVNoCodesPlugin *weakSelf = self;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [weakSelf.noCodesSandwich loadScreen:contextKey completion:^(NSDictionary<NSString *,id> * _Nullable result, SandwichError * _Nullable error) {
+            [QCUtils returnCordovaResult:result error:error command:command delegate:weakSelf.commandDelegate];
+        }];
+    });
+}
+
 - (void)close:(CDVInvokedUrlCommand *)command {
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.noCodesSandwich close];
