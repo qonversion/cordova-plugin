@@ -54,8 +54,15 @@ export default class NoCodesInternal implements NoCodesApi {
   }
 
   async loadScreen(contextKey: string): Promise<NoCodesScreen> {
-    const screenData = await callNoCodesNative<Record<string, any>>('loadScreen', [contextKey]);
-    return Mapper.convertScreen(screenData);
+    try {
+      const screenData = await callNoCodesNative<Record<string, any>>('loadScreen', [contextKey]);
+      return Mapper.convertScreen(screenData);
+    } catch (rawError) {
+      const error = typeof rawError === 'object' && rawError !== null
+        ? Mapper.convertNoCodesError(rawError as Record<string, any>)
+        : undefined;
+      throw error ?? rawError;
+    }
   }
 
   async close(): Promise<void> {
