@@ -32,7 +32,7 @@ import {PurchaseOptionsBuilder} from './PurchaseOptionsBuilder';
 import {SKProductDiscount} from './SKProductDiscount';
 import {PromotionalOffer} from './PromotionalOffer';
 
-const sdkVersion = "7.7.0";
+const sdkVersion = "7.8.0";
 
 export default class QonversionInternal implements QonversionApi {
 
@@ -140,6 +140,11 @@ export default class QonversionInternal implements QonversionApi {
     return mappedProducts;
   }
 
+  /**
+   * @deprecated Offerings are deprecated. Manage paywall products with Remote Configs instead: https://documentation.qonversion.io/docs/migrate-offerings-to-remote-configs
+   *
+   * @see [Migrate Offerings to Remote Configs](https://documentation.qonversion.io/docs/migrate-offerings-to-remote-configs) for more details
+   */
   async offerings(): Promise<Offerings | null> {
     let offerings = await callQonversionNative<QOfferings>('offerings');
     // noinspection UnnecessaryLocalVariableJS

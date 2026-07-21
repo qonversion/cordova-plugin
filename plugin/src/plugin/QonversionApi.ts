@@ -69,7 +69,9 @@ export interface QonversionApi {
    *
    * @returns the promise with Qonversion offerings
    *
-   * @see [Offerings](https://qonversion.io/docs/offerings) for more details
+   * @deprecated Offerings are deprecated. Manage paywall products with Remote Configs instead: https://documentation.qonversion.io/docs/migrate-offerings-to-remote-configs
+   *
+   * @see [Migrate Offerings to Remote Configs](https://documentation.qonversion.io/docs/migrate-offerings-to-remote-configs) for more details
    */
   offerings(): Promise<Offerings | null>;
 
