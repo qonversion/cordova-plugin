@@ -32,7 +32,7 @@ import {PurchaseOptionsBuilder} from './PurchaseOptionsBuilder';
 import {SKProductDiscount} from './SKProductDiscount';
 import {PromotionalOffer} from './PromotionalOffer';
 
-const sdkVersion = "7.8.0";
+const sdkVersion = "7.9.0";
 
 export default class QonversionInternal implements QonversionApi {
 
