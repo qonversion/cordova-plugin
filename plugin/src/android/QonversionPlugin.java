@@ -195,6 +195,11 @@ public class QonversionPlugin extends AnnotatedCordovaPlugin implements Qonversi
         qonversionSandwich.remoteConfigList(Utils.getResultListener(callbackContext));
     }
 
+    @PluginAction(thread = ExecutionThread.WORKER, actionName = "invalidateRemoteConfigsCache")
+    public void invalidateRemoteConfigsCache(CallbackContext callbackContext) {
+        qonversionSandwich.invalidateRemoteConfigsCache();
+    }
+
     @PluginAction(thread = ExecutionThread.WORKER, actionName = "remoteConfigListForContextKeys", isAutofinish = false)
     public void remoteConfigListForContextKeys(JSONArray contextKeys, boolean includeEmptyContextKey, CallbackContext callbackContext) {
         try {
