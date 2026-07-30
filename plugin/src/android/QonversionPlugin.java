@@ -206,6 +206,11 @@ public class QonversionPlugin extends AnnotatedCordovaPlugin implements Qonversi
         }
     }
 
+    @PluginAction(thread = ExecutionThread.WORKER, actionName = "invalidateRemoteConfigsCache")
+    public void invalidateRemoteConfigsCache(CallbackContext callbackContext) {
+        qonversionSandwich.invalidateRemoteConfigsCache();
+    }
+
     @PluginAction(thread = ExecutionThread.UI, actionName = "attachUserToExperiment", isAutofinish = false)
     public void attachUserToExperiment(String experimentId, String groupId, CallbackContext callbackContext) {
         qonversionSandwich.attachUserToExperiment(experimentId, groupId, Utils.getEmptyResultListener(callbackContext));

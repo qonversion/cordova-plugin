@@ -90,6 +90,10 @@
     [self.qonversionSandwich syncHistoricalData];
 }
 
+- (void)invalidateRemoteConfigsCache:(CDVInvokedUrlCommand *)command {
+    [self.qonversionSandwich invalidateRemoteConfigsCache];
+}
+
 - (void)syncStoreKit2Purchases:(CDVInvokedUrlCommand *)command {
     [self.qonversionSandwich syncStoreKit2Purchases];
 }

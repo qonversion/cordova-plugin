@@ -256,6 +256,10 @@ export default class QonversionInternal implements QonversionApi {
     return mappedRemoteConfigList;
   }
 
+  invalidateRemoteConfigsCache () {
+    callQonversionNative('invalidateRemoteConfigsCache').then(noop);
+  }
+
   async attachUserToExperiment(experimentId: string, groupId: string): Promise<void> {
     await callQonversionNative('attachUserToExperiment', [experimentId, groupId]);
     return;

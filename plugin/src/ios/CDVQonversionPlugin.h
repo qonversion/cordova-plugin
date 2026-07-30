@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)storeSDKInfo:(CDVInvokedUrlCommand *)command;
 - (void)initializeSdk:(CDVInvokedUrlCommand *)command;
 - (void)syncHistoricalData:(CDVInvokedUrlCommand *)command;
+- (void)invalidateRemoteConfigsCache:(CDVInvokedUrlCommand *)command;
 - (void)syncStoreKit2Purchases:(CDVInvokedUrlCommand *)command;
 - (void)setDefinedProperty:(CDVInvokedUrlCommand *)command;
 - (void)setCustomProperty:(CDVInvokedUrlCommand *)command;
