@@ -1,0 +1,27 @@
+name: Checks
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  bridge-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: yarn
+          cache-dependency-path: plugin/yarn.lock
+      - name: Verify frozen assignment contract
+        run: node scripts/test-frozen-assignment-contract.mjs
+      - name: Build TypeScript bridge
+        working-directory: plugin
+        run: |
+          yarn install --frozen-lockfile
+          yarn build
