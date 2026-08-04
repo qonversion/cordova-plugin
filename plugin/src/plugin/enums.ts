@@ -257,6 +257,7 @@ export enum RemoteConfigurationAssignmentType {
   UNKNOWN = "unknown",
   AUTO = "auto",
   MANUAL = "manual",
+  FROZEN = "frozen",
 }
 
 export enum ActionType {
