@@ -29,6 +29,9 @@ jobs:
       - name: Upgrade npm
         run: npm install -g npm@11.7.0
 
+      - name: Verify frozen assignment contract
+        run: node scripts/test-frozen-assignment-contract.mjs
+
       - name: Build
         run: |
           cd plugin
