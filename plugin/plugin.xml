@@ -70,13 +70,15 @@
                 <param name="android-package" value="com.qonversion.android.sdk.NoCodesPlugin"/>
             </feature>
         </config-file>
-        <framework src="io.qonversion:sandwich:7.12.0" />
+        <framework src="io.qonversion:sandwich:7.13.0" />
         <source-file src="src/android/NoCodesPlugin.java" target-dir="src/com/qonversion/android/sdk" />
         <source-file src="src/android/QonversionPlugin.java" target-dir="src/com/qonversion/android/sdk" />
         <source-file src="src/android/EntitiesConverter.java" target-dir="src/com/qonversion/android/sdk" />
         <source-file src="src/android/Utils.java" target-dir="src/com/qonversion/android/sdk" />
     </platform>
-    <platform name="ios">
+    <!-- cordova-ios 8+: the plugin is installed as the Swift package described in Package.swift (package="swift").
+         cordova-ios 7 ignores that attribute and uses the source files + the pod below. -->
+    <platform name="ios" package="swift">
         <config-file target="config.xml" parent="/*">
             <feature name="QonversionPlugin">
                 <param name="ios-package" value="CDVQonversionPlugin"/>
@@ -93,10 +95,11 @@
         <source-file src="src/ios/QCUtils.m" />
         <podspec>
             <config>
-                <source url="https://github.com/CocoaPods/Specs.git"/>
+                <source url="https://cdn.cocoapods.org/"/>
             </config>
             <pods use-frameworks="true">
-                <pod name="QonversionSandwich" spec="7.12.0" />
+                <!-- nospm: only installed by cordova-ios versions without Swift Package Manager support (< 8) -->
+                <pod name="QonversionSandwich" spec="7.13.0" nospm="true" />
             </pods>
         </podspec>
     </platform>
