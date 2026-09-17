@@ -23,19 +23,38 @@ def update_plugin_xml(new_version)
 end
 
 def upgrade_sandwich_android(new_version)
-  path = "../plugin/plugin.xml"
-  regex = /<framework src=\"io\.qonversion:sandwich:.*\" \/>/
-  result_value = "<framework src=\"io.qonversion:sandwich:#{new_version}\" />"
-
-  update_file(path, regex, result_value)
+  update_file_strict("../plugin/plugin.xml", /<framework src="io\.qonversion:sandwich:.*" \/>/, "<framework src=\"io.qonversion:sandwich:#{new_version}\" />")
 end
 
+# The sandwich pin lives in plugin.xml (CocoaPods, cordova-ios < 8) and Package.swift (SwiftPM, cordova-ios 8+);
+# they must always match.
 def upgrade_sandwich_ios(new_version)
-  path = "../plugin/plugin.xml"
-  regex = /<pod name=\"QonversionSandwich\" spec=\".*\" \/>/
-  result_value = "<pod name=\"QonversionSandwich\" spec=\"#{new_version}\" />"
+  update_file_strict("../plugin/plugin.xml", /<pod name="QonversionSandwich" spec=".*" nospm="true" \/>/, "<pod name=\"QonversionSandwich\" spec=\"#{new_version}\" nospm=\"true\" />")
+  update_file_strict("../plugin/Package.swift", /sandwich-sdk.git", exact: ".*"\)/, "sandwich-sdk.git\", exact: \"#{new_version}\")")
+end
 
-  update_file(path, regex, result_value)
+# Every manifest the sandwich pin lives in, with the pattern that must match exactly once.
+SANDWICH_PIN_FILES = {
+  "../plugin/plugin.xml" => [/<framework src="io\.qonversion:sandwich:.*" \/>/, /<pod name="QonversionSandwich" spec=".*" nospm="true" \/>/],
+  "../plugin/Package.swift" => [/sandwich-sdk.git", exact: ".*"\)/],
+}
+
+def assert_sandwich_pins_updatable
+  SANDWICH_PIN_FILES.each do |path, regexes|
+    regexes.each do |regex|
+      matches = File.read(path).scan(regex).length
+      UI.user_error!("#{path}: expected exactly one match for #{regex.inspect}, found #{matches}") unless matches == 1
+    end
+  end
+end
+
+# Like update_file, but fails loudly unless the pattern matches exactly once —
+# a silent no-op would let the plugin.xml and Package.swift pins drift apart.
+def update_file_strict(path, regex, result_value)
+  file = File.read(path)
+  matches = file.scan(regex).length
+  UI.user_error!("#{path}: expected exactly one match for #{regex.inspect}, found #{matches}") unless matches == 1
+  File.write(path, file.sub(regex, result_value))
 end
 
 def update_file(path, regex, result_value)
@@ -88,6 +107,9 @@ end
 
 lane :upgrade_sandwich do |options|
   new_version = options[:version]
+  UI.user_error!("Pass version:x.y.z") unless new_version.to_s.match?(/\A\d+\.\d+\.\d+\z/)
+  # Check every manifest first so a broken pattern cannot leave the tree half-bumped.
+  assert_sandwich_pins_updatable
 
   upgrade_sandwich_android(new_version)
   upgrade_sandwich_ios(new_version)

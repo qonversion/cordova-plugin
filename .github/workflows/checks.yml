@@ -1,0 +1,87 @@
+name: Checks
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  # The sandwich pin lives in plugin.xml twice (Android framework, iOS pod for cordova-ios < 8) and in
+  # Package.swift (cordova-ios 8+); `fastlane upgrade_sandwich version:x.y.z` bumps them — this gate keeps them equal.
+  pins:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check the sandwich pins match
+        run: |
+          pins=""
+          pins="$pins $(grep -oE 'io.qonversion:sandwich:[0-9.]+' plugin/plugin.xml | grep -oE '[0-9.]+$' || true)"
+          pins="$pins $(grep -oE '<pod name="QonversionSandwich" spec="[0-9.]+"' plugin/plugin.xml | grep -oE '"[0-9.]+"$' | tr -d '"' || true)"
+          pins="$pins $(grep -oE 'sandwich-sdk.git", exact: "[0-9.]+"' plugin/Package.swift | grep -oE '"[0-9.]+"$' | tr -d '"' || true)"
+          echo "pins (android, ios pod, Package.swift):$pins"
+          [ "$(echo $pins | wc -w)" -eq 3 ] && [ "$(echo $pins | tr ' ' '\n' | sort -u | wc -l)" -eq 1 ] || { echo "::error::sandwich pins differ between plugin.xml and Package.swift"; exit 1; }
+
+  # Real consumer checks: a fresh Cordova app installs the plugin from the working tree.
+  # cordova-ios 8 consumes it as a Swift package (package="swift"); cordova-ios 7 ignores that and uses the
+  # source files + the QonversionSandwich pod (nospm="true"), so both distribution paths are built on every PR.
+  ios:
+    name: iOS app (cordova-ios ${{ matrix.cordova_ios }}, ${{ matrix.package_manager }})
+    runs-on: macos-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - cordova_ios: '8'
+            package_manager: swiftpm
+          - cordova_ios: '7'
+            package_manager: cocoapods
+
+    steps:
+      - uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Build the plugin (TypeScript → www)
+        working-directory: plugin
+        run: |
+          yarn install
+          yarn build
+      - name: Create a Cordova app with the plugin
+        working-directory: ${{ runner.temp }}
+        run: |
+          npm install --silent cordova@13
+          npx cordova create app io.qonversion.cdvsmoke CdvSmoke
+          cd app
+          sed -i '' 's#</widget>#    <preference name="deployment-target" value="13.0" />\n</widget>#' config.xml
+          npx cordova platform add ios@${{ matrix.cordova_ios }}
+          npx cordova plugin add "$GITHUB_WORKSPACE/plugin"
+          if [ "${{ matrix.package_manager }}" = "swiftpm" ]; then
+            test -f platforms/ios/packages/cordova-ios-plugins/Package.swift
+            grep -n 'qonversion/cordova-plugin' platforms/ios/packages/cordova-ios-plugins/Package.swift
+            # cordova-ios 8 still writes a (pod-less) Podfile for the podspec source/use_frameworks declarations
+            if grep -qE '^\s*pod ' platforms/ios/Podfile; then echo "::error::a pod leaked into the SwiftPM Podfile"; cat platforms/ios/Podfile; exit 1; fi
+            test ! -d platforms/ios/Pods/QonversionSandwich
+          else
+            grep -n 'QonversionSandwich' platforms/ios/Podfile platforms/ios/Podfile.lock
+          fi
+      # xcodebuild rather than `cordova build`: the cordova CLI's simulator listing does not work with current Xcode
+      # simulator names on cordova-ios 7, and the point here is compiling the plugin against its native dependency.
+      - name: Build the app for the iOS simulator
+        working-directory: ${{ runner.temp }}/app/platforms/ios
+        run: |
+          # cordova-ios 8 names the project App.xcworkspace, cordova-ios 7 <AppName>.xcworkspace
+          workspace=$(ls -d *.xcworkspace | head -1)
+          xcodebuild -workspace "$workspace" -scheme "${workspace%.xcworkspace}" \
+            -destination 'generic/platform=iOS Simulator' \
+            build CODE_SIGNING_ALLOWED=NO
+      - name: Show how the plugin was resolved
+        working-directory: ${{ runner.temp }}/app/platforms/ios
+        run: |
+          if [ "${{ matrix.package_manager }}" = "swiftpm" ]; then
+            find . -name Package.resolved -path '*xcshareddata*' -exec cat {} \;
+          else
+            cat Podfile.lock
+          fi
