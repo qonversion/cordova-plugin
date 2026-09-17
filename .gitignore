@@ -18,3 +18,8 @@ android.iml
 
 
 **/www/*
+
+# SwiftPM
+.build/
+.swiftpm/
+Package.resolved

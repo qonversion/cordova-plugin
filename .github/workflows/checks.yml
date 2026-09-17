@@ -26,6 +26,7 @@ jobs:
   ios:
     name: iOS app (cordova-ios ${{ matrix.cordova_ios }}, ${{ matrix.package_manager }})
     runs-on: macos-latest
+    timeout-minutes: 30
     strategy:
       fail-fast: false
       matrix:
@@ -60,7 +61,9 @@ jobs:
           if [ "${{ matrix.package_manager }}" = "swiftpm" ]; then
             test -f platforms/ios/packages/cordova-ios-plugins/Package.swift
             grep -n 'qonversion/cordova-plugin' platforms/ios/packages/cordova-ios-plugins/Package.swift
-            ! grep -q 'QonversionSandwich' platforms/ios/Podfile
+            # cordova-ios 8 still writes a (pod-less) Podfile for the podspec source/use_frameworks declarations
+            if grep -qE '^\s*pod ' platforms/ios/Podfile; then echo "::error::a pod leaked into the SwiftPM Podfile"; cat platforms/ios/Podfile; exit 1; fi
+            test ! -d platforms/ios/Pods/QonversionSandwich
           else
             grep -n 'QonversionSandwich' platforms/ios/Podfile platforms/ios/Podfile.lock
           fi
