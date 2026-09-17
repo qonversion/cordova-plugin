@@ -16,8 +16,8 @@ Qonversion - In-app subscription monetization: implement subscriptions and grow 
      </a>
 </p>
 
-[![npm](https://img.shields.io/npm/v/cordova-plugin-qonversion)](https://www.npmjs.com/package/cordova-plugin-qonversion)
-[![MIT License](http://img.shields.io/cocoapods/l/Qonversion.svg?style=flat)](https://qonversion.io)
+[![npm](https://img.shields.io/npm/v/@qonversion/cordova-plugin)](https://www.npmjs.com/package/@qonversion/cordova-plugin)
+[![MIT License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](#license)
 
 
 ## In-App Subscription Implementation & Management
@@ -96,6 +96,12 @@ Send user-level subscription data to your favorite platforms.
 * **Customer support.** You can always reach out to our customer support and get the help required.
 
 Convinced? Let's go!
+
+## Installation
+
+Follow the [installation guide](https://documentation.qonversion.io/docs/cordova). On cordova-ios 8 the plugin is installed as a Swift package and the native dependency comes from Swift Package Manager; cordova-ios 6/7 keep using CocoaPods — see [iOS requirements](https://documentation.qonversion.io/docs/cordova#ios-requirements).
+
+> CocoaPods trunk becomes read-only on December 2, 2026 — see the [CocoaPods → Swift Package Manager migration guide](https://documentation.qonversion.io/docs/dec-2026-migration-guide-cocoapods-to-spm).
 
 ## Documentation
 
