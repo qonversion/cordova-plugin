@@ -11,7 +11,7 @@ Qonversion Cordova plugin: in-app subscriptions, receipt validation, subscriptio
 cordova plugin add @qonversion/cordova-plugin
 ```
 
-The plugin wires up the native iOS and Android modules itself: on cordova-ios 8 it is installed as a Swift package and the native dependency comes from Swift Package Manager; cordova-ios 6/7 keep using CocoaPods. The iOS deployment target must be 13.0 or higher — on cordova-ios 6/7 add `<preference name="deployment-target" value="13.0" />` to `config.xml`. Requirements and troubleshooting: [Cordova installation guide](https://documentation.qonversion.io/docs/cordova).
+The plugin wires up the native iOS and Android modules itself: on cordova-ios 8 it is installed as a Swift package and the native dependency (QonversionSandwich) is resolved through Swift Package Manager; cordova-ios 6/7 keep using CocoaPods. The CocoaPods tool must be installed on both paths — cordova-ios 8 still generates a pod-less Podfile and runs `pod install` (CocoaPods 1.16.0 or newer per the cordova-ios 8 prerequisites). The iOS deployment target must be 13.0 or higher — on cordova-ios 6/7 add `<preference name="deployment-target" value="13.0" />` to `config.xml`. Requirements and troubleshooting: [Cordova installation guide](https://documentation.qonversion.io/docs/cordova#ios-requirements).
 
 ## Documentation
 
