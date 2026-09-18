@@ -8,4 +8,8 @@
     <content src="index.html" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
+    <platform name="ios">
+        <!-- QonversionSandwich requires iOS 13.0; cordova-ios 8 defaults to it, older cordova-ios versions default to 11.0. -->
+        <preference name="deployment-target" value="13.0" />
+    </platform>
 </widget>
