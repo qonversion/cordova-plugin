@@ -5,11 +5,11 @@
   "description": "A sample Apache Cordova application.",
   "main": "index.js",
   "scripts": {
-    "clean": "cd ../plugin && yarn build && cd ../sample && cordova plugin rm cordova-plugin-qonversion && cordova plugin add ../plugin",
+    "clean": "cd ../plugin && yarn build && cd ../sample && (cordova plugin rm @qonversion/cordova-plugin || true) && cordova plugin add ../plugin",
     "android": "cordova run android -- --gradleArg=-PcdvCompileSdkVersion=33",
-    "ios": "cordova run ios",
+    "ios": "cordova run ios --emulator",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "xcode": "open \"./platforms/ios/Qonversion Cordova.xcworkspace\""
+    "xcode": "open ./platforms/ios/App.xcworkspace"
   },
   "keywords": [
     "ecosystem:cordova"
@@ -20,13 +20,13 @@
     "@qonversion/cordova-plugin": "file:../plugin",
     "cordova-android": "^13.0.0",
     "cordova-annotated-plugin-android": "^1.0.4",
-    "cordova-ios": "^6.3.0",
-    "cordova-plugin-device": "^3.0.0",
-    "cordova-plugin-qonversion": "file:../plugin"
+    "cordova-ios": "^8.1.1",
+    "cordova-plugin-device": "^3.0.0"
   },
   "cordova": {
     "platforms": [
-      "android"
+      "android",
+      "ios"
     ],
     "plugins": {}
   }
