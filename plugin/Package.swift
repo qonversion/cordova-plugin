@@ -16,7 +16,7 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/apache/cordova-ios.git", "8.0.0"..<"9.0.0"),
-        .package(url: "https://github.com/qonversion/sandwich-sdk.git", exact: "7.13.1")
+        .package(url: "https://github.com/qonversion/sandwich-sdk.git", exact: "7.14.0")
     ],
     targets: [
         .target(
