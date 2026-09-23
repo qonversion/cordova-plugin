@@ -489,6 +489,8 @@ class Mapper {
         return EntitlementSource.STRIPE;
       case "Manual":
         return EntitlementSource.MANUAL;
+      case "Paddle":
+        return EntitlementSource.PADDLE;
     }
 
     return EntitlementSource.UNKNOWN;
