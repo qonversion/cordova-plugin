@@ -1,4 +1,4 @@
-<!-- header image: pending — add when the asset is published (see readme-v2/readme-template.md §2.1) -->
+<p align="center"><img src="https://raw.githubusercontent.com/qonversion/cordova-plugin/main/.github/assets/sdk-header.png" width="100%" alt="Qonversion SDK"></p>
 
 # Qonversion Cordova Plugin
 
