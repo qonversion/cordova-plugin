@@ -9,7 +9,7 @@ your app.
 
 [![Version](https://img.shields.io/github/v/release/qonversion/cordova-plugin?label=version)](https://github.com/qonversion/cordova-plugin/releases)
 [![npm](https://img.shields.io/npm/v/%40qonversion%2Fcordova-plugin)](https://www.npmjs.com/package/@qonversion/cordova-plugin)
-[![MIT License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](LICENSE)
+[![MIT License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://github.com/qonversion/cordova-plugin/blob/main/LICENSE)
 [![Platforms](https://img.shields.io/badge/platforms-iOS%20%7C%20Android-blue.svg?style=flat)](https://documentation.qonversion.io/docs/cordova)
 
 ## Quickstart
@@ -57,8 +57,10 @@ Full walk-through, both modes and the store setup: [Quick start](https://documen
 
 On cordova-ios 8 the plugin is installed as a Swift package and the native dependency comes from
 Swift Package Manager; cordova-ios 7 keeps using CocoaPods — see
-[iOS requirements](https://documentation.qonversion.io/docs/cordova#ios-requirements). The iOS
-deployment target must be 13.0 or higher; on cordova-ios 7 set it in `config.xml` yourself.
+[iOS requirements](https://documentation.qonversion.io/docs/cordova#ios-requirements). The CocoaPods
+tool must be installed on cordova-ios 8 as well: the platform still writes a Podfile without pods and
+runs `pod install`. The iOS deployment target must be 13.0 or higher; on cordova-ios 7 set it in
+`config.xml` yourself.
 
 > CocoaPods trunk becomes read-only on December 2, 2026 — see the
 > [CocoaPods → Swift Package Manager migration guide](https://documentation.qonversion.io/docs/dec-2026-migration-guide-cocoapods-to-spm).
@@ -94,11 +96,11 @@ training data remembers.
 appending `.md` to its URL, and [`llms.txt`](https://documentation.qonversion.io/llms.txt) lists every page.
 
 **Work on your project data as an agent.** The Qonversion MCP server at `https://mcp.qonversion.io/mcp`
-exposes the platform's resources as tools. Reading Apple Ads — campaign reports, time series and the
-connection status — is on for all accounts. **Changing campaigns — bids, budgets and campaign status
-— is a closed beta, switched on per account on request**; outside it those tools are not available,
-so ask support to enable it before wiring an agent to them. The agent authenticates as you over
-OAuth 2.1, each tool is gated by its own scope, and no Qonversion key is handed to the model.
+exposes the platform's resources as tools. The agent authenticates as you over OAuth 2.1, each tool
+is gated by its own scope, and no Qonversion key is handed to the model. Apple Ads tools need the
+feature on your account (404 otherwise); campaign changes additionally need the `apple_ads:write`
+scope and a team member with campaign-management permission — check
+`get_apple_ads_connection_status`.
 
 Destructive tools and Apple Ads changes that increase spend do not fire on the first call: they
 return a short-lived token addressed to the human operator, and completing the action requires
@@ -117,7 +119,7 @@ working in your app's repository:
 > Steps:
 > 1. Check with me that a Qonversion project exists and the app stores are connected — project key, App Store shared secret and App Store ID, Google Play service account key. This is step 2 of the quick start, I have to do it in the dashboard, and nothing validates until it is done. Google credentials can take up to 24 hours to start working.
 > 2. Read `https://documentation.qonversion.io/docs/quickstart.md` and decide with me between Analytics Mode and Subscription Management Mode. Do not pick one silently.
-> 3. Read the install page for this project's platform, linked from `https://documentation.qonversion.io/docs/install-sdk.md`. Use the SDK version the docs name, not one from memory.
+> 3. Read the install page for this project's platform, linked from `https://documentation.qonversion.io/docs/install-sdk.md`, and follow its steps and method names. Take the SDK version from the latest release tag or the package registry, not from memory — the docs page can name an older one; if they disagree, tell me.
 > 4. Install and configure the SDK. Ask me for the Qonversion project key; it is in the dashboard under Settings → Developer → Keys. Never commit it to the repository.
 > 5. Implement the mode we chose, following the documented method names exactly.
 > 6. Show me the diff and tell me what you could not verify against the docs.
@@ -154,4 +156,4 @@ Contributions are what make the open source community such an amazing place to l
 
 ## License
 
-Qonversion SDK is available under the MIT license. See [LICENSE](LICENSE).
+Qonversion SDK is available under the MIT license. See [LICENSE](https://github.com/qonversion/cordova-plugin/blob/main/LICENSE).

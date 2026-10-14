@@ -14,9 +14,25 @@ part that runs inside your app.
 cordova plugin add @qonversion/cordova-plugin
 ```
 
-**The full readme lives in [`plugin/README.md`](plugin/README.md)** — quickstart, the first call,
-requirements and the agent section. The package is published from `plugin/`, so that is also the
-file npm renders.
+Initialize and check what the user has access to:
+
+```javascript
+// after the `deviceready` event
+const config = new Qonversion.ConfigBuilder(
+  'your_project_key',
+  Qonversion.LaunchMode.SUBSCRIPTION_MANAGEMENT,
+).build();
+Qonversion.initialize(config);
+
+const entitlements = await Qonversion.getSharedInstance().checkEntitlements();
+if (entitlements.get('premium')?.isActive) {
+  // unlock premium features
+}
+```
+
+**The full readme lives in [`plugin/README.md`](plugin/README.md)** — where to find the project key,
+Analytics Mode as the alternative to Subscription Management Mode, the requirements and the agent
+section. The package is published from `plugin/`, so that is also the file npm renders.
 
 * [Welcome](https://documentation.qonversion.io/docs/qonversion-platform) — what the platform does.
 * [Cordova setup](https://documentation.qonversion.io/docs/cordova) — full installation.
